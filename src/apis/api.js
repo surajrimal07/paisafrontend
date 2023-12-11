@@ -1,6 +1,11 @@
 import axios from "axios";
 import { v4 as uuidv4 } from 'uuid';
 
+
+
+//create a seperate file for all api urls
+
+
 const api = axios.create({
     baseURL: "http://localhost:5000",
     withCredentials: true,
@@ -11,36 +16,64 @@ const api = axios.create({
 
 export const createAPI = (data) => api.post("/api/create",data);
 
-const RegisterUser = async (name, phone, email, password) => {
-    const uniqueToken = uuidv4();
 
-    const requestData = {
-      name: name,
-      phone: phone,
-      email: email,
-      password: password,
-      token: uniqueToken,
-    };
-
-    try {
-      const response = await api.post('/api/create', requestData);
-      console.log("test")
-        console.log(response)
-      if (response.status === 200) {
-        console.log('Registration successful:');
-        return { status: 'success' };
-      } else if (response.status === 400){
-        console.error('Duplicate Data');
-        return { status: 'duplicate', data: response.data };
-      } else if ( response.status === 500){
-        console.error('Registration failed. Server returned:', response.status, response.data);
-        return { status: 'failed', data: response.data };
-      }
-    } catch (error) {
-      console.error('API Request Error:', error.message);
-      return { status: 'failed', error: error.message };
-    }
+const loginUser = async (email, password) => {
+  const requestData = {
+    email: email,
+    password: password,
   };
 
+  try {
+    const response = await api.post('/api/login', requestData);
 
-export default RegisterUser;
+    if (response.status === 200) {
+      console.log('Login successful:', response.data);
+      return { status: 200, data: response.data };
+    } else {
+      console.error('Unhandled status code:', response.status);
+      return { status: response.status, error: 'An unexpected error occurred.' };
+    }
+  } catch (error) {
+    if (error.response) {
+      console.error('API Response Error:', error.response.status, error.response.data);
+      return { status: error.response.status, error: error.response.data.error };
+    } else if (error.request) {
+      console.error('API Request Error: No response received');
+      return { status: 500, error: 'An error occurred during login.' };
+    } else {
+      console.error('API Request Setup Error:', error.message);
+      return { status: 500, error: 'An error occurred during login.' };
+    }
+  }
+};
+
+const RegisterUser = async (name, phone, email, password) => {
+  const originalToken = uuidv4();
+  const uniqueToken = originalToken.replace(/-/g, '');
+
+  const requestData = {
+    name: name,
+    phone: phone,
+    email: email,
+    password: password,
+    token: uniqueToken,
+  };
+
+  console.log('Registering with:', requestData);
+
+  try {
+    const response = await api.post('/api/create', requestData);
+    return response.status;
+  } catch (error) {
+    console.error('API Request Error:', error.message);
+
+    if (error.response) {
+      return error.response.status;
+    } else {
+      throw error;
+    }
+  }
+};
+
+export { RegisterUser as default, loginUser };
+

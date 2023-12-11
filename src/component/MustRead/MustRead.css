@@ -1,0 +1,145 @@
+.mr {
+    width: 100%;
+    margin-bottom: 35px;
+}
+
+.mr .mrContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    background-color: white;
+    margin: auto;
+    padding-bottom: 60px;
+}
+
+.mrContainer .mrMainTitle {
+    width: 40%;
+    text-align: center;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    /* border: 2px solid red; */
+}
+
+.mrMainTitle .title {
+    margin-top: 25px;
+    font-size: 35px;
+}
+
+.mrMainTitle .desc {
+    font-size: 20px;
+    margin-bottom: 25px;
+}
+
+.mrContainer .boxContainer {
+    display: flex;
+    justify-content: space-around;
+    width: 90%;
+}
+
+.boxContainer .box {
+    display: flex;
+    flex-direction: column;
+    width: 27%;
+    height: 400px;
+    object-fit: cover;
+    /* border: 2px solid rgb(40, 39, 39); */
+    background-color: rgba(214, 226, 230, 0.329);
+    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: 1.5s;
+}
+
+.boxContainer .box:hover {
+    /* transform: translateY(-0.5%); */
+    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.5);
+}
+
+.box .boxImg {
+    margin-top: 15px;
+    width: 100%;
+    height: 45%;
+    /* border: 2px solid rgb(229, 7, 7); */
+}
+
+.boxImg img {
+    /* margin: 0 15px; */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.box .content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 55%;
+    object-fit: cover;
+    /* border: 2px solid rgb(10, 205, 7); */
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+}
+
+.content .content1 {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.content1 .marketing {
+    font-size: 17px;
+    font-weight: 600;
+    color: rgb(77, 77, 77);
+}
+
+.content1 .date {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 17px;
+    font-weight: 600;
+    color: rgb(77, 77, 77)
+}
+
+.date .month {}
+
+.date .year {}
+
+.content .content2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 10px;
+}
+
+.content2 .title {
+    font-size: 18px;
+    color: rgb(27, 26, 26);
+}
+
+.content2 .desc {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgb(73, 72, 72);
+}
+
+.mrContainer .more {
+    margin-top: 50px;
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    justify-content: center;
+}
+
+.more span {
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(58, 59, 58);
+}

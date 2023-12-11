@@ -1,0 +1,44 @@
+.featured {
+    width: 100%;
+    background-color: rgb(133, 220, 242);
+    margin-top: 40px;
+}
+
+.featured .featuredContainer {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.featuredContainer .title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    margin-top: 15px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.featuredContainer .featuredContainerImage {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.featuredContainerImage .imageContainer {
+    width: 18%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.featuredContainerImage .imageContainer img {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+}

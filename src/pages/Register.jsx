@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
+import { Link, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import '../App.css';
 import RegisterUser from '../apis/api.js';
+import logo from "../component/images/hilogo.png";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -26,7 +28,7 @@ const Register = () => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (isNaN(phone) || phone.length !== 10) {
@@ -34,77 +36,111 @@ const Register = () => {
       return;
     }
 
-    const data = {
-      name: name,
-      phone: phone,
-      email: email,
-      password: password
-    }
 
-    RegisterUser(data).then((respose) => {
-      if (respose.status === 'success') {
-        toast.success("Successfully registered");
-        console.log("success");
-      } else if (respose.status === 'duplicate') {
-        toast.error("Email already exists");
-        console.log("failed 400");
+    try {
+      const response = await RegisterUser(name, phone, email, password);
+
+      console.log(response);
+
+      if (response === 200) {
+        toast.success('Registration successful');
+        console.log('Registration successful');
+        localStorage.setItem('token',response.data.token)
+        const jsonDecode= JSON.stringify(response.data.userData)
+        localStorage.setItem('user',jsonDecode)
+        navigate('/dashboard');
+      } else if (response === 400) {
+        toast.error('Email already exists');
+        console.log('Registration failed - Email already exists');
       } else {
-        toast.error("Server Error");
-        console.log(respose.data);
+        toast.error('Server Error');
+        console.log('Registration failed - Server Error:', response);
       }
-    });
-
-    console.log('Registering with:', { name, phone, email, password });
+    } catch (error) {
+      console.error('An error occurred during registration:', error);
+      toast.error('An error occurred during registration');
+    }
   };
 
   return (
-    <div className="App">
-      <div className="register-container">
-        <h2>10Paisa Register</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group inline">
-            <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={handleNameChange}
-              required
-            />
+    <div className="container-fluid">
+      <div className="row vh-100">
+        <div className="col-md-6 bg-primary d-flex justify-content-center align-items-center">
+          <div className="text-center">
+            <img src={logo} alt="Logo" className="img-fluid" />
           </div>
-          <div className="form-group inline">
-            <label htmlFor="phone">Phone:</label>
-            <input
-              type="tel"
-              id="phone"
-              value={phone}
-              onChange={handlePhoneChange}
-              required
-            />
+        </div>
+        <div className="col-md-6 d-flex justify-content-center align-items-center">
+          <div className="card border-0 shadow-lg bg-light">
+            <div className="card-body p-4">
+              <h2 className="text-center mb-4" style={{ fontSize: '1.5rem' }}>Register to 10Paisa</h2>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="name" className="form-label">
+                    Name:
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    className="form-control"
+                    value={name}
+                    onChange={handleNameChange}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="phone" className="form-label">
+                    Phone:
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    className="form-control"
+                    value={phone}
+                    onChange={handlePhoneChange}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    Email:
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    className="form-control"
+                    value={email}
+                    onChange={handleEmailChange}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="password" className="form-label">
+                    Password:
+                  </label>
+                  <input
+                    type="password"
+                    id="password"
+                    className="form-control"
+                    value={password}
+                    onChange={handlePasswordChange}
+                    required
+                  />
+                </div>
+                <div className="d-grid mb-3">
+                  <button type="submit" className="btn btn-primary btn-block">
+                    Register to 10Paisa
+                  </button>
+                </div>
+                <div className="text-center">
+                  Already have an account? <Link to="/login">Login</Link>
+                </div>
+              </form>
+            </div>
           </div>
-          <div className="form-group inline">
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={handleEmailChange}
-              required
-            />
-          </div>
-          <div className="form-group inline">
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={handlePasswordChange}
-              required
-            />
-          </div>
-          <button type="submit">Register</button>
-        </form>
+        </div>
       </div>
+      <ToastContainer position="top-right" />
     </div>
   );
 };

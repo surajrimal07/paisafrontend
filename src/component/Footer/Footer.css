@@ -1,0 +1,190 @@
+.footer {
+    width: 100%;
+    background-color: rgba(14, 179, 179, 0.952);
+}
+
+.footer .footerContainer {
+    width: 85%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 25px;
+}
+
+.footerContainer .logo {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.footerContainer .logo .logoImg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo img {
+    width: 30px;
+    height: 30px;
+}
+
+.footerContainer .logoName {
+    font-size: 28px;
+    color: rgb(108, 10, 125);
+
+}
+
+.logo span {
+    color: rgb(26, 185, 81);
+}
+
+
+.footerContainer .topFooter {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    flex-direction: row;
+
+}
+
+.topFooter .tf1 {
+    display: flex;
+
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tf1 .title {
+    color: black;
+    font-weight: 600;
+    font-size: 18px;
+    word-spacing: 4px;
+    margin-bottom: 10px;
+}
+
+.tf1 .fContactContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.fContactContainer .fContact {
+    display: flex;
+    gap: 8px;
+}
+
+.fContact span {
+    color: rgb(26, 26, 26);
+}
+
+.tf1 .follow {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.follow .title {
+    color: black;
+    font-weight: 600;
+    font-size: 18px;
+    word-spacing: 4px;
+}
+
+.follow .followImgContainer {
+    display: flex;
+    gap: 15px;
+
+}
+
+.followImgContainer .followImg {
+    border-radius: 50%;
+    background-color: black;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.followImgContainer .followImg:hover {
+    background-color: rgb(64, 12, 237);
+}
+
+.topFooter .tf2 {
+    display: flex;
+    flex-direction: column;
+    color: black;
+    gap: 8px;
+}
+
+.tf2 .title {
+    font-weight: 500;
+    font-size: 25px;
+}
+
+.tf2 ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tf2 ul li {
+    list-style: none;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.footerBorder {
+    margin: 45px 0;
+    border: 1px solid rgb(60, 60, 60);
+    width: 100%;
+}
+
+.footerContainer .middleFooter {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    color: black;
+}
+
+.middleFooter .mfContainer {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 4px;
+}
+
+.mfContainer .title {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.mfContainer .desc {
+    font-weight: 600
+}
+
+.footerContainer .bottomFooter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    width: 100%;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.footerBorder1 {
+    margin-top: 45px;
+    border: 1px solid rgb(60, 60, 60);
+    width: 100%;
+}

@@ -1,0 +1,107 @@
+.product {
+    width: 100%;
+    background-color: rgb(240, 243, 243);
+    margin-top: 50px;
+    margin-bottom: 70px;
+}
+
+.product .productContainer {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.productContainer .title {
+    display: flex;
+    width: 60%;
+    justify-content: center;
+    align-items: center;
+    font-size: 38px;
+    margin-top: 15px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    text-align: center;
+    line-height: 50px;
+}
+
+.productContainer .productMain {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* flex: 2; */
+    /* border: 2px solid red; */
+}
+
+.productMain .mainCard {
+    width: 90%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    /* border: 2px solid red; */
+    /* gap: 40px; */
+}
+
+.mainCard .cardLeft {
+    width: 90%;
+    /* height: 90%; */
+    display: flex;
+    flex: 2;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.cardLeft img {
+    width: 90%;
+    height: 90%;
+}
+
+.mainCard .cardRight {
+    display: flex;
+    flex: 2;
+    flex-direction: column;
+    /* margin-bottom: 70px; */
+
+}
+
+.cardRight .titleCard {
+    font-size: 40px;
+    margin-bottom: 25px;
+    /* margin-left: 40px; */
+}
+
+.cardRight .subTitle {
+    font-size: 20px;
+    line-height: 30px;
+    margin-bottom: 26px;
+    color: rgb(92, 83, 83);
+    /* margin-left: 40px; */
+}
+
+.subTitle .pointContainer {
+    font-size: 28px;
+    /* margin-left: 40px; */
+}
+
+.pointContainer .point {
+    font-size: 20px;
+    line-height: 40px;
+    margin-bottom: 26px;
+    /* margin-left: 15px; */
+}
+
+.productContainer .productBtn {
+    padding: 16px 25px;
+    background-color: rgb(162, 148, 231);
+    border-radius: 15px;
+    width: 25%;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-top: 20px;
+    cursor: pointer;
+    text-align: center;
+}
