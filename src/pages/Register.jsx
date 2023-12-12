@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -67,7 +67,7 @@ const Register = () => {
       <div className="row vh-100">
         <div className="col-md-6 bg-primary d-flex justify-content-center align-items-center">
           <div className="text-center">
-            <img src={logo} alt="Logo" className="img-fluid" />
+          <img src={logo} alt="Logo" className="img-fluid custom-logo" />
           </div>
         </div>
         <div className="col-md-6 d-flex justify-content-center align-items-center">

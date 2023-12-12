@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { loginUser } from '../apis/api'; // Import the loginUser function
+import { loginUser } from '../apis/api';
 import logo from "../component/images/hilogo.png";
+
+import './login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -32,18 +34,14 @@ const Login = () => {
 
       if (response.status === 200) {
         toast.success('Login successful');
-        console.log('Login successful');
-        console.log(response.data.token)
-        localStorage.setItem('token',response.data.token)
-        const jsonDecode= JSON.stringify(response.data)
-        localStorage.setItem('user',jsonDecode)
+        localStorage.setItem('token', response.data.token);
+        const jsonDecode = JSON.stringify(response.data);
+        localStorage.setItem('user', jsonDecode);
         navigate('/dashboard');
       } else if (response.status === 401) {
         toast.error("Invalid email or password. Please check your credentials and try again.");
-        console.log('Invalid email or password');
       } else {
         toast.error('An unexpected error occurred');
-        console.log('Unexpected error');
       }
     } catch (error) {
       console.error('An error occurred during login:', error);
@@ -56,11 +54,11 @@ const Login = () => {
       <div className="row vh-100">
         <div className="col-md-6 bg-primary d-flex justify-content-center align-items-center">
           <div className="text-center">
-            <img src={logo} alt="Logo" className="img-fluid" />
+          <img src={logo} alt="Logo" className="img-fluid custom-logo" />
           </div>
         </div>
         <div className="col-md-6 d-flex justify-content-center align-items-center">
-          <div className="card border-0 shadow-lg bg-light">
+          <div className="card border-0 shadow-lg custom-card">
             <div className="card-body p-4">
               <h2 className="text-center mb-4">10Paisa Login</h2>
               <form onSubmit={handleSubmit}>

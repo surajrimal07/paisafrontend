@@ -9,9 +9,3 @@ root.render(
     <App />
   </React.StrictMode>
 );
-
-
-//localStorage.setItem('root', res.data.token);
-
-// const jsonDecode = JSON.stringify(res.data.userdata);
-// localStorage.setItem('user',jsonDecode);

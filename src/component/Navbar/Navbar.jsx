@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 
 const Navbar = () => {
 
-  // get data of user form local storage
   const user = JSON.parse(localStorage.getItem('user'))
 
   return (
@@ -22,24 +21,17 @@ const Navbar = () => {
               <li className="nav-item">
                 <Link className="nav-link" to="/features">Features</Link>
               </li>
-              <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown
-                </a>
-                <ul className="dropdown-menu">
-                  <li><a className="dropdown-item" href="#">A</a></li>
-                  <li><a className="dropdown-item" href="#">B</a></li>
-                  <li><a className="dropdown-item" href="#">AB</a></li>
-                  <li><a className="dropdown-item" href="#">O</a></li>
-                </ul>
+              <li className="nav-item">
+                <Link className="nav-link" to="/aboutus">About Us</Link>
               </li>
+
             </ul>
             <form className="d-flex" role="search">
               {
                 user ? <>
                   <div class="dropdown">
                     <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Welcome, {user.firstName}!
+                      Welcome, {user.name}!
                     </button>
                     <ul class="dropdown-menu">
                       <li><Link class="dropdown-item" to="/profile">Profile</Link></li>
@@ -51,7 +43,7 @@ const Navbar = () => {
                 </>
                   : <>
                     <Link className="btn btn-outline-primary me-2" to={'/login'}>Login</Link>
-                    <Link className="btn btn-outline-success" to={'/register'}>Register</Link>
+                    <Link className="btn btn-outline-success" to={'/signup'}>Register</Link>
                   </>
               }
             </form>
