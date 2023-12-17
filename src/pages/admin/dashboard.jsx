@@ -1,70 +1,69 @@
-import React, { useEffect, useState } from "react";
-import { getAllAssets } from '../../apis/api';
+import React, { useEffect, useState } from 'react';
+import { getAllAssets, getAllUsers } from '../../apis/api';
 import './dashboard.css';
 
 function AdminDashboard() {
   const [assets, setAssets] = useState([]);
+  const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState({});
-  const [itemsPerPage, setItemsPerPage] = useState(5); // Adjust this number as needed
+  const [currentUsersPage, setCurrentUsersPage] = useState(1);
+  const [currentAssetsPage, setCurrentAssetsPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(15)
+  const [searchQuery, setSearchQuery] = useState('');;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getAllAssets();
-
-        if (response.status === 200) {
-          if (Array.isArray(response.data.data)) {
-            setAssets(response.data.data);
-
-            // Initialize currentPage for each category and sector group
-            const initialPages = {};
-            response.data.data.forEach((asset) => {
-              const key = `${asset.category}-${asset.sector}`;
-              initialPages[key] = 1;
-            });
-            setCurrentPage(initialPages);
-          } else {
-            console.error('Invalid data format. Expected an array:', response.data);
-          }
+        const assetResponse = await getAllAssets();
+        if (assetResponse.status === 200 && Array.isArray(assetResponse.data.data)) {
+          setAssets(assetResponse.data.data);
         } else {
-          console.error('Error fetching assets:', response.error);
+          console.error('Error fetching assets:', assetResponse.error);
+        }
+
+        const userResponse = await getAllUsers();
+        if (userResponse.status === 200 && Array.isArray(userResponse.data)) {
+          setUsers(userResponse.data);
+        } else {
+          console.error('Error fetching users:', userResponse.error);
         }
       } catch (error) {
-        console.error('Error fetching assets:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
   }, []);
 
-  const indexOfLastItem = (category, sector) => currentPage[`${category}-${sector}`] * itemsPerPage;
-  const indexOfFirstItem = (category, sector) => indexOfLastItem(category, sector) - itemsPerPage;
-  const currentAssets = (category, sector) => assets
-    .filter(asset => asset.category === category && asset.sector === sector)
-    .slice(indexOfFirstItem(category, sector), indexOfLastItem(category, sector));
+  const handleEditUser = (userId) => {
+    // Implement edit user functionality
+    console.log(`Edit user with ID ${userId}`);
+  };
 
-  const totalPageCount = (category, sector) =>
-    Math.ceil(
-      assets.filter(asset => asset.category === category && asset.sector === sector).length / itemsPerPage
-    );
+  const handleDeleteUser = (userId) => {
+    // Implement delete user functionality
+    console.log(`Delete user with ID ${userId}`);
+  };
 
-  const renderPaginationButtons = (category, sector) => {
+  const indexOfLastUser = currentUsersPage * itemsPerPage;
+  const indexOfFirstUser = indexOfLastUser - itemsPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+
+  const totalUsersPageCount = Math.ceil(users.length / itemsPerPage);
+
+  const renderUserPaginationButtons = () => {
     const buttons = [];
     const maxButtonsToShow = 5;
-
-    // Determine the range of buttons to show
-    let startPage = Math.max(1, currentPage[`${category}-${sector}`] - Math.floor(maxButtonsToShow / 2));
-    let endPage = Math.min(totalPageCount(category, sector), startPage + maxButtonsToShow - 1);
-
-    // Adjust the startPage based on the endPage
+    let startPage = Math.max(1, currentUsersPage - Math.floor(maxButtonsToShow / 2));
+    let endPage = Math.min(totalUsersPageCount, startPage + maxButtonsToShow - 1);
     startPage = Math.max(1, endPage - maxButtonsToShow + 1);
 
     for (let i = startPage; i <= endPage; i++) {
       buttons.push(
         <button
           key={i}
-          onClick={() => setCurrentPage(prev => ({ ...prev, [`${category}-${sector}`]: i }))}
-          className={currentPage[`${category}-${sector}`] === i ? 'active' : ''}
+          onClick={() => setCurrentUsersPage(i)}
+          className={currentUsersPage === i ? 'active' : ''}
         >
           {i}
         </button>
@@ -74,44 +73,141 @@ function AdminDashboard() {
     return buttons;
   };
 
+  const indexOfLastAsset = currentAssetsPage * itemsPerPage;
+  const indexOfFirstAsset = indexOfLastAsset - itemsPerPage;
+  const currentAssets = assets.slice(indexOfFirstAsset, indexOfLastAsset);
+
+  const totalAssetsPageCount = Math.ceil(assets.length / itemsPerPage);
+
+  const renderAssetPaginationButtons = () => {
+    const buttons = [];
+    const maxButtonsToShow = 5;
+    let startPage = Math.max(1, currentAssetsPage - Math.floor(maxButtonsToShow / 2));
+    let endPage = Math.min(totalAssetsPageCount, startPage + maxButtonsToShow - 1);
+    startPage = Math.max(1, endPage - maxButtonsToShow + 1);
+
+    for (let i = startPage; i <= endPage; i++) {
+      buttons.push(
+        <button
+          key={i}
+          onClick={() => setCurrentAssetsPage(i)}
+          className={currentAssetsPage === i ? 'active' : ''}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    return buttons;
+  };
+
+  const handleSearch = () => {
+    // Filter assets based on search query
+    const filteredAssets = assets.filter(
+      (asset) =>
+        asset.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        asset.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    // Set the filtered assets
+    setAssets(filteredAssets);
+
+    // Reset pagination to the first page
+    setCurrentPage({});
+
+    // Filter users based on search query
+    const filteredUsers = users.filter(
+      (user) =>
+        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    // Set the filtered users
+    setUsers(filteredUsers);
+
+    // Reset user pagination to the first page
+    setCurrentUsersPage(1);
+  };
+
   return (
-    <>
-      <div className="m-4">
-        <h2>Admin Dashboard</h2>
-        <div className="category-sector-boxes">
-          {Array.from(new Set(assets.map(asset => `${asset.category}-${asset.sector}`))).map((group, index) => {
-            const [category, sector] = group.split('-');
-            return (
-              <div key={index} className="category-sector-box">
-                <h3>{category}</h3>
-                <h4>{sector}</h4>
-                <table className="table mt-2">
-                  <thead className="table-dark">
-                    <tr>
-                      <th>Symbol</th>
-                      <th>Last Price (LTP)</th>
-                      {/* Add more headers as needed */}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {currentAssets(category, sector).map((asset, index) => (
-                      <tr key={index}>
-                        <td>{asset.symbol}</td>
-                        <td>{asset.ltp}</td>
-                        {/* Add more cells as needed */}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <div className="pagination-container">
-                  {renderPaginationButtons(category, sector)}
-                </div>
-              </div>
-            );
-          })}
+    <div className="m-4">
+      <h2>Admin Dashboard</h2>
+
+
+    {/* Search */}
+    <div className="search-container mb-4">
+      <input
+        type="text"
+        placeholder="Enter symbol, name, or email..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+      <button className="search-button" onClick={handleSearch}>
+        Search
+      </button>
+    </div>
+
+      {/* Users Section */}
+      <div className="category-sector-box users-section">
+        <h3>Users</h3>
+        <table className="table mt-2">
+          <thead className="table-dark">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentUsers.map((user, index) => (
+              <tr key={index}>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>{user.phone}</td>
+                <td>
+                  <button className="edit-button" onClick={() => handleEditUser(user._id)}>Edit</button>
+                  <button className="delete-button" onClick={() => handleDeleteUser(user._id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="pagination-container">
+          {renderUserPaginationButtons()}
         </div>
       </div>
-    </>
+
+      {/* Assets Section */}
+      <div className="category-sector-box">
+        <h3>Assets</h3>
+        <table className="table mt-2">
+          <thead className="table-dark">
+            <tr>
+              <th>Category</th>
+              <th>Sector</th>
+              <th>Symbol</th>
+              <th>Last Price (LTP)</th>
+              <th>Point Change</th>
+              <th>Percent Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentAssets.map((asset, index) => (
+              <tr key={index}>
+                <td>{asset.name}</td>
+                <td>{asset.sector}</td>
+                <td>{asset.symbol}</td>
+                <td>{asset.ltp}</td>
+                <td>{asset.pointchange}</td>
+                <td>{asset.percentchange}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="pagination-container">
+          {renderAssetPaginationButtons()}
+        </div>
+      </div>
+    </div>
   );
 }
 

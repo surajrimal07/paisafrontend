@@ -7,7 +7,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 const api = axios.create({
-    baseURL: "http://localhost:5000",
+    //baseURL: "http://localhost:5000",
+    baseURL: "https://paisabackend.el.r.appspot.com",
+
     withCredentials: true,
     headers: {
         "Content-Type": "application/json"
@@ -96,6 +98,21 @@ const getAllAssets = async () => {
   }
 };
 
+const getAllUsers = async () => {
+  try {
+    const response = await api.post('/api/allusers');
+
+    if (response.status === 200) {
+      localStorage.setItem('userlistData', JSON.stringify(response.data));
+      return { status: 200, data: response.data.users };
+    } else {
+      console.error('Unhandled status code:', response.status);
+      return { status: response.status, error: 'An unexpected error occurred.' };
+    }
+  } catch (error) {
+    return { status: 500, error: 'An error occurred while fetching assets.' };
+  }
+};
 
 
 
@@ -127,5 +144,5 @@ const RegisterUser = async (name, phone, email, password) => {
   }
 };
 
-export { RegisterUser as default, getAllAssets, loginUser, updateAsset };
+export { RegisterUser as default, getAllAssets, getAllUsers, loginUser, updateAsset };
 

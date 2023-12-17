@@ -1,73 +1,99 @@
-.pagination-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-  }
-
-  .pagination-container button {
-    background-color: #4caf50;
-    color: white;
-    border: 1px solid #4caf50;
-    padding: 8px 16px;
-    margin: 0 4px;
-    cursor: pointer;
-  }
-
-  .pagination-container button.active {
-    background-color: #45a049;
-  }
-
-  /* dashboard.css */
+/* dashboard.css */
 
 .category-sector-boxes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
 
-  .category-sector-box {
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 8px;
-    width: 300px;
-  }
+.category-sector-box {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%; /* Modified to occupy full width */
+}
 
-  .category-sector-box h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
+.category-sector-box h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
 
-  .category-sector-box h4 {
-    font-size: 16px;
-    margin-bottom: 15px;
-  }
+.category-sector-box h4 {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
 
-  .table {
-    width: 100%;
-    margin-top: 15px;
-  }
+.table {
+  width: 100%;
+  margin-top: 15px;
+}
 
-  .table th, .table td {
-    padding: 10px;
-    text-align: left;
-  }
+.table th,
+.table td {
+  padding: 10px;
+  text-align: left;
+}
 
-  .pagination-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
-  }
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
 
-  .pagination-container button {
-    margin: 0 5px;
-    padding: 8px 12px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+.pagination-container button {
+  margin: 0 5px;
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
-  .pagination-container button.active {
-    background-color: #0056b3;
-  }
+.pagination-container button.active {
+  background-color: #0056b3;
+}
+
+/* Additional styling for user section */
+.users-section {
+  width: 100%;
+}
+
+.edit-button,
+.delete-button {
+  margin-right: 5px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+/* Add the following styles to your existing CSS file or create a new one */
+
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-container input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.search-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+}
