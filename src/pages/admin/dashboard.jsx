@@ -8,8 +8,10 @@ function AdminDashboard() {
   const [currentPage, setCurrentPage] = useState({});
   const [currentUsersPage, setCurrentUsersPage] = useState(1);
   const [currentAssetsPage, setCurrentAssetsPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(15)
-  const [searchQuery, setSearchQuery] = useState('');;
+  const [itemsPerPage, setItemsPerPage] = useState(15);
+  const [searchQueryUsers, setSearchQueryUsers] = useState('');
+  const [searchQueryAssets, setSearchQueryAssets] = useState('');
+  const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,7 +44,14 @@ function AdminDashboard() {
 
   const handleDeleteUser = (userId) => {
     // Implement delete user functionality
+    
+
     console.log(`Delete user with ID ${userId}`);
+  };
+
+  const handleViewDetail = (item) => {
+    // Implement view detail functionality
+    setSelectedItem(item);
   };
 
   const indexOfLastUser = currentUsersPage * itemsPerPage;
@@ -101,25 +110,23 @@ function AdminDashboard() {
     return buttons;
   };
 
-  const handleSearch = () => {
-    // Filter assets based on search query
-    const filteredAssets = assets.filter(
-      (asset) =>
-        asset.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        asset.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    // Set the filtered assets
-    setAssets(filteredAssets);
-
-    // Reset pagination to the first page
-    setCurrentPage({});
+  const handleSearchUsers = () => {
+    console.log('Search query:', searchQueryUsers);
 
     // Filter users based on search query
-    const filteredUsers = users.filter(
-      (user) =>
-        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredUsers = users.filter((user) => {
+      console.log('User:', user);
+      const lowerCaseQuery = searchQueryUsers.toLowerCase();
+      return (
+        user.name.toLowerCase().includes(lowerCaseQuery) ||
+        user.email.toLowerCase().includes(lowerCaseQuery) ||
+        (user.phone && user.phone.toString().includes(lowerCaseQuery)) ||
+        user.token.toLowerCase().includes(lowerCaseQuery)
+      );
+    });
+
+    console.log('Filtered Users:', filteredUsers);
+
     // Set the filtered users
     setUsers(filteredUsers);
 
@@ -127,23 +134,46 @@ function AdminDashboard() {
     setCurrentUsersPage(1);
   };
 
+  const handleSearchAssets = () => {
+    // Filter assets based on search query
+    const filteredAssets = assets.filter(
+      (asset) =>
+        asset.symbol.toLowerCase().includes(searchQueryAssets.toLowerCase()) ||
+        asset.name.toLowerCase().includes(searchQueryAssets.toLowerCase())
+    );
+    // Set the filtered assets
+    setAssets(filteredAssets);
+
+    // Reset asset pagination to the first page
+    setCurrentAssetsPage(1);
+  };
+
+  const handleCloseDialog = () => {
+    // Close the dialog box
+    setSelectedItem(null);
+  };
+
+  const handleEditDetail = () => {
+    // Implement edit functionality for the selected item
+    console.log(`Edit item:`, selectedItem);
+  };
+
   return (
     <div className="m-4">
       <h2>Admin Dashboard</h2>
 
-
-    {/* Search */}
-    <div className="search-container mb-4">
-      <input
-        type="text"
-        placeholder="Enter symbol, name, or email..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <button className="search-button" onClick={handleSearch}>
-        Search
-      </button>
-    </div>
+      {/* Search Users */}
+      <div className="search-container mb-4">
+        <input
+          type="text"
+          placeholder="Search users by name, email, phone, or token..."
+          value={searchQueryUsers}
+          onChange={(e) => setSearchQueryUsers(e.target.value)}
+        />
+        <button className="search-button" onClick={handleSearchUsers}>
+          Search Users
+        </button>
+      </div>
 
       {/* Users Section */}
       <div className="category-sector-box users-section">
@@ -154,18 +184,26 @@ function AdminDashboard() {
               <th>Name</th>
               <th>Email</th>
               <th>Phone</th>
+              <th>Admin</th>
+              <th>Balance</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {currentUsers.map((user, index) => (
-              <tr key={index}>
+              <tr key={index} onClick={() => handleViewDetail(user)}>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>{user.phone}</td>
+                <td>{JSON.stringify(user.isAdmin)}</td>
+                <td>{user.userAmount}</td>
                 <td>
-                  <button className="edit-button" onClick={() => handleEditUser(user._id)}>Edit</button>
-                  <button className="delete-button" onClick={() => handleDeleteUser(user._id)}>Delete</button>
+                  <button className="edit-button" onClick={() => handleEditUser(user._id)}>
+                    Edit
+                  </button>
+                  <button className="delete-button" onClick={() => handleDeleteUser(user._id)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -174,6 +212,19 @@ function AdminDashboard() {
         <div className="pagination-container">
           {renderUserPaginationButtons()}
         </div>
+      </div>
+
+      {/* Search Assets */}
+      <div className="search-container mb-4">
+        <input
+          type="text"
+          placeholder="Search assets by symbol or name..."
+          value={searchQueryAssets}
+          onChange={(e) => setSearchQueryAssets(e.target.value)}
+        />
+        <button className="search-button" onClick={handleSearchAssets}>
+          Search Assets
+        </button>
       </div>
 
       {/* Assets Section */}
@@ -192,13 +243,13 @@ function AdminDashboard() {
           </thead>
           <tbody>
             {currentAssets.map((asset, index) => (
-              <tr key={index}>
+              <tr key={index} onClick={() => handleViewDetail(asset)}>
                 <td>{asset.name}</td>
                 <td>{asset.sector}</td>
                 <td>{asset.symbol}</td>
                 <td>{asset.ltp}</td>
                 <td>{asset.pointchange}</td>
-                <td>{asset.percentchange}</td>
+                <td>{asset.percentchange}%</td>
               </tr>
             ))}
           </tbody>
@@ -207,8 +258,32 @@ function AdminDashboard() {
           {renderAssetPaginationButtons()}
         </div>
       </div>
+
+      {/* Dialog Box */}
+      {selectedItem && (
+        <div className="dialog-container">
+          <div className="dialog-box">
+            <button className="edit-button" onClick={() => handleEditUser(selectedItem._id)}>
+              Edit
+            </button>
+            <button className="close-button" onClick={handleCloseDialog}>
+              Close
+            </button>
+            <h3>Details</h3>
+            {/* Render details in a more readable format */}
+            <div>
+              {Object.keys(selectedItem).map((key) => (
+                <div key={key}>
+                  <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong> {selectedItem[key]}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
+
 }
 
 export default AdminDashboard;

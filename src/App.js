@@ -12,6 +12,12 @@ import Unique from './component/Unique/Unique';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/admin/dashboard';
+import { AdminRoutes } from './protected/AdminRoutes';
+import { UserRoutes } from './protected/UserRoutes';
+
+
+
+
 
 const Homepage = () => {
 
@@ -34,10 +40,20 @@ function App() {
       <div className="App">
         <Navbar />
         <Routes>
+
+
           <Route path="/" element={<Homepage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard/>} />
+
+          <Route element = {<UserRoutes/>}>
+            <Route path ='/profile' element={<h1> Profile </h1>} />
+            </Route>
+
+          <Route element = {<AdminRoutes/>} >
+            <Route path ='/admin/dashboard' element={<Dashboard/>} />
+            </Route>
+
         </Routes>
       </div>
     </Router>

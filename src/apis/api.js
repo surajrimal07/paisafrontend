@@ -6,6 +6,14 @@ import { v4 as uuidv4 } from 'uuid';
 //create a seperate file for all api urls
 
 
+//creating headers for all api calls
+const config = {
+  headers: {
+  'authorization': `Bearer  ${localStorage.getItem('token')}`
+  }}
+
+
+
 const api = axios.create({
     //baseURL: "http://localhost:5000",
     baseURL: "https://paisabackend.el.r.appspot.com",
@@ -58,7 +66,7 @@ const updateAsset = async (token, dpimage, field, code) => {
   };
 
   try {
-    const response = await api.post('/api/update-asset', requestData);
+    const response = await api.post('/api/update-asset', requestData, config);
 
     if (response.status === 200) {
       console.log('Update successful:', response.data);

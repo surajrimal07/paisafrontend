@@ -1,9 +1,17 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
 
   const user = JSON.parse(localStorage.getItem('user'))
+
+  const navigate = useNavigate()
+
+  const handleLogout = (e) => {
+    e.preventDefault()
+    localStorage.clear()
+    navigate('/login')
+  }
 
   return (
     <>
@@ -37,7 +45,7 @@ const Navbar = () => {
                       <li><Link class="dropdown-item" to="/profile">Profile</Link></li>
                       <li><Link class="dropdown-item" to="/dashboard">Dashboard</Link></li>
                       <li><Link class="dropdown-item" to="/changepp">Change password</Link></li>
-                      <li><Link class="dropdown-item" to="/logout">Logout</Link></li>
+                      <li><button onClick= {handleLogout} class="dropdown-item" to="/logout">Logout</button></li>
                     </ul>
                   </div>
 
