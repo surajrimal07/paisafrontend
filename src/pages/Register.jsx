@@ -1,8 +1,8 @@
-import React, { useState ,} from 'react';
+import React, { useState, } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import RegisterUser from '../apis/api.js';
+import { RegisterUser } from '../apis/api.js';
 import logo from "../component/images/hilogo.png";
 
 const Register = () => {
@@ -11,31 +11,91 @@ const Register = () => {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  //for error message
+  const [nameError, setNameError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
+
+  //for validation
+  const validate = () => {
+    let isValid = true;
+
+    //reset error message
+    setNameError('')
+    setPhoneError('')
+    setEmailError('')
+    setPasswordError('')
+    setConfirmPasswordError('')
+
+    if(name.trim() === '') {
+      setNameError("Please enter your name");
+      isValid = false;
+    }
+    if(phone.trim() === ''|| phone.length !== 10) {
+      setPhoneError("Please enter your phone");
+      isValid = false;
+    }
+    if(email.trim() === '') {
+      setEmailError("Please enter your email");
+      isValid = false;
+    }
+    if(password.trim() === '') {
+      setPasswordError("Please enter your password");
+      isValid = false;
+    }
+    if(confirmPassword.trim() === '') {
+      setConfirmPasswordError("Please enter your confirm password");
+      isValid = false;
+    }
+
+    if(password.trim() !== confirmPassword.trim() ){
+      setConfirmPasswordError("Password do not match");
+      isValid = false;
+    }
+    return isValid;
+  }
 
   const handleNameChange = (event) => {
     setName(event.target.value);
+    setNameError('')
   };
 
   const handlePhoneChange = (event) => {
     setPhone(event.target.value);
+    setPhoneError('')
   };
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
+    setEmailError('')
   };
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
+    setPasswordError('')
+  };
+
+  const handleConfirmPasswordChange = (event) => {
+    setConfirmPassword(event.target.value);
+    setConfirmPasswordError('')
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (isNaN(phone) || phone.length !== 10) {
-      console.error('Invalid phone number. Please enter a 10-digit numeric phone number.');
-      return;
+    const isValid = validate()
+    if (!isValid) {
+      return
     }
-
+    // if (isNaN(phone) || phone.length !== 10) {
+    //   console.error('Invalid phone number. Please enter a 10-digit numeric phone number.');
+    //   return;
+    // }
 
     try {
       const response = await RegisterUser(name, phone, email, password);
@@ -87,6 +147,9 @@ const Register = () => {
                     onChange={handleNameChange}
                     required
                   />
+                  {
+                    nameError &&  <p className='text-danger'>{nameError}</p>
+                  }
                 </div>
                 <div className="mb-3">
                   <label htmlFor="phone" className="form-label">
@@ -100,6 +163,9 @@ const Register = () => {
                     onChange={handlePhoneChange}
                     required
                   />
+                {
+                    phoneError &&  <p className='text-danger'>{phoneError}</p>
+                  }
                 </div>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">
@@ -113,6 +179,9 @@ const Register = () => {
                     onChange={handleEmailChange}
                     required
                   />
+                  {
+                    emailError &&  <p className='text-danger'>{emailError}</p>
+                  }
                 </div>
                 <div className="mb-3">
                   <label htmlFor="password" className="form-label">
@@ -126,6 +195,25 @@ const Register = () => {
                     onChange={handlePasswordChange}
                     required
                   />
+                  {
+                    passwordError &&  <p className='text-danger'>{passwordError}</p>
+                  }
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="confirmPassword" className="form-label">
+                    Confirm Password:
+                  </label>
+                  <input
+                  type="password"
+                  id="confirmPassword"
+                  className="form-control"
+                  value={confirmPassword}
+                  onChange={handleConfirmPasswordChange}
+                  required
+                />
+                {
+                    confirmPasswordError &&  <p className='text-danger'>{confirmPasswordError}</p>
+                  }
                 </div>
                 <div className="d-grid mb-3">
                   <button type="submit" className="btn btn-primary btn-block">

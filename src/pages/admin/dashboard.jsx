@@ -16,16 +16,19 @@ function AdminDashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const assetResponse = await getAllAssets();
+        const [assetResponse, userResponse] = await Promise.all([
+          getAllAssets(),
+          getAllUsers()
+        ]);
+
         if (assetResponse.status === 200 && Array.isArray(assetResponse.data.data)) {
           setAssets(assetResponse.data.data);
         } else {
           console.error('Error fetching assets:', assetResponse.error);
         }
 
-        const userResponse = await getAllUsers();
-        if (userResponse.status === 200 && Array.isArray(userResponse.data)) {
-          setUsers(userResponse.data);
+        if (userResponse.status === 200 && Array.isArray(userResponse.data.data)) {
+          setUsers(userResponse.data.data);
         } else {
           console.error('Error fetching users:', userResponse.error);
         }
@@ -44,7 +47,7 @@ function AdminDashboard() {
 
   const handleDeleteUser = (userId) => {
     // Implement delete user functionality
-    
+
 
     console.log(`Delete user with ID ${userId}`);
   };

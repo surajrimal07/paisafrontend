@@ -31,13 +31,14 @@ const Login = () => {
 
     try {
       const response = await loginUser(email, password);
+      console.log('Response:', response);
 
       if (response.status === 200) {
         toast.success('Login successful');
-        localStorage.setItem('token', response.data.token);
-        const jsonDecode = JSON.stringify(response.data);
+        const jsonDecode = JSON.stringify(response.data.data);
+        localStorage.setItem('token', response.data.data.token);
         localStorage.setItem('user', jsonDecode);
-        navigate('/dashboard');
+        navigate('/admin/dashboard');
       } else if (response.status === 401) {
         toast.error("Invalid email or password. Please check your credentials and try again.");
       } else {
