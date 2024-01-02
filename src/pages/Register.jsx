@@ -1,223 +1,148 @@
-import React, { useState, } from 'react';
+// export default Register;
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { RegisterUser } from '../apis/api.js';
-import logo from "../component/images/hilogo.png";
+import { default as quote1, default as quote2, default as quote3, default as quote4 } from "../component/images/hilogo.png";
+
+
+
+
+const quotes = [
+  { image: quote1, text: 'Compound interest is the eighth wonder of the world; he who understands it, earns it, he who doesn’t pays it.' },
+  { image: quote2, text: 'An investment in knowledge pays the best interest.' },
+  { image: quote3, text: 'Know what you own, and why you own it.' },
+  { image: quote4, text: 'The easiest way to manage your money is to take it one step at a time and not worry about being perfect.' },
+];
+
 
 const Register = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
 
-  //for error message
-  const [nameError, setNameError] = useState('');
-  const [phoneError, setPhoneError] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
 
+  const [formErrors, setFormErrors] = useState({});
+  const [currentQuote, setCurrentQuote] = useState(0);
 
-  //for validation
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setFormErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
+  };
+
   const validate = () => {
-    let isValid = true;
+    const errors = {};
 
-    //reset error message
-    setNameError('')
-    setPhoneError('')
-    setEmailError('')
-    setPasswordError('')
-    setConfirmPasswordError('')
-
-    if(name.trim() === '') {
-      setNameError("Please enter your name");
-      isValid = false;
-    }
-    if(phone.trim() === ''|| phone.length !== 10) {
-      setPhoneError("Please enter your phone");
-      isValid = false;
-    }
-    if(email.trim() === '') {
-      setEmailError("Please enter your email");
-      isValid = false;
-    }
-    if(password.trim() === '') {
-      setPasswordError("Please enter your password");
-      isValid = false;
-    }
-    if(confirmPassword.trim() === '') {
-      setConfirmPasswordError("Please enter your confirm password");
-      isValid = false;
+    for (const key in formData) {
+      if (formData[key].trim() === '') {
+        errors[key] = `Please enter your ${key}`;
+      }
     }
 
-    if(password.trim() !== confirmPassword.trim() ){
-      setConfirmPasswordError("Password do not match");
-      isValid = false;
+    if (formData.phone.trim() !== '' && formData.phone.length !== 10) {
+      errors.phone = 'Please enter a valid phone number';
     }
-    return isValid;
-  }
 
-  const handleNameChange = (event) => {
-    setName(event.target.value);
-    setNameError('')
-  };
+    if (formData.password !== formData.confirmPassword) {
+      errors.confirmPassword = 'Passwords do not match';
+    }
 
-  const handlePhoneChange = (event) => {
-    setPhone(event.target.value);
-    setPhoneError('')
-  };
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-    setEmailError('')
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-    setPasswordError('')
-  };
-
-  const handleConfirmPasswordChange = (event) => {
-    setConfirmPassword(event.target.value);
-    setConfirmPasswordError('')
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const isValid = validate()
-    if (!isValid) {
-      return
+    if (!validate()) {
+      return;
     }
-    // if (isNaN(phone) || phone.length !== 10) {
-    //   console.error('Invalid phone number. Please enter a 10-digit numeric phone number.');
-    //   return;
-    // }
 
     try {
-      const response = await RegisterUser(name, phone, email, password);
+      const response = await RegisterUser(formData);
 
-      console.log(response);
-
-      if (response === 200) {
-        toast.success('Registration successful');
-        console.log('Registration successful');
-        localStorage.setItem('token',response.data.token)
-        const jsonDecode= JSON.stringify(response.data.userData)
-        localStorage.setItem('user',jsonDecode)
+      if (response.data.success) {
+        const { token } = response.data.data.token;
+        toast.success(response.data.message);
+        localStorage.setItem('token', token);
+        const jsonDecode = JSON.stringify(response.data.data);
+        localStorage.setItem('user', jsonDecode);
         navigate('/dashboard');
-      } else if (response === 400) {
-        toast.error('Email already exists');
-        console.log('Registration failed - Email already exists');
       } else {
-        toast.error('Server Error');
-        console.log('Registration failed - Server Error:', response);
+        toast.error(response.data.message);
       }
-    } catch (error) {
-      console.error('An error occurred during registration:', error);
-      toast.error('An error occurred during registration');
+    } catch (err) {
+      const errorMessage =
+        err.response && err.response.data && err.response.data.message
+          ? err.response.data.message
+          : 'An error occurred.';
+      toast.error(errorMessage);
     }
   };
+
+
+  const handleDotClick = (index) => {
+    setCurrentQuote(index);
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentQuote((prevQuote) => (prevQuote + 1) % quotes.length);
+    }, 5000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <div className="container-fluid">
       <div className="row vh-100">
-        <div className="col-md-6 bg-primary d-flex justify-content-center align-items-center">
+        <div className="col-md-6 d-flex justify-content-center align-items-center">
           <div className="text-center">
-          <img src={logo} alt="Logo" className="img-fluid custom-logo" />
+            <img src={quotes[currentQuote].image} alt="Quote" className="img-fluid custom-logo" />
+            <p>{quotes[currentQuote].text}</p>
+            <div className="dots-container">
+              {quotes.map((_, index) => (
+                <span
+                  key={index}
+                  className={`dot ${index === currentQuote ? 'active' : ''}`}
+                  onClick={() => handleDotClick(index)}
+                ></span>
+              ))}
+            </div>
           </div>
         </div>
         <div className="col-md-6 d-flex justify-content-center align-items-center">
           <div className="card border-0 shadow-lg bg-light">
             <div className="card-body p-4">
-              <h2 className="text-center mb-4" style={{ fontSize: '1.5rem' }}>Register to 10Paisa</h2>
+              <h2 className="text-center mb-4" style={{ fontSize: '1.5rem' }}>Register</h2>
               <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label htmlFor="name" className="form-label">
-                    Name:
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    className="form-control"
-                    value={name}
-                    onChange={handleNameChange}
-                    required
-                  />
-                  {
-                    nameError &&  <p className='text-danger'>{nameError}</p>
-                  }
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="phone" className="form-label">
-                    Phone:
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    className="form-control"
-                    value={phone}
-                    onChange={handlePhoneChange}
-                    required
-                  />
-                {
-                    phoneError &&  <p className='text-danger'>{phoneError}</p>
-                  }
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">
-                    Email:
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="form-control"
-                    value={email}
-                    onChange={handleEmailChange}
-                    required
-                  />
-                  {
-                    emailError &&  <p className='text-danger'>{emailError}</p>
-                  }
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="password" className="form-label">
-                    Password:
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    className="form-control"
-                    value={password}
-                    onChange={handlePasswordChange}
-                    required
-                  />
-                  {
-                    passwordError &&  <p className='text-danger'>{passwordError}</p>
-                  }
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="confirmPassword" className="form-label">
-                    Confirm Password:
-                  </label>
-                  <input
-                  type="password"
-                  id="confirmPassword"
-                  className="form-control"
-                  value={confirmPassword}
-                  onChange={handleConfirmPasswordChange}
-                  required
-                />
-                {
-                    confirmPasswordError &&  <p className='text-danger'>{confirmPasswordError}</p>
-                  }
-                </div>
+                {Object.keys(formData).map((key) => (
+                  <div className="mb-3" key={key}>
+                    <label htmlFor={key} className="form-label">
+                      {key.charAt(0).toUpperCase() + key.slice(1)}:
+                    </label>
+                    <input
+                      type={key === 'password' || key === 'confirmPassword' ? 'password' : 'text'}
+                      id={key}
+                      name={key}
+                      className="form-control"
+                      value={formData[key]}
+                      onChange={handleChange}
+                      autoComplete={key === 'email' ? 'new-email' : 'new-password'}
+                      required
+                    />
+                    {formErrors[key] && <p className='text-danger'>{formErrors[key]}</p>}
+                  </div>
+                ))}
                 <div className="d-grid mb-3">
                   <button type="submit" className="btn btn-primary btn-block">
-                    Register to 10Paisa
+                    Register
                   </button>
                 </div>
                 <div className="text-center">

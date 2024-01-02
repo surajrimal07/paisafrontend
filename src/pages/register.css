@@ -1,8 +1,8 @@
 /* Register.css */
 .custom-logo {
     max-width: 100%;
-    max-height: 300px;
-    margin-bottom: 20px;
+    max-height: 100%;
+    margin-bottom: 0px;
   }
 
 
@@ -11,11 +11,25 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
 
-  .custom-logo-container {
-    background-color: rgba(33, 150, 243, 0.8); /* Material Design blue color with alpha for transparency */
-    padding: 20px;
-    border-radius: 10px;
-    backdrop-filter: blur(10px); /* Adjust the blur value as needed */
+  .dots-container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    background-color: black; /* Change this to your desired dot color */
+    border-radius: 50%;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .dot.active {
+    background-color: black; /* Change the active dot color if needed */
   }
 
   /* Add more styles as needed */

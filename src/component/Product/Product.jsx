@@ -1,10 +1,10 @@
 import React from 'react'
+import { MdOutlineDoubleArrow } from "react-icons/md"
 import a12 from "../images/a12.png"
 import a2 from "../images/a2.png"
 import a3 from "../images/a3.png"
 import a4 from "../images/a4.png"
 import { Product1, Product2 } from "./data"
-import { MdOutlineDoubleArrow } from "react-icons/md"
 import "./product.css"
 
 const Product = () => {
@@ -13,7 +13,7 @@ const Product = () => {
             <div className="product">
                 <div className="productContainer">
                     <h1 className="title">
-                        Fill in the gaps.  Gain a Holistic view of your portfolio with time tested Accuracy
+                        Fill in the gaps.  Gain a Holistic view of your portfolio with time tested accuracy
                     </h1>
                     <div className="productMain">
                         <div className="mainCard">

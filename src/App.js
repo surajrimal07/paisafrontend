@@ -1,22 +1,24 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import ScrollToTop from "react-scroll-to-top";
 import './App.css';
-import Featured from './component/Featured/Featured';
+
 import Footer from './component/Footer/Footer';
 import Header from './component/Header/Header';
 import Navbar from './component/Navbar/Navbar';
 import Product from './component/Product/Product';
-import Questions from './component/Questions/Questions';
 import Review from './component/Review/Review';
 import Unique from './component/Unique/Unique';
-import Login from './pages/Login';
 import Register from './pages/Register';
+//import Signup from './pages/signup/newregister';
+
+import AboutUsPage from './component/about/about';
+import Feathures from './component/feathures/feathures';
 import Dashboard from './pages/admin/dashboard';
+import MyProfilePage from './pages/dashboard/userdashboard';
+import Login from './pages/login/Login';
 import { AdminRoutes } from './protected/AdminRoutes';
 import { UserRoutes } from './protected/UserRoutes';
-
-
-
 
 
 const Homepage = () => {
@@ -24,12 +26,11 @@ const Homepage = () => {
   return (
     <div>
       <Header />
-      <Featured />
       <Product />
       <Unique />
       <Review />
-      <Questions />
       <Footer />
+      <ScrollToTop smooth />
     </div>
   );
 };
@@ -45,6 +46,9 @@ function App() {
           <Route path="/" element={<Homepage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
+          <Route path="/aboutus" element={<AboutUsPage />} />
+          <Route path="/feathures" element={<Feathures />} />
+          <Route path="/myprofile" element={<MyProfilePage />} />
 
           <Route element = {<UserRoutes/>}>
             <Route path ='/profile' element={<h1> Profile </h1>} />

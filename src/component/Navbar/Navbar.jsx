@@ -1,66 +1,149 @@
-import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import logo from '../images/logo.png';
 
 const Navbar = () => {
-
-  const user = JSON.parse(localStorage.getItem('user'))
-
-  const navigate = useNavigate()
+  const user = JSON.parse(localStorage.getItem('user'));
+  const navigate = useNavigate();
 
   const handleLogout = (e) => {
-    e.preventDefault()
-    localStorage.clear()
-    navigate('/login')
-  }
+    e.preventDefault();
+    localStorage.clear();
+    navigate('/login');
+  };
+
+  const getFirstName = () => {
+    if (user && user.name) {
+      const fullName = user.name.split(' ');
+      return fullName[0];
+    }
+    return '';
+  };
 
   return (
     <>
-      <nav className="navbar bg-info navbar-expand-lg">
+      <nav className="navbar navbar-expand-lg">
         <div className="container-fluid">
-          <Link className="navbar-brand text-danger fw-bold" to="/">10Paisa</Link>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <NavLink className="navbar-brand text fw-bold" to="/" activeClassName="active" exact>
+          <img src={logo} alt="Logo" className="me-2" style={{ width: '30px', height: '30px' }} />
+            10Paisa
+          </NavLink>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className="nav-link active" to="/">Home</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/features">Features</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/aboutus">About Us</Link>
+                <NavLink className="nav-link" to="/" activeClassName="active" exact>
+                  Home
+                </NavLink>
               </li>
 
+{user && (
+  <li className="nav-item">
+    <NavLink
+      className="nav-link"
+      to="/myprofile"
+      activeClassName="active"
+    >
+      Profile
+    </NavLink>
+  </li>
+)}
+              {user && (
+                <li className="nav-item">
+                  <NavLink
+                    className="nav-link"
+                    to={user.isAdmin ? '/admin/dashboard' : '/dashboard'}
+                    activeClassName="active"
+                  >
+                    Dashboard
+                  </NavLink>
+                </li>
+              )}
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/feathures" activeClassName="active">
+                  Features
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/aboutus" activeClassName="active">
+                  About Us
+                </NavLink>
+              </li>
             </ul>
             <form className="d-flex" role="search">
-              {
-                user ? <>
-                  <div class="dropdown">
-                    <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Welcome, {user.name}!
+              {user ? (
+                <>
+                  <div className="dropdown">
+                    <button
+                      className="btn btn-outline-dark dropdown-toggle"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Welcome, {getFirstName()}!
                     </button>
-                    <ul class="dropdown-menu">
-                      <li><Link class="dropdown-item" to="/profile">Profile</Link></li>
-                      <li><Link class="dropdown-item" to="/dashboard">Dashboard</Link></li>
-                      <li><Link class="dropdown-item" to="/changepp">Change password</Link></li>
-                      <li><button onClick= {handleLogout} class="dropdown-item" to="/logout">Logout</button></li>
+                    <ul className="dropdown-menu">
+                      <li>
+                        <NavLink className="dropdown-item" to="/myprofile" activeClassName="active">
+                          Profile
+                        </NavLink>
+                      </li>
+                      {user.isAdmin ? (
+                        <li>
+                          <NavLink className="dropdown-item" to="/admin/dashboard" activeClassName="active">
+                            Admin Dashboard
+                          </NavLink>
+                        </li>
+                      ) : (
+                        <li>
+                          <NavLink className="dropdown-item" to="/dashboard" activeClassName="active">
+                            User Dashboard
+                          </NavLink>
+                        </li>
+                      )}
+                      <li>
+                        <NavLink className="dropdown-item" to="/changepp" activeClassName="active">
+                          Change password
+                        </NavLink>
+                      </li>
+                      <li>
+                        <button
+                          onClick={handleLogout}
+                          className="dropdown-item"
+                          to="/logout"
+                        >
+                          Logout
+                        </button>
+                      </li>
                     </ul>
                   </div>
-
                 </>
-                  : <>
-                    <Link className="btn btn-outline-primary me-2" to={'/login'}>Login</Link>
-                    <Link className="btn btn-outline-success" to={'/signup'}>Register</Link>
-                  </>
-              }
+              ) : (
+                <>
+                  <NavLink className="btn btn-outline-primary me-2" to={'/login'} activeClassName="active">
+                    Login
+                  </NavLink>
+                  <NavLink className="btn btn-outline-success" to={'/signup'} activeClassName="active">
+                    Register
+                  </NavLink>
+                </>
+              )}
             </form>
           </div>
         </div>
       </nav>
     </>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

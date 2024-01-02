@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { getAllAssets, getAllUsers } from '../../apis/api';
+import { ToastContainer, toast } from 'react-toastify';
+import { deleteUser, getAllAssets, getAllUsers } from '../../apis/api';
 import './dashboard.css';
 
 function AdminDashboard() {
@@ -12,28 +13,31 @@ function AdminDashboard() {
   const [searchQueryUsers, setSearchQueryUsers] = useState('');
   const [searchQueryAssets, setSearchQueryAssets] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
+  const [deletingUser, setDeletingUser] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [assetResponse, userResponse] = await Promise.all([
-          getAllAssets(),
-          getAllUsers()
-        ]);
-
+        const assetResponse = await getAllAssets();
         if (assetResponse.status === 200 && Array.isArray(assetResponse.data.data)) {
+          const jsonDecode = JSON.stringify(assetResponse.data.data);
+          localStorage.setItem('Assets', jsonDecode);
           setAssets(assetResponse.data.data);
         } else {
           console.error('Error fetching assets:', assetResponse.error);
         }
 
+        const userResponse = await getAllUsers();
         if (userResponse.status === 200 && Array.isArray(userResponse.data.data)) {
+          const jsonDecode = JSON.stringify(userResponse.data.data);
+          localStorage.setItem('Users', jsonDecode);
           setUsers(userResponse.data.data);
         } else {
           console.error('Error fetching users:', userResponse.error);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
+
       }
     };
 
@@ -46,14 +50,51 @@ function AdminDashboard() {
   };
 
   const handleDeleteUser = (userId) => {
-    // Implement delete user functionality
+    setDeletingUser(userId);
+  };
 
+  function DeleteConfirmationModal({ confirmDelete, cancelDelete }) {
+    return (
+      <div className="modal-container">
+        <div className="modal-box">
+          <p>Are you sure you want to delete this user?</p>
+          <div>
+            <button className="confirm-button" onClick={confirmDelete}>
+              Yes
+            </button>
+            <button className="cancel-button" onClick={cancelDelete}>
+              No
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-    console.log(`Delete user with ID ${userId}`);
+  const handleCancelDelete = () => {
+    setDeletingUser(null);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      console.log("Deleting user email is "+deletingUser)
+      const response = await deleteUser(deletingUser);
+
+      if (response.status === 200 || response.status === 204) {
+        toast.success('User deleted successfully');
+        setUsers(users.filter((user) => user.email !== deletingUser));
+      } else {
+        toast.error('Failed to delete user');
+      }
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      toast.error('An error occurred while deleting user');
+    } finally {
+      setDeletingUser(null);
+    }
   };
 
   const handleViewDetail = (item) => {
-    // Implement view detail functionality
     setSelectedItem(item);
   };
 
@@ -194,7 +235,7 @@ function AdminDashboard() {
           </thead>
           <tbody>
             {currentUsers.map((user, index) => (
-              <tr key={index} onClick={() => handleViewDetail(user)}>
+              <tr key={index} >
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>{user.phone}</td>
@@ -204,7 +245,7 @@ function AdminDashboard() {
                   <button className="edit-button" onClick={() => handleEditUser(user._id)}>
                     Edit
                   </button>
-                  <button className="delete-button" onClick={() => handleDeleteUser(user._id)}>
+                  <button className="delete-button" onClick={() => handleDeleteUser(user.email)}>
                     Delete
                   </button>
                 </td>
@@ -216,6 +257,14 @@ function AdminDashboard() {
           {renderUserPaginationButtons()}
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deletingUser && (
+        <DeleteConfirmationModal
+          confirmDelete={confirmDelete}
+          cancelDelete={handleCancelDelete}
+        />
+      )}
 
       {/* Search Assets */}
       <div className="search-container mb-4">
@@ -284,6 +333,8 @@ function AdminDashboard() {
           </div>
         </div>
       )}
+
+      <ToastContainer position="top-right" />
     </div>
   );
 

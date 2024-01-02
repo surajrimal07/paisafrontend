@@ -20,7 +20,7 @@ const Unique = () => {
                     </div>
                     <div className="uniqueCenter">
                         <span className="title1">What makes us unique ?</span>
-                        <h3 className="title2">The Nivashartha difference.</h3>
+                        <h3 className="title2">The 10Paisa difference.</h3>
                         <span className="title3">There's no guessing games here - we use a data-driven investment approach</span>
                     </div>
                     <div className="uniqueLeft">
