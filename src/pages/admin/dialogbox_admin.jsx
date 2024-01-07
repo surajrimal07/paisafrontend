@@ -1,45 +1,58 @@
-// EditUserDialogBox.js
-import React, { useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-function EditUserDialogBox({ user, onSave, onCancel }) {
-  const [editedUser, setEditedUser] = useState({ ...user });
+function UserDialogBox({ user, onEdit, onClose, isEditing }) {
+  const dialogRef = useRef(null);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditedUser((prevUser) => ({ ...prevUser, [name]: value }));
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (dialogRef.current && !dialogRef.current.contains(event.target)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutsideClick);
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [onClose]);
+
+  const handleSaveChanges = () => {
+    if (isEditing) {
+      onEdit(user);
+    }
+    onClose();
   };
 
-  const handleSave = () => {
-    onSave(editedUser);
-    onCancel();
-  };
+  // Configuration object to manage which fields to exclude
+  const fieldsToExclude = ['_id', '__v'];
 
   return (
-    <div className="edit-dialog-container">
-      <div className="edit-dialog-box">
-        <div>
-          <label>Name:</label>
-          <input type="text" name="name" value={editedUser.name} onChange={handleInputChange} />
-        </div>
-        <div>
-          <label>Email:</label>
-          <input type="text" name="email" value={editedUser.email} onChange={handleInputChange} />
-        </div>
-        <div>
-          <label>Phone:</label>
-          <input type="text" name="phone" value={editedUser.phone} onChange={handleInputChange} />
-        </div>
-        <div className="edit-dialog-buttons">
-          <button className="save-button" onClick={handleSave}>
-            Save
+    <div className="dialog-container">
+      <div className="dialog-box" ref={dialogRef}>
+        <div className="dialog-buttons">
+          {isEditing && (
+            <button className="edit-button-dialog" onClick={handleSaveChanges}>
+              Save Changes
+            </button>
+          )}
+          <button className="close-button" onClick={onClose}>
+            Close
           </button>
-          <button className="cancel-button" onClick={onCancel}>
-            Cancel
-          </button>
+          <h3>{isEditing ? 'Edit' : 'Details'}</h3>
+          <div className="user-details">
+            {Object.entries(user).map(([key, value]) => (
+              // Only render if the key is not in the fieldsToExclude array
+              !fieldsToExclude.includes(key) && (
+                <div key={key}>
+                  <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong> {key === 'isAdmin' ? (value ? 'True' : 'False') : value}
+                </div>
+              )
+            ))}
+          </div>
         </div>
       </div>
     </div>
   );
-}
-
-export default EditUserDialogBox;
+              }
+export default UserDialogBox;

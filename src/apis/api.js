@@ -89,7 +89,7 @@ export const getAllUsers = () =>  api.get('/api/allusers', config);
 //export const deleteUser = (data) => api.delete(`/api/deleteUser`,data, config);
 
 export const deleteUser = (deletingUser) => {
-  const apiEndpoint = 'http://localhost:5000/api/deleteUser';
+  const apiEndpoint = baseURL + '/api/deleteUser';;
   const config = {
     headers: {
       'Authorization': `Bearer ${token}`,

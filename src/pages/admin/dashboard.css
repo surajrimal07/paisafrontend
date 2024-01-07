@@ -179,6 +179,7 @@ dashboard.css
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .dialog-box {
@@ -190,7 +191,9 @@ dashboard.css
   border-radius: 5px;
   overflow-wrap: break-word;
   word-wrap: break-word;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   white-space: normal;
+  backdrop-filter: blur(5px);
 }
 /* Close button in the dialog */
 
@@ -281,4 +284,158 @@ dashboard.css
   max-width: 50px; /* Adjust the value based on your preference */
   max-height: 50px; /* Adjust the value based on your preference */
   border-radius: 50%; /* Optional: Make the image round */
+}
+
+
+
+/* Add this to your existing CSS file or create a new one */
+
+/* Add this to your existing CSS file or create a new one */
+
+
+
+.edit-dialog-box {
+  background: #fff;
+  padding: 20px;
+  width: 30%; /* Adjust the width as needed */
+  max-height: 80vh; /* Adjust the max-height as needed */
+  overflow-y: auto; /* Enable vertical scrolling */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.edit-dialog-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.edit-button-diaglogg{
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  background: green;
+  color: #fff;
+}
+
+
+.edit-button-dialog,
+.close-button-dialog {
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+}
+
+.close-button-dialog {
+  background: #e74c3c;
+  color: #fff;
+}
+
+h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.edit-dialog-input {
+  margin-bottom: 10px;
+}
+
+strong {
+  margin-right: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+
+.edit-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5); /* Adjust the alpha value for transparency */
+  z-index: 1000; /* Ensure the overlay is above other elements */
+}
+
+.edit-dialog-container {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 1001; /* Ensure the dialog is above the overlay */
+}
+
+.edit-dialog-buttons {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.close-button-dialog {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-button-diaglog {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.blur-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px); /* Adjust the blur amount as needed */
+  z-index: 1000;
+}
+
+.edit-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+
+
+.user-details {
+  margin-top: 20px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.user-details strong {
+  margin-right: 5px;
 }
