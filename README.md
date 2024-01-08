@@ -52,7 +52,7 @@ The Smart Investment web application is a state-of-the-art web application that 
 Before you start, make sure you have the following installed:
 - Node.js: The backend server is built with Node.js. Install Node.js from the [official website](https://nodejs.org/).
 - Database: You'll need a MongoDB database system or MongoDB Atlas, to store user and financial data. Make sure you have 'paisa' database with 'users' collection [official website](https://www.mongodb.com/try/download/community).
-- React : React is used to create this web web app frontend. Install react from [official website](https://react.dev/learn/installation)
+- React : React is used to create this web web app frontend. Install react from [official website](https://react.dev/learn/installation).
 
 ## TODO
 - Recommendation system.
