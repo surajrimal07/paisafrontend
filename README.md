@@ -1,70 +1,86 @@
-# Getting Started with Create React App
+# 10paisa
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">
+  <img width="300" height="300" src="assets/logos/logo.png?raw=true">
+</p>
 
-## Available Scripts
 
-In the project directory, you can run:
+A Smart Investment App made for Softwarica College of IT & E-Commerce, Coventry University
 
-### `npm start`
+## Overview
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The Smart Investment Application is a state-of-the-art application that gives users the knowledge and insights they need to maximize their investment strategy. Utilizing technology, data analytics, and intelligent systems, this ground-breaking program offers users individualized investment suggestions, portfolio management, and real-time market analysis.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features
 
-### `npm test`
+- User registration and portfolio management: user registration, login, etc.
+ 
+- Investment dashboard: a dashboard displaying an overview of the user's investment portfolios. End-of-day updates on investment opportunities, gains, and losses
+ 
+- Diverse asset classes: The app supports multiple asset classes like bonds, mutual funds, stocks, SIPs, IPOs, FPOs, etc. The app also provides detailed information and research on each investment   asset class or opportunity.
+ 
+- Portfolio tracking: ability to add, edit, and remove investments or portfolios. Portfolio performance charts and graphs.
+ 
+- Portfolio rebalancing: portfolio rebalancing recommendations Ability to rebalance portfolios based on user criteria.
+ 
+- Research and Analysis: Market news and updates, financial asset comparison, and research
+  Investment recommendations are based on user preferences and goals.
+ 
+- Goal Planning: Set financial goals (e.g retirement, children's education, buying a house).
+  Track progress towards achieving those goals.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Portfolio Comparison: comparing portfolios in terms of their dividend yield, yearly returns, capital appreciation, and liquidity.
+ 
+- Transaction History: View the transaction history for all investments.
+ 
+- Financial News and Insights: Up-to-date financial news and articles; data aggregation from third-party related news sites
+ 
+- Personalized Recommendations: Simple algorithm-driven investment recommendations based on the user's financial criteria and goals
+ 
+- Demo buy sell: The app facilitates easy buying and selling of available asset classes and listed securities for learning purposes.
+ 
+- Stock search and sorting: The app facilitates users looking up stocks and investment opportunities.
 
-### `npm run build`
+## Screenshots
+<img src="figma/grid/Screenshots/1.jpg?raw=true" width="400"/> <img src="figma/grid/Screenshots/2.jpg?raw=true" width="400"/>
+<img src="figma/grid/Screenshots/3.jpg?raw=true" width="400"/> <img src="figma/grid/Screenshots/4.jpg?raw=true" width="400"/>
+<img src="figma/grid/Screenshots/5.jpg?raw=true" width="400"/>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Prerequisites
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Before you start, make sure you have the following installed:
+- Java: The mobile app requires JDK 20. Install JDK 20 from here [Java JDK link](https://www.oracle.com/java/technologies/downloads/).
+- Gradle: The mobile app is developed using gradle 8.3. Build using gradle 8.3 in your system. [Gradle releases](https://gradle.org/releases/).
+- Flutter: The mobile app is developed using Flutter. Install Flutter by following the official [installation guide](https://flutter.dev/docs/get-started/install).
+- Node.js: The backend server is built with Node.js. Install Node.js from the [official website](https://nodejs.org/).
+- Android Studio or VS Code : To run the app on an Android emulator or device, you'll need Android Studio or VS Code with the Flutter plugin installed [official website](https://code.visualstudio.com/download).
+- Database: You'll need a MongoDB database system or MongoDB Atlas, to store user and financial data. Make sure you have 'paisa' database with 'users' collection [official website](https://www.mongodb.com/try/download/community).
 
-### `npm run eject`
+## TODO
+- Charts, Notification Listener, wacc, loss gains and other financial calculations. 
+- Complete asset View, portfolio view.
+- Recommendation system.
+- Fetch live data (working on it).
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## What Works?
+- Splash Screen
+- Onboarding Screen With Onboarding logic (Showing Onboarding only first time)
+- Login Screen (connected to MongoDB)
+- Signup Screen (connected to MongoDB)
+- OTP Screen (EMail OTP, uses [ethereal.email](ethereal.email) service)
+- Password reset, user data update.
+- Live asset prices (limited asset).
+- Live notification.
+- User token system works.
+- Proper navigation and routing.
+- Account deletion.
+- Web socket
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Getting Started
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. Clone the repository:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+git clone https://github.com/ST60002CEM/batch31a-surajrimal07
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
