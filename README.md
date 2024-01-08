@@ -58,8 +58,7 @@ Before you start, make sure you have the following installed:
 - Recommendation system.
 
 ## What Works?
-- Splash Screen (token checks)
-- Onboarding Screen With Onboarding logic (Showing Onboarding only first time)
+- Seperate user and admin dashboard
 - Login Screen (connected to MongoDB)
 - Signup Screen (connected to MongoDB)
 - OTP Screen (EMail OTP, uses [Google Mail Service](mail.google.com) service)
@@ -74,6 +73,15 @@ Before you start, make sure you have the following installed:
 - Portfolio, create portfolio, edit portfolio, delete portfolio, add asset to portfolio, edit and delete asset from portfolio.
 - Watchlist, create watchlist, edit watchlist, delete watchlist, add asset to watchlist, edit and delete asset from watchlist.
 - Wacc calculation, portfolio adjustment, asset news, asset advance candlestick chart.
+
+## Technology Used
+-  Rest API
+-  Web Socket
+-  JSON
+-  React JS
+-  Node JS
+-  Mongo DB
+-  Express JS
 
 ## Getting Started
 
