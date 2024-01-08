@@ -77,11 +77,12 @@ Before you start, make sure you have the following installed:
 ## Technology Used
 -  Rest API
 -  Web Socket
--  JSON
+-  JSON & JSON web token
 -  React JS
 -  Node JS
 -  Mongo DB
 -  Express JS
+-  Hashing
 
 ## Getting Started
 
