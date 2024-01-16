@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { FaSortDown, FaSortUp, FaTimes } from 'react-icons/fa';
+import ScrollToTop from "react-scroll-to-top";
 import { ToastContainer, toast } from 'react-toastify';
-import { deleteUser, getAllAssets, getAllUsers } from '../../apis/api';
+import { deleteUser, getAllAssets, getAllUsers, getCommo, getMetals } from '../../apis/api';
 import './dashboard.css';
 import UserDialogBox from './dialogbox_admin.jsx';
 import EditUserDialogBox from './editingbox_admin.jsx';
@@ -10,18 +11,23 @@ import InfoCard from './infocard.jsx';
 function AdminDashboard() {
   const [assets, setAssets] = useState([]);
   const [users, setUsers] = useState([]);
+  const [commodities, setCommodities] = useState([]);
+  const [metals, setMetals] = useState([]);
   const [currentPage, setCurrentPage] = useState({});
   const [currentUsersPage, setCurrentUsersPage] = useState(1);
   const [currentAssetsPage, setCurrentAssetsPage] = useState(1);
+  const [currentCommoditiesPage, setCurrentCommoditiesPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(15);
   const [searchQueryUsers, setSearchQueryUsers] = useState('');
   const [searchQueryAssets, setSearchQueryAssets] = useState('');
+  const [searchQueryCommodities, setSearchQueryCommodities] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
   const [deletingUser, setDeletingUser] = useState(null);
   const [isEditingUser, setEditingUser] = useState(null);
   const [isEditingDialogOpen, setEditingDialogOpen] = useState(false);
   const [sortOrderUsers, setSortOrderUsers] = useState({ column: null, ascending: true });
   const [sortOrderAssets, setSortOrderAssets] = useState({ column: null, ascending: true });
+  const [sortOrderCommodities, setSortOrderCommodities] = useState({ column: null, ascending: true });
 
 
   const totalUsers = users.length;
@@ -52,6 +58,26 @@ function AdminDashboard() {
       } catch (error) {
         console.error('Error fetching data:', error);
       }
+
+      const metalsResponse = await getMetals();
+      if (metalsResponse.status === 200 && Array.isArray(metalsResponse.data.metalPrices)) {
+        const jsonDecode = JSON.stringify(metalsResponse.data.metalPrices);
+        localStorage.setItem('Metals', jsonDecode);
+        setMetals(metalsResponse.data.metalPrices);
+      } else {
+        console.error('Error fetching metals:', metalsResponse.error);
+      }
+
+      const commodityResponse = await getCommo();
+      if (commodityResponse.status === 200 && Array.isArray(commodityResponse.data.data)) {
+        const jsonDecode = JSON.stringify(commodityResponse.data.data);
+        localStorage.setItem('Commodities', jsonDecode);
+        setCommodities(commodityResponse.data.data);
+      } else {
+        console.error('Error fetching commodities:', commodityResponse.error);
+      }
+
+
     };
 
     fetchData();
@@ -98,6 +124,23 @@ function AdminDashboard() {
     });
     setAssets(sortOrderAsset);
   };
+
+  const handleSortCommodities = (column) => {
+    const isAscending = sortOrderCommodities.column === column ? !sortOrderCommodities.ascending : true;
+    setSortOrderCommodities({ column, ascending: isAscending });
+
+    const sortOrderCommodity = [...commodities].sort((a, b) => {
+      const valueA = a[column];
+      const valueB = b[column];
+
+      if (typeof valueA === 'string' && typeof valueB === 'string') {
+        return isAscending ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
+      } else {
+        return isAscending ? (valueA > valueB ? 1 : -1) : valueA > valueB ? -1 : 1;
+      }
+    });
+    setCommodities(sortOrderCommodity);
+  }
 
   const handleEditUser = (user) => {
     setEditingUser(user);
@@ -196,7 +239,12 @@ function AdminDashboard() {
   const indexOfFirstAsset = indexOfLastAsset - itemsPerPage;
   const currentAssets = assets.slice(indexOfFirstAsset, indexOfLastAsset);
 
+  const indexOfLastCommodity = currentCommoditiesPage * itemsPerPage;
+  const indexOfFirstCommodity = indexOfLastCommodity - itemsPerPage;
+  const currentCommodity = commodities.slice(indexOfFirstCommodity, indexOfLastCommodity);
+
   const totalAssetsPageCount = Math.ceil(assets.length / itemsPerPage);
+  const totalCommoditiesPageCount = Math.ceil(commodities.length / itemsPerPage);
 
   const renderAssetPaginationButtons = () => {
     const buttons = [];
@@ -220,8 +268,30 @@ function AdminDashboard() {
     return buttons;
   };
 
+  const renderCommodityPaginationButtons = () => {
+    const buttons = [];
+    const maxButtonsToShow = 5;
+    let startPage = Math.max(1, currentCommoditiesPage - Math.floor(maxButtonsToShow / 2));
+    let endPage = Math.min(totalCommoditiesPageCount, startPage + maxButtonsToShow - 1);
+    startPage = Math.max(1, endPage - maxButtonsToShow + 1);
+
+    for (let i = startPage; i <= endPage; i++) {
+      buttons.push(
+        <button
+          key={i}
+          onClick={() => setCurrentCommoditiesPage(i)}
+          className={currentCommoditiesPage === i ? 'active' : ''}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    return buttons;
+  }
+
   const handleSaveEdit = (editedUser) => {
-    // Dummy save function (replace with actual logic)
+
     console.log('Saving changes:', editedUser);
 
   };
@@ -249,30 +319,35 @@ function AdminDashboard() {
         user.token.toLowerCase().includes(lowerCaseQuery)
       );
     });
-
-    // Set the filtered users
     setUsers(filteredUsers);
-
-    // Reset user pagination to the first page
     setCurrentUsersPage(1);
   };
 
   const handleSearchAssets = () => {
-    // Filter assets based on search query
     const filteredAssets = assets.filter(
       (asset) =>
         asset.symbol.toLowerCase().includes(searchQueryAssets.toLowerCase()) ||
         asset.name.toLowerCase().includes(searchQueryAssets.toLowerCase())
     );
-    // Set the filtered assets
     setAssets(filteredAssets);
-
-    // Reset asset pagination to the first page
     setCurrentAssetsPage(1);
   };
 
+
+  const handleSearchCommodities = () => {
+    const filteredCommodities = commodities.filter((commodity) => {
+
+      const nameMatch =
+        commodity.name && commodity.name.toLowerCase().includes(searchQueryCommodities.toLowerCase());
+      return nameMatch;
+    });
+
+    setCommodities(filteredCommodities);
+    setCurrentCommoditiesPage(1);
+  };
+
+
   const handleCloseDialog = () => {
-    // Close the dialog box
     setSelectedItem(null);
   };
 
@@ -441,6 +516,92 @@ function AdminDashboard() {
         </div>
       </div>
 
+      {/* Search Commodities */}
+      <div className="search-container mb-4">
+        <input
+          type="text"
+          placeholder="Search commodities by symbol or name..."
+          value={searchQueryCommodities}
+          onChange={(e) => setSearchQueryCommodities(e.target.value)}
+        />
+        <button className="search-button" onClick={handleSearchCommodities}>
+          Search Commodities
+        </button>
+      </div>
+
+      {/* Commodities Section */}
+      <div className="category-sector-box">
+        <h3>Commodities</h3>
+        <table className="table mt-2">
+          <thead className="table-dark">
+            <tr>
+              <th>Symbol</th>
+
+              <th>
+              LTP
+        </th>
+        <th onClick={() => handleSortCommodities('ltp')}>
+        Unit {renderSortIcon('ltp', sortOrderCommodities)}
+        </th>
+
+            <th >
+            Category
+            </th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentCommodity.map((currentCommodity, index) => (
+              <tr key={index} onClick={() => handleViewDetail(currentCommodity)}>
+                <td>{currentCommodity.symbol}</td>
+                <td>{currentCommodity.ltp}</td>
+                <td>{currentCommodity.unit}</td>
+                <td>{currentCommodity.category}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="pagination-container">
+          {renderCommodityPaginationButtons()}
+        </div>
+      </div>
+
+      {/* Metals Section*/}
+      <div className="category-sector-box">
+        <h3>Metals</h3>
+        <table className="table mt-2">
+          <thead className="table-dark">
+            <tr>
+              <th>Name</th>
+
+              <th>
+              LTP
+        </th>
+        <th>
+        Unit
+        </th>
+
+            <th >
+            Category
+            </th>
+            </tr>
+          </thead>
+          <tbody>
+            {metals.map((metal, index) => (
+              <tr key={index} onClick={() => handleViewDetail(metal)}>
+                <td>{metal.symbol}</td>
+                <td>{metal.ltp}</td>
+                <td>{metal.unit}</td>
+                <td>{metal.category}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="pagination-container">
+        </div>
+      </div>
+
+
+
       {/* Dialog Boxes */}
       {selectedItem && (
         <UserDialogBox
@@ -456,6 +617,7 @@ function AdminDashboard() {
 )}
 
       <ToastContainer position="top-right" />
+      <ScrollToTop smooth />
     </div>
   );
 }

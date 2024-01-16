@@ -1,14 +1,53 @@
-import React from 'react'
-import { BiTimeFive } from 'react-icons/bi'
-import { BsTwitter, BsYoutube } from 'react-icons/bs'
-import { CgMail } from 'react-icons/cg'
-import { FaFacebookF, FaPhoneAlt } from 'react-icons/fa'
-import { GrInstagram } from 'react-icons/gr'
-import { RiWhatsappLine } from 'react-icons/ri'
-import logo from '../images/logo.png'
-import './Footer.css'
+
+import { BiTimeFive } from 'react-icons/bi';
+import { BsTwitter, BsYoutube } from 'react-icons/bs';
+import { CgMail } from 'react-icons/cg';
+import { FaFacebookF, FaPhoneAlt } from 'react-icons/fa';
+import { GrInstagram } from 'react-icons/gr';
+import { RiWhatsappLine } from 'react-icons/ri';
+import { React, useNavigate } from 'react-router-dom';
+import logo from '../images/logo.png';
+import './Footer.css';
 
 const Footer = () => {
+    const navigate = useNavigate();
+
+    const handleNavigation = (event) => {
+        event.preventDefault();
+        navigate('/faq');
+      };
+
+      const handledisclosure = (event) => {
+        event.preventDefault();
+        navigate('/disclosure');
+      };
+
+      const handleprivacy = (event) => {
+        event.preventDefault();
+        navigate('/privacypolicy');
+      };
+
+      const handleterms = (event) => {
+        event.preventDefault();
+        navigate('/termsandconditions');
+      };
+
+      const handledisc = (event) => {
+        event.preventDefault();
+        navigate('/disclaimer');
+      };
+
+      const handleabout = (event) => {
+        event.preventDefault();
+        navigate('/aboutus');
+      };
+
+      const handlecarrier = (event) => {
+        event.preventDefault();
+        navigate('/career');
+      };
+
+
     return (
         <>
             <div className="footer" id="footer">
@@ -65,11 +104,32 @@ const Footer = () => {
                         <div className="tf2">
                             <h2 className="title">10 Paisa</h2>
                             <ul>
-                                <li>About us</li>
-                                <li>Career</li>
-                                <li>Complaint</li>
-                                <li>From CEO</li>
-                                <li>Contact</li>
+                            <li>
+          <a href="/aboutus" onClick={handleabout}>
+          About us
+          </a>
+        </li>
+        <li>
+          <a href="/career" onClick={handlecarrier}>
+          Career
+          </a>
+        </li>
+        <li>
+          <a href="/complaint" onClick={handlecarrier}>
+          Complaint
+          </a>
+        </li>
+        <li>
+          <a href="/complaint" onClick={handlecarrier}>
+          From CEO
+          </a>
+        </li>
+        <li>
+          <a href="/complaint" onClick={handlecarrier}>
+          Contact
+          </a>
+        </li>
+
                             </ul>
                         </div>
 
@@ -88,26 +148,36 @@ const Footer = () => {
                         <div className="tf2">
                             <h2 className="title">Terms</h2>
                             <ul>
-                                <li>Disclaimer</li>
-                                <li>Terms & Conditions</li>
-                                <li>Privacy Policy</li>
-                                <li>Disclosure</li>
-                                <li>FAQ</li>
+
+                                <li>
+          <a href="/disclaimer" onClick={handledisc}>
+          Disclaimer
+          </a>
+        </li>
+
+                                <li>
+          <a href="/termsandconditions" onClick={handleterms}>
+          Terms & Conditions
+          </a>
+        </li>
+                                <li>
+          <a href="/privacypolicy" onClick={handleprivacy}>
+          Privacy Policy
+          </a>
+        </li>
+                                <li>
+          <a href="/disclosure" onClick={handledisclosure}>
+          Disclosure
+          </a>
+        </li>
+
+                                <li>
+          <a href="/faq" onClick={handleNavigation}>
+            FAQ
+          </a>
+        </li>
                             </ul>
                         </div>
-
-                        {/* <div className="tf2">
-                            <h2 className="title">More</h2>
-                            <ul>
-                                <li>Disclaimer</li>
-                                <li>Terms & Conditions</li>
-                                <li>Privacy Policy</li>
-                                <li>Disclosure</li>
-                                <li>FAQ</li>
-                                <li>Refund Policy</li>
-                            </ul>
-                        </div> */}
-
                     </div>
 
                     <div className="footerBorder"></div>

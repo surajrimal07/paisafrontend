@@ -45,6 +45,10 @@ export const loginUser =  (data) =>  api.post('/api/login', data)
 
 export const getAllAssets = () =>  api.get('/api/sharesansardata');
 
+export const getMetals = (id) =>  api.get(`/api/metal`);
+
+export const getCommo = (id) =>  api.get(`/api/commodity`);
+
 export const getAllUsers = () =>  api.get('/api/allusers', config);
 
 export const deleteUser = (deletingUser) => {

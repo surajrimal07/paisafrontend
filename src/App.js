@@ -6,7 +6,6 @@ import './App.css';
 import Footer from './component/Footer/Footer';
 import Header from './component/Header/Header';
 import Navbar from './component/Navbar/Navbar';
-import Product from './component/Product/Product';
 import Review from './component/Review/Review';
 import Unique from './component/Unique/Unique';
 import Register from './pages/Register';
@@ -22,13 +21,21 @@ import Login from './pages/login/login2';
 import { AdminRoutes } from './protected/AdminRoutes';
 import { UserRoutes } from './protected/UserRoutes';
 
+//homepage small pages
+import Career from './component/carrier/carrier';
+import Complaint from './component/complain/complain';
+import Disclaimer from './component/disclamer/disclaimer';
+import Disclosure from './component/disclosure/disclosure';
+import FAQ from './component/faq/faq';
+import PrivacyPolicy from './component/privacy/privacy';
+import TermsAndConditions from './component/terms/terms';
+
 
 const Homepage = () => {
 
   return (
     <div>
       <Header />
-      <Product />
       <Unique />
       <Review />
       <Footer />
@@ -42,8 +49,8 @@ function App() {
     <Router>
       <div className="App">
         <Navbar />
+        <div className="mt-5">
         <Routes>
-
 
           <Route path="/" element={<Homepage />} />
           <Route path="/login" element={<Login />} />
@@ -51,16 +58,23 @@ function App() {
           <Route path="/aboutus" element={<AboutUsPage />} />
           <Route path="/feathures" element={<Feathures />} />
           <Route path="/myprofile" element={<MyProfilePage />} />
-
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/disclosure" element={<Disclosure />} />
+          <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+          <Route path="/termsandconditions" element={<TermsAndConditions />} />
+          <Route path="/disclaimer" element={<Disclaimer />} />
+          <Route path="/career" element={<Career />} />
+          <Route path="/complaint" element={<Complaint />} />
           <Route element = {<UserRoutes/>}>
             <Route path ='/profile' element={<h1> Profile </h1>} />
-            </Route>
 
+            </Route>
           <Route element = {<AdminRoutes/>} >
             <Route path ='/admin/dashboard' element={<Dashboard/>} />
             </Route>
 
         </Routes>
+        </div>
       </div>
     </Router>
   );
