@@ -7,6 +7,8 @@
 
 A Smart Investment web app made for Softwarica College of IT & E-Commerce, Coventry University
 
+Try live at [vercel](https://paisafrontend.vercel.app/)
+
 ## Overview
 
 The Smart Investment web application is a state-of-the-art web application that gives users the knowledge and insights they need to maximize their investment strategy. Utilizing technology, data analytics, and intelligent systems, this ground-breaking program offers users individualized investment suggestions, portfolio management, and real-time market analysis.
