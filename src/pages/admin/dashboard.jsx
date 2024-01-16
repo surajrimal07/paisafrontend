@@ -5,6 +5,7 @@ import { deleteUser, getAllAssets, getAllUsers } from '../../apis/api';
 import './dashboard.css';
 import UserDialogBox from './dialogbox_admin.jsx';
 import EditUserDialogBox from './editingbox_admin.jsx';
+import InfoCard from './infocard.jsx';
 
 function AdminDashboard() {
   const [assets, setAssets] = useState([]);
@@ -22,6 +23,11 @@ function AdminDashboard() {
   const [sortOrderUsers, setSortOrderUsers] = useState({ column: null, ascending: true });
   const [sortOrderAssets, setSortOrderAssets] = useState({ column: null, ascending: true });
 
+
+  const totalUsers = users.length;
+  const totalAssets = assets.length;
+  const totalAmount = users.reduce((total, user) => total + user.userAmount, 0);
+  const totalAdmins = users.filter(user => user.isAdmin).length;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -92,38 +98,6 @@ function AdminDashboard() {
     });
     setAssets(sortOrderAsset);
   };
-
-    // // Sorting function for users
-    // const sortedUsers = users.slice().sort((a, b) => {
-    //   if (sortOrderUsers.column) {
-    //     const keyA = a[sortOrderUsers.column];
-    //     const keyB = b[sortOrderUsers.column];
-
-    //     if (sortOrderUsers.ascending) {
-    //       return keyA.localeCompare(keyB);
-    //     } else {
-    //       return keyB.localeCompare(keyA);
-    //     }
-    //   }
-
-    //   return 0;
-    // });
-
-    // // Sorting function for assets
-    // const sortedAssets = assets.slice().sort((a, b) => {
-    //   if (sortOrderAssets.column) {
-    //     const keyA = a[sortOrderAssets.column];
-    //     const keyB = b[sortOrderAssets.column];
-
-    //     if (sortOrderAssets.ascending) {
-    //       return keyA.localeCompare(keyB);
-    //     } else {
-    //       return keyB.localeCompare(keyA);
-    //     }
-    //   }
-
-    //   return 0;
-    // });
 
   const handleEditUser = (user) => {
     setEditingUser(user);
@@ -309,9 +283,15 @@ function AdminDashboard() {
 
   return (
     <div className="m-4">
-      <h2>Admin Dashboard</h2>
+      <h2>Admin Panel</h2>
 
-      {/* Search Users */}
+      <InfoCard
+        totalUsers={totalUsers}
+        totalAssets={totalAssets}
+        totalAmount={totalAmount}
+        totalAdmins={totalAdmins}
+      />
+
       <div className="search-container mb-4">
         <input
           type="text"

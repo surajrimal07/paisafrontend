@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { FaEdit } from 'react-icons/fa';
 
 const MyProfilePage = () => {
   const [userData, setUserData] = useState(null);
@@ -33,6 +34,7 @@ const MyProfilePage = () => {
               <div className="card-body">
                 <h5 className="card-title">{userData.name}</h5>
                 <p className="card-text">{userData.email}</p>
+                <FaEdit className="edit-icon" /> {/* Edit icon for user image */}
               </div>
             </div>
           </div>
@@ -47,14 +49,14 @@ const MyProfilePage = () => {
                 </div>
                 <div className="row">
                   <div className="col-md-6">
-                    <p><strong>Name:</strong> {userData.name}</p>
-                    <p><strong>Email:</strong> {userData.email}</p>
-                    <p><strong>Password:</strong> {maskPassword(userData.pass)}</p>
-                    <p><strong>Phone:</strong> {userData.phone}</p>
+                    <p><strong>Name:</strong> {userData.name} <FaEdit className="edit-icon" /></p>
+                    <p><strong>Email:</strong> {userData.email} <FaEdit className="edit-icon" /></p>
+                    <p><strong>Password:</strong> {maskPassword(userData.pass)} <FaEdit className="edit-icon" /></p>
+                    <p><strong>Phone:</strong> {userData.phone} <FaEdit className="edit-icon" /></p>
                   </div>
                   <div className="col-md-6">
-                    <p><strong>Amount:</strong> ${userData.userAmount}</p>
-                    <p><strong>Portfolio:</strong> {userData.portfolio.length} assets</p>
+                    <p><strong>Amount:</strong> ${userData.userAmount} <FaEdit className="edit-icon" /></p>
+                    <p><strong>Portfolio:</strong> {userData.portfolio.length} assets <FaEdit className="edit-icon" /></p>
                   </div>
                 </div>
               </div>

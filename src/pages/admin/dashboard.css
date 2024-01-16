@@ -286,14 +286,6 @@ dashboard.css
   border-radius: 50%; /* Optional: Make the image round */
 }
 
-
-
-/* Add this to your existing CSS file or create a new one */
-
-/* Add this to your existing CSS file or create a new one */
-
-
-
 .edit-dialog-box {
   background: #fff;
   padding: 20px;
@@ -339,8 +331,49 @@ h3 {
 }
 
 .edit-dialog-input {
+  margin-bottom: 5px;
+}
+
+/* Add this to your existing dashboard.css file */
+
+.edit-dialog-input {
   margin-bottom: 10px;
 }
+
+.edit-dialog-input input,
+.edit-dialog-input select {
+  border: 1px solid #ccc; /* or any other default border style you prefer */
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.custom-dropdown {
+  position: relative;
+}
+
+.custom-dropdown input {
+  cursor: pointer;
+}
+
+.dropdown-options div {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.custom-dropdown.active .dropdown-options {
+  display: block;
+}
+
+.dropdown-options div {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdown-options div:hover {
+  background-color: #f1f1f1;
+}
+
 
 strong {
   margin-right: 5px;
@@ -361,7 +394,10 @@ input {
   width: 100%;
   height: 100%;
   background: rgba(255, 255, 255, 0.5); /* Adjust the alpha value for transparency */
-  z-index: 1000; /* Ensure the overlay is above other elements */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* /* Ensure the overlay is above other elements */
 }
 
 .edit-dialog-container {
@@ -375,10 +411,10 @@ input {
   height: 100%;
   transform: translate(-50%, -50%);
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   background: rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  z-index: 1001; /* Ensure the dialog is above the overlay */
+  z-index: 1001;
 }
 
 .edit-dialog-buttons {

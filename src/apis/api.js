@@ -1,7 +1,7 @@
 import axios from "axios";
 
-//const baseURL = "http://localhost:5000";
-const baseURL = "https://paisabackend.el.r.appspot.com"
+const baseURL = "http://localhost:5000";
+//const baseURL = "https://paisabackend.el.r.appspot.com"
 const token = localStorage.getItem('token');
 
 //testing logger
@@ -20,18 +20,13 @@ axios.interceptors.response.use((response) => {
   return Promise.reject(error);
 });
 
-
-//
-
-
-
 const api = axios.create({
   baseURL,
   withCredentials: true,
   headers: {
-    //'Authorization': `Bearer ${token}`,
-   // 'Content-Type': 'application/json',
-    "Content-Type" : "multipart/form-data",
+    'Authorization': `Bearer ${token}`,
+   'Content-Type': 'application/json',
+    //"Content-Type" : "multipart/form-data",
   },
 });
 
@@ -44,49 +39,13 @@ const config = {
     }
 }
 
-// const handleApiCall = async (apiCall) => {
-//   try {
-//     const response = await apiCall();
-//     console.log('Response status:', response.status);
-//     console.log('Response data:', response.data);
-//     return { status: response.status, data: response.data };
-//   } catch (error) {
-//     console.error('API Error:', error);
-//     if (error.response) {
-//       return { status: error.response.status, error: error.response.data.error || 'An unexpected error occurred.' };
-//     } else if (error.request) {
-//       return { status: 500, error: 'An error occurred: No response received' };
-//     } else {
-//       return { status: 500, error: `An error occurred: ${error.message}` };
-//     }
-//   }
-// };
-//const createAPI = (endpoint, data) => handleApiCall(() => api.post(endpoint, data));
-
 export const RegisterUser = (data) => api.post('/api/create', data)
-// {
-//   console.log('Registering with:', data);
-//   return createAPI("/api/create", data);
-// }
 
 export const loginUser =  (data) =>  api.post('/api/login', data)
 
-
-// export const loginUser = async (email, password) => {
-//   const requestData = { email, password };
-//   return createAPI('/api/login', requestData);
-// };
-
-// export const updateAsset = (token, dpimage, field, code) => {
-//   const requestData = { token, dpimage, field, code };
-//   return createAPI('/api/update-asset', requestData);
-// };
-
-export const getAllAssets = () =>  api.post('/api/sharesansardata');
+export const getAllAssets = () =>  api.get('/api/sharesansardata');
 
 export const getAllUsers = () =>  api.get('/api/allusers', config);
-
-//export const deleteUser = (data) => api.delete(`/api/deleteUser`,data, config);
 
 export const deleteUser = (deletingUser) => {
   const apiEndpoint = baseURL + '/api/deleteUser';;
@@ -110,4 +69,36 @@ export const deleteUser = (deletingUser) => {
     });
 };
 
-export const updateUser = (id, data) => api.put(`/api/updateuser/${id}`, data, config);
+
+//json for edit user
+// {
+//   "email": "suraj@rimal.com",
+//   "field": "password",
+//   "value": "000000"
+// }
+
+export const editUser = (userid, field,value) => {
+  const endpoint = baseURL + '/api/updateuser';
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const requestBody = {
+    email: userid,
+    field: field,
+    value: value
+  };
+
+  return axios.put(endpoint, requestBody, config)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      console.error(`Error making POST request to: ${endpoint}`, error.response ? error.response.data : error.message);
+      throw error;
+    });
+};
