@@ -106,3 +106,29 @@ export const editUser = (userid, field,value) => {
       throw error;
     });
 };
+
+export const getIndex = () =>  api.get(`/api/index`);
+
+
+export const getNews = (page = 1, limit = 10) => {
+  const url = `/news?_page=${page}&limit=${limit}`;
+  return api.get(url);
+};
+
+
+// export const notificationSocket = (messageCallback) => {
+//   const { lastMessage, sendJsonMessage } = useWebSocket('ws://localhost:8081');
+
+
+//   //const socket = io('http://localhost:8081');
+//   socket.on('message', (message) => {
+//     messageCallback(message);
+//   });
+//   return socket;
+// };
+
+export const disconnectSocket = (socket) => {
+  if (socket) {
+    socket.disconnect();
+  }
+};

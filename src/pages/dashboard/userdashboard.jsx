@@ -139,7 +139,7 @@ const MyProfilePage = () => {
           <div className="col-md-4">
             <div className="card">
               <img
-                className="card-img-top"
+                className="user-image"
                 src={newImage || userData.dpImage}
                 alt="User DP"
                 onClick={() => document.getElementById('imageInput').click()}
@@ -151,11 +151,11 @@ const MyProfilePage = () => {
                 style={{ display: 'none' }}
                 onChange={handleImageUpload}
               />
-              <div className="card-body">
+              {/* <div className="card-body">
                 <h5 className="card-title">{userData.name}</h5>
                 <p className="card-text">{userData.email}</p>
                 <FaEdit className="edit-icon" onClick={() => openModal('dpImage')} />
-              </div>
+              </div> */}
             </div>
           </div>
 

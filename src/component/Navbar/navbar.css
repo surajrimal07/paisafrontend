@@ -3,3 +3,66 @@
     padding-bottom: 8px;
     background-color: rgb(253, 245, 243);
   }
+
+  .notification-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 8px;
+    z-index: 1000;
+    border: 1px solid #ccc;  /* Add border for a stylish look */
+  }
+
+  .notification-item {
+    display: flex;
+    padding: 10px;
+    border-bottom: 1px solid #eee;  /* Add a grey divider between notifications */
+  }
+
+  .notification-item:last-child {
+    border-bottom: none;  /* Remove the divider for the last notification */
+  }
+
+  .notification-content {
+    flex: 1;
+  }
+
+  .no-notifications {
+    padding: 10px;
+  }
+
+  .notification-image {
+    max-width: 50px;
+    max-height: 50px;
+    margin-right: 10px;
+  }
+
+  .notification-count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px;
+    font-size: 12px;
+  }
+
+  .notification-count {
+    position: absolute;
+    top: 5px;
+    right: -5px;
+    color: #ffffff; /* Text color of the count */
+    font-size: 8px; /* Font size of the count */
+    font-weight: normal; /* Font weight of the count */
+    padding: 1px 5px; /* Padding around the count */
+    border-radius: 50%; /* Border-radius for a circular shape */
+  }
+

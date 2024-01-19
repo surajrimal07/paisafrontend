@@ -57,7 +57,7 @@ const Footer = () => {
                         <div className="logoImg">
                             <img src={logo} alt="logo" />
                         </div>
-                        <h2 className="logoName">10<span className="logoNameColor">PA</span>ISA</h2>
+                        <h2 onClick={() => navigate('/') } className="logoName">10Paisa</h2>
                     </div>
 
                     <div className="topFooter">
@@ -102,30 +102,30 @@ const Footer = () => {
                         </div>
 
                         <div className="tf2">
-                            <h2 className="title">10 Paisa</h2>
+                            <h2 className="title">About</h2>
                             <ul>
                             <li>
-          <a href="/aboutus" onClick={handleabout}>
+          <a href="/aboutus" onClick={handleabout} className="footer-link">
           About us
           </a>
         </li>
         <li>
-          <a href="/career" onClick={handlecarrier}>
+          <a href="/career" onClick={handlecarrier}className="footer-link">
           Career
           </a>
         </li>
         <li>
-          <a href="/complaint" onClick={handlecarrier}>
+          <a href="/complaint" onClick={handlecarrier}className="footer-link">
           Complaint
           </a>
         </li>
         <li>
-          <a href="/complaint" onClick={handlecarrier}>
+          <a href="/complaint" onClick={handlecarrier}className="footer-link">
           From CEO
           </a>
         </li>
         <li>
-          <a href="/complaint" onClick={handlecarrier}>
+          <a href="/complaint" onClick={handlecarrier}className="footer-link">
           Contact
           </a>
         </li>
@@ -150,29 +150,29 @@ const Footer = () => {
                             <ul>
 
                                 <li>
-          <a href="/disclaimer" onClick={handledisc}>
+          <a href="/disclaimer" className="footer-link" onClick={handledisc}>
           Disclaimer
           </a>
         </li>
 
                                 <li>
-          <a href="/termsandconditions" onClick={handleterms}>
+          <a href="/termsandconditions" className="footer-link" onClick={handleterms}>
           Terms & Conditions
           </a>
         </li>
                                 <li>
-          <a href="/privacypolicy" onClick={handleprivacy}>
+          <a href="/privacypolicy" className="footer-link" onClick={handleprivacy}>
           Privacy Policy
           </a>
         </li>
                                 <li>
-          <a href="/disclosure" onClick={handledisclosure}>
+          <a href="/disclosure" className="footer-link" onClick={handledisclosure}>
           Disclosure
           </a>
         </li>
 
                                 <li>
-          <a href="/faq" onClick={handleNavigation}>
+          <a href="/faq" className="footer-link" onClick={handleNavigation}>
             FAQ
           </a>
         </li>
@@ -182,24 +182,38 @@ const Footer = () => {
 
                     <div className="footerBorder"></div>
 
-                    <div className="middleFooter">
-                        <div className="mfContainer">
-                            <span className="desc">SEBON Registered Analyst Details: </span>
-                            <span className="desc">Registered Name: 10 Paisa pvt ltd</span>
-                            <span className="desc">Types of registration: Non-Individual</span>
-                            <span className="desc">Registration No.: 009786453589</span>
-                            <span className="desc">Validity: till 2026</span>
-                        </div>
+                                      {/* Google Map Embed */}
+                                      <div className="google-map">
+              </div>
+              <div className="middleFooter" style={{ display: 'flex', justifyContent: 'space-around' }}>
+            <div className="google-map">
+              <iframe
+                title="Google Map"
+                width="450"
+                height="300"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.7173622488464!2d85.32441701506173!3d27.717368382839795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19bb09ebc50b%3A0x98e49d824c13c675!2sSamakushi%20Road%2C%20Kathmandu%2044600!5e0!3m2!1sen!2snp!4v1648277850934!5m2!1sen!2snp"
+              ></iframe>
+            </div>
 
-                        <div className="mfContainer">
-                            <span className="title">10Paisa Private Limited.</span>
-                            <span className="desc">Reg Address: Samakushi Road, Kathmandu</span>
-                            <span className="desc">Telephone: 01-5678912</span>
-                            <span className="desc">Principal Officer: Suraj Rimal</span>
-                            <span className="desc">Email: suraj@10Paisa.com</span>
-                            <span className="desc">Telephone: +977 9840220290</span>
-                        </div>
-                    </div>
+            <div style={{ width: '100px' }}></div>
+
+            <div className="mfContainer">
+              <span className="title">SEBON Registered Analyst Details: </span>
+              <span className="desc">Registered Name: 10 Paisa pvt ltd</span>
+              <span className="desc">Types of registration: Non-Individual</span>
+              <span className="desc">Registration No.: 009786453589</span>
+              <span className="desc">Validity: till 2026</span>
+            </div>
+
+            <div className="mfContainer">
+              <span className="title">10Paisa Private Limited.</span>
+              <span className="desc">Reg Address: Samakushi Road, Kathmandu</span>
+              <span className="desc">Telephone: 01-5678912</span>
+              <span className="desc">Principal Officer: Suraj Rimal</span>
+              <span className="desc">Email: suraj@10Paisa.com</span>
+              <span className="desc">Telephone: +977 9840220290</span>
+            </div>
+          </div>
 
                     <div className="footerBorder1"></div>
 

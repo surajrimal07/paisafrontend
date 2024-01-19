@@ -2,19 +2,23 @@
     width: 100%;
     background-color: rgba(14, 179, 179, 0.952);
 }
+.footer-link {
+    color: #000000;
+    text-decoration: none;
+}
 
 .footer .footerContainer {
-    width: 85%;
+    width: 88%;
     margin: auto;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    gap: 25px;
+    gap: 5px;
 }
 
 .footerContainer .logo {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     margin-top: 20px;
     cursor: pointer;
     display: flex;
@@ -35,8 +39,8 @@
 }
 
 .footerContainer .logoName {
-    font-size: 28px;
-    color: rgb(108, 10, 125);
+    font-size: 30px;
+    color: rgb(0, 0, 0);
 
 }
 
@@ -62,8 +66,8 @@
 
 .tf1 .title {
     color: black;
-    font-weight: 600;
-    font-size: 18px;
+    font-weight: 500;
+    font-size: 25px;
     word-spacing: 4px;
     margin-bottom: 10px;
 }
@@ -144,7 +148,7 @@
 }
 
 .footerBorder {
-    margin: 45px 0;
+    margin: 5px 0;
     border: 1px solid rgb(60, 60, 60);
     width: 100%;
 }
@@ -160,7 +164,7 @@
     display: flex;
     flex-direction: column;
     flex: 1;
-    gap: 4px;
+    gap: 9px;
 }
 
 .mfContainer .title {
@@ -170,7 +174,7 @@
 }
 
 .mfContainer .desc {
-    font-weight: 600
+    font-weight: 500
 }
 
 .footerContainer .bottomFooter {

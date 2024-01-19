@@ -10,6 +10,16 @@
     justify-content: center;
   }
 
+  .user-image {
+    max-width: 100px; /* Adjust the size as needed */
+    max-height: 100px; /* Adjust the size as needed */
+  }
+
+  .user-image {
+    max-width: 400px;
+    max-height: 400px;
+  }
+
   .modal-content {
     background: white;
     padding: 20px;

@@ -8,6 +8,7 @@ import Header from './component/Header/Header';
 import Navbar from './component/Navbar/Navbar';
 import Review from './component/Review/Review';
 import Unique from './component/Unique/Unique';
+import NewsDisplay from './component/news/news';
 import Register from './pages/Register';
 //import Signup from './pages/signup/newregister';
 
@@ -38,7 +39,6 @@ const Homepage = () => {
       <Header />
       <Unique />
       <Review />
-      <Footer />
       <ScrollToTop smooth />
     </div>
   );
@@ -59,6 +59,7 @@ function App() {
           <Route path="/feathures" element={<Feathures />} />
           <Route path="/myprofile" element={<MyProfilePage />} />
           <Route path="/faq" element={<FAQ />} />
+          <Route path="/news" element={<NewsDisplay />} />
           <Route path="/disclosure" element={<Disclosure />} />
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
           <Route path="/termsandconditions" element={<TermsAndConditions />} />
@@ -75,6 +76,7 @@ function App() {
 
         </Routes>
         </div>
+        <Footer />
       </div>
     </Router>
   );
