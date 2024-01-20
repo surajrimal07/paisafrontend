@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { BiRefresh } from 'react-icons/bi';
 import ScrollToTop from "react-scroll-to-top";
 import { getNews } from '../../apis/api.js';
@@ -8,72 +8,123 @@ const NewsDisplay = () => {
     const [newsData, setNewsData] = useState([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
-    const [showAnimation, setShowAnimation] = useState(false);
+    const [isFetching, setIsFetching] = useState(false);
+    const [showAnimation] = useState(false);
     const loaderRef = useRef(null);
-
-    useEffect(() => {
-        const handleScroll = () => {
-          const scrollPosition = window.scrollY + window.innerHeight;
-          const triggerPosition = document.getElementById('news-container').offsetTop;
-
-          if (scrollPosition > triggerPosition) {
-            setShowAnimation(true);
-          } else {
-            setShowAnimation(false);
-          }
-        };
-
-        window.addEventListener('scroll', handleScroll);
-
-        return () => {
-          window.removeEventListener('scroll', handleScroll);
-        };
-      }, []);
+    const itemsPerPage = 10;
+    const maxItems = 50;
 
 
-    const fetchNews = async () => {
+    //fetching mechanism
+
+    // useEffect(() => {
+    //     const handleScroll = () => {
+    //       const scrollPosition = window.scrollY + window.innerHeight;
+    //       const documentHeight = document.documentElement.scrollHeight;
+    //      const triggerThreshold = 0.9;
+
+    //     if (scrollPosition >= documentHeight * triggerThreshold && !loading) {
+    //           setIsFetching(true);
+    // fetchNews();
+    //     }
+    //   };
+
+    //     window.addEventListener('scroll', handleScroll);
+
+    //     return () => {
+    //       window.removeEventListener('scroll', handleScroll);
+    //     };
+    //   }, [loading]);
+
+
+    // const fetchNews = async () => {
+    //   try {
+    //     setLoading(true);
+    //     const response = await getNews(page, 10);
+    //     const newData = response.data;
+    //     if (newData.length > 0) {
+    //     setNewsData((prevData) => [...prevData, ...newData]);
+    //     setPage((prevPage) => prevPage + 1);
+    //     }
+    //   } catch (error) {
+    //     console.error('Error fetching news:', error);
+    //   } finally {
+    //     setLoading(false);
+    //     setIsFetching(false);
+    //   }
+    // };
+
+
+
+    // const handleObserver = (entities) => {
+    //   const target = entities[0];
+    //   if (target.isIntersecting && !loading) {
+    //     setIsFetching(true);
+    //     //fetchNews();
+    //   }
+    // };
+
+    // useEffect(() => {
+    //   if (isFetching) {
+    //     fetchNews();
+    //   }
+    // }, [isFetching]); // eslint-disable-line
+
+
+
+    // useEffect(() => {
+    //   const loaderCurrent = loaderRef.current;
+    //   const options = {
+    //     root: null,
+    //     rootMargin: '20px',
+    //     threshold: 1.0,
+    //   };
+
+    //   const observer = new IntersectionObserver(handleObserver, options);
+
+    //   if (loaderCurrent) {
+    //     observer.observe(loaderCurrent);
+    //   }
+
+    //   return () => {
+    //     if (loaderCurrent) {
+    //       observer.unobserve(loaderCurrent);
+    //     }
+    //   };
+    //   // eslint-disable-next-line
+    // }, [loaderRef]);
+
+
+    const fetchNews = useCallback(async () => {
       try {
         setLoading(true);
-        const response = await getNews(page, 10);
+        const response = await getNews(page, itemsPerPage);
         const newData = response.data;
-        setNewsData((prevData) => [...prevData, ...newData]);
-        setPage((prevPage) => prevPage + 1);
+        if (newData.length > 0) {
+          setNewsData((prevData) => [...prevData, ...newData]);
+          setPage((prevPage) => prevPage + 1);
+
+        // Remove older items to maintain a maximum number of items
+        //setNewsData((prevData) => prevData.slice(-maxItems));
+        }
       } catch (error) {
         console.error('Error fetching news:', error);
       } finally {
         setLoading(false);
+        setIsFetching(false);
       }
-    };
+    }, [page]);
 
-    const truncateDescription = (description, wordLimit) => {
-        const words = description.split(' ');
-        if (words.length <= wordLimit) {
-          return description;
+    const handleObserver = useCallback(
+      (entities) => {
+        const target = entities[0];
+        if (target.isIntersecting && !loading && !isFetching) {
+          setIsFetching(true);
+          fetchNews();
         }
-        return words.slice(0, wordLimit).join(' ') + '...';
-      };
-
-    const handleObserver = (entities) => {
-      const target = entities[0];
-      if (target.isIntersecting && !loading) {
-        fetchNews();
-      }
-    };
-
-    const handleRefresh = async () => {
-      try {
-        const response = await getNews(1, 10);
-        const newData = response.data;
-        setNewsData(newData);
-
-        const newsContainer = document.getElementById('news-container');
-        if (newsContainer) {
-          newsContainer.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      } catch (error) {
-        console.error('Error refreshing news:', error);
-      }
-    };
+      },
+      [loading, isFetching, fetchNews]
+    );
 
     useEffect(() => {
       const loaderCurrent = loaderRef.current;
@@ -94,18 +145,62 @@ const NewsDisplay = () => {
           observer.unobserve(loaderCurrent);
         }
       };
-      // eslint-disable-next-line
-    }, [loaderRef]);
+    }, [handleObserver, loaderRef]);
 
     useEffect(() => {
-      fetchNews();
-      // eslint-disable-next-line
-    }, []);
+      const handleScroll = () => {
+        const scrollPosition = window.scrollY + window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        const triggerThreshold = 0.9;
+
+        if (scrollPosition >= documentHeight * triggerThreshold && !loading && !isFetching) {
+          setIsFetching(true);
+          fetchNews();
+        }
+      };
+
+      window.addEventListener('scroll', handleScroll);
+
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }, [loading, isFetching, fetchNews]);
+
+
+
+    //handle refresh
+
+    const handleRefresh = async () => {
+      try {
+        const response = await getNews(1, 10);
+        const newData = response.data;
+        setNewsData(newData);
+        setPage(2);
+
+        const newsContainer = document.getElementById('news-container');
+        if (newsContainer) {
+          newsContainer.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      } catch (error) {
+        console.error('Error refreshing news:', error);
+      }
+    };
+
+
+
+    //end  of fetching mechanism
 
     const getDefaultImage = () => {
       return 'news.jpg';
     };
-    //fix lint warning later
+
+    const truncateDescription = (description, wordLimit) => {
+      const words = description.split(' ');
+      if (words.length <= wordLimit) {
+        return description;
+      }
+      return words.slice(0, wordLimit).join(' ') + '...';
+    };
 
     return (
       <div id="news-container" className={`container mt-5 ${showAnimation ? 'slide-from-below' : ''}`}>

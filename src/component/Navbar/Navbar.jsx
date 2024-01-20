@@ -7,7 +7,7 @@ import useWebSocket from 'react-use-websocket';
 import { getIndex } from '../../apis/api.js';
 import logo from '../images/logo.png';
 import './navbar.css';
-const notificationSound = new Audio('../sound/noti.mp3');
+import sound from './noti.mp3';
 
 const Navbar = () => {
   const { lastMessage } = useWebSocket('ws://localhost:8081');
@@ -15,6 +15,7 @@ const Navbar = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [notificationCount, setNotificationCount] = useState(0);
+  const notificationSound = useRef(new Audio(sound));
   const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
   const location = useLocation();
@@ -43,12 +44,10 @@ const Navbar = () => {
   const getindex = async () => {
     try {
       const res = await getIndex();
-      console.log(res.data);
 
       const indexData = res.data;
 
       if (indexData && indexData.index && indexData.percentage) {
-        console.log(indexData);
         const isNegative = indexData.percentage.charAt(0) === '-';
         const arrow = isNegative ? '↓' : '↑';
         const color = isNegative ? 'red' : 'green';
@@ -70,6 +69,28 @@ const Navbar = () => {
     }
   };
 
+  //notification sound
+  const handleDocumentClick = () => {
+    if (notificationSound.current && notificationSound.current.paused) {
+      notificationSound.current.play();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleDocumentClick);
+    return () => {
+      document.removeEventListener('click', handleDocumentClick);
+    };
+  }, [])
+
+    // Function to clear notifications
+    const handleClearNotifications = () => {
+      setNotifications([]);
+      setNotificationCount(0);
+      localStorage.removeItem('notifications');
+    };
+
+  //
 
   useEffect(() => {
     getindex();
@@ -100,7 +121,9 @@ const Navbar = () => {
       const storedCount = parseInt(localStorage.getItem('notificationCount')) || 0;
       const newCount = storedCount + 1;
       localStorage.setItem('notificationCount', newCount.toString());
-      notificationSound.play();
+
+      // Save notifications to local storage
+      localStorage.setItem('notifications', JSON.stringify([newNotification, ...notifications]));
     }
   }, [lastMessage]);
 
@@ -257,6 +280,13 @@ const Navbar = () => {
                         zIndex: '1000',
                       }}
                     >
+                     {/** Clear Notifications */}
+                     <div className="dropdown-header">
+            <span className="clear-icon" onClick={handleClearNotifications} role="button" tabIndex={0}>
+              <i className="fas fa-trash-alt"></i>
+            </span>
+          </div>
+          {/** end of clear notifications */}
                        {notifications.length === 0 ? (
             <div className="no-notifications">No notifications</div>
           ) : (
