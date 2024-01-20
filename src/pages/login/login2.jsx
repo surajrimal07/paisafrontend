@@ -266,16 +266,13 @@ import { RegisterUser, loginUser } from '../../apis/api';
 import './login2.css';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('suraj@rimal.com');
+  const [password, setPassword] = useState('000000');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
-
-
-
 
   const showRegister = location.state && location.state.showRegister;
 
@@ -311,10 +308,8 @@ const Login = () => {
 
   const validate = () => {
     if (showLogin) {
-      // Validation logic for login
       return email.trim() !== '' && password.trim() !== '';
     } else {
-      // Validation logic for registration
       return (
         name.trim() !== '' &&
         phone.trim() !== '' &&

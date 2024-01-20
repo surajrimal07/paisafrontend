@@ -1,72 +1,72 @@
-// import React, { useEffect, useState } from 'react';
-// import { FaEdit } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import { FaEdit } from 'react-icons/fa';
 
-// const MyProfilePage = () => {
-//   const [userData, setUserData] = useState(null);
+const MyProfilePage = () => {
+  const [userData, setUserData] = useState(null);
 
-//   useEffect(() => {
-//     const storedUserData = JSON.parse(localStorage.getItem('user'));
+  useEffect(() => {
+    const storedUserData = JSON.parse(localStorage.getItem('user'));
 
-//     if (storedUserData) {
-//       setUserData(storedUserData);
-//     }
-//   }, []);
+    if (storedUserData) {
+      setUserData(storedUserData);
+    }
+  }, []);
 
-//   const maskPassword = (password) => {
-//     return '*'.repeat(password.length);
-//   };
+  const maskPassword = (password) => {
+    return '*'.repeat(password.length);
+  };
 
-//   return (
-//     <div className="container my-5">
-//       <div className="row">
-//         <div className="col">
-//           <h2>My Profile</h2>
-//         </div>
-//       </div>
+  return (
+    <div className="container my-5">
+      <div className="row">
+        <div className="col">
+          <h2>My Profile</h2>
+        </div>
+      </div>
 
-//       {userData && (
-//         <div className="row mt-4">
-//           <div className="col-md-4">
-//             <div className="card">
-//               <img className="card-img-top" src={userData.dpImage} alt="User DP" />
-//               <div className="card-body">
-//                 <h5 className="card-title">{userData.name}</h5>
-//                 <p className="card-text">{userData.email}</p>
-//                 <FaEdit className="edit-icon" /> {/* Edit icon for user image */}
-//               </div>
-//             </div>
-//           </div>
+      {userData && (
+        <div className="row mt-4">
+          <div className="col-md-4">
+            <div className="card">
+              <img className="card-img-top" src={userData.dpImage} alt="User DP" />
+              <div className="card-body">
+                <h5 className="card-title">{userData.name}</h5>
+                <p className="card-text">{userData.email}</p>
+                <FaEdit className="edit-icon" /> {/* Edit icon for user image */}
+              </div>
+            </div>
+          </div>
 
-//           <div className="col-md-8">
-//             <div className="card">
-//               <div className="card-body">
-//                 <div className="row mb-3">
-//                   <div className="col">
-//                     <h4>Personal Information</h4>
-//                   </div>
-//                 </div>
-//                 <div className="row">
-//                   <div className="col-md-6">
-//                     <p><strong>Name:</strong> {userData.name} <FaEdit className="edit-icon" /></p>
-//                     <p><strong>Email:</strong> {userData.email} <FaEdit className="edit-icon" /></p>
-//                     <p><strong>Password:</strong> {maskPassword(userData.pass)} <FaEdit className="edit-icon" /></p>
-//                     <p><strong>Phone:</strong> {userData.phone} <FaEdit className="edit-icon" /></p>
-//                   </div>
-//                   <div className="col-md-6">
-//                     <p><strong>Amount:</strong> ${userData.userAmount} <FaEdit className="edit-icon" /></p>
-//                     <p><strong>Portfolio:</strong> {userData.portfolio.length} assets <FaEdit className="edit-icon" /></p>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
+          <div className="col-md-8">
+            <div className="card">
+              <div className="card-body">
+                <div className="row mb-3">
+                  <div className="col">
+                    <h4>Personal Information</h4>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    <p><strong>Name:</strong> {userData.name} <FaEdit className="edit-icon" /></p>
+                    <p><strong>Email:</strong> {userData.email} <FaEdit className="edit-icon" /></p>
+                    <p><strong>Password:</strong> {maskPassword(userData.pass)} <FaEdit className="edit-icon" /></p>
+                    <p><strong>Phone:</strong> {userData.phone} <FaEdit className="edit-icon" /></p>
+                  </div>
+                  <div className="col-md-6">
+                    <p><strong>Amount:</strong> ${userData.userAmount} <FaEdit className="edit-icon" /></p>
+                    <p><strong>Portfolio:</strong> {userData.portfolio.length} assets <FaEdit className="edit-icon" /></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
-// export default MyProfilePage;
+ export default MyProfilePage;
 
 // import React, { useEffect, useState } from 'react';
 // import { FaEdit } from 'react-icons/fa';
@@ -237,64 +237,87 @@
 // };
 
 // export default MyProfilePage;
+// import React, { useState } from 'react';
+// import { Link } from 'react-router-dom';
+// import './App.css';
+
+// const MyProfilePage = () => {
+//   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+//   const toggleSidebar = () => {
+//     setSidebarOpen(!sidebarOpen);
+//   };
+
+//   return (
+//     <>
+//       <div className={`app-container ${sidebarOpen ? 'sidebar-open' : ''}`}>
+//         <nav className={`navbar navbar-dark bg-sidebar ${sidebarOpen ? 'navbar-open' : ''}`}>
+//           <button className="btn btn-outline-light" onClick={toggleSidebar}>
+//             ☰
+//           </button>
+//         </nav>
+
+//         <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+//           <button className="btn btn-outline-light btn-close" onClick={toggleSidebar}>
+//             ☰
+//           </button>
+//           <ul className="nav flex-column">
+//             <li className="nav-item">
+//               <Link className="nav-link" to="/profile" onClick={toggleSidebar}>
+//                 Profile
+//               </Link>
+//             </li>
+//             <li className="nav-item">
+//               <Link className="nav-link" to="/dashboard" onClick={toggleSidebar}>
+//                 Dashboard
+//               </Link>
+//             </li>
+//             <li className="nav-item">
+//               <Link className="nav-link" to="/portfolio" onClick={toggleSidebar}>
+//                 Portfolio
+//               </Link>
+//             </li>
+//             <li className="nav-item">
+//               <Link className="nav-link" to="/watchlist" onClick={toggleSidebar}>
+//                 Watchlist
+//               </Link>
+//             </li>
+//             <li className="nav-item">
+//               <Link className="nav-link" to="/assets" onClick={toggleSidebar}>
+//                 Assets
+//               </Link>
+//             </li>
+//             <li className="nav-item">
+//               <Link className="nav-link" to="/commodities" onClick={toggleSidebar}>
+//                 Commodities
+//               </Link>
+//             </li>
+//           </ul>
+//         </div>
+
+//         <main className={`content ${sidebarOpen ? 'content-open' : ''}`}>
+//           {/* Main content goes here */}
+//           <h2>Main Content</h2>
+//         </main>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default MyProfilePage;
 
 
+// import { Menu, MenuItem, Sidebar, SubMenu } from 'react-pro-sidebar';
 
-import React, { useState } from 'react';
-import './new.css'; // You may create a separate CSS file for custom styling
+// <Sidebar>
+//   <Menu>
+//     <SubMenu label="Charts">
+//       <MenuItem> Pie charts </MenuItem>
+//       <MenuItem> Line charts </MenuItem>
+//     </SubMenu>
+//     <MenuItem> Documentation </MenuItem>
+//     <MenuItem> Calendar </MenuItem>
+//   </Menu>
+// </Sidebar>;
 
-const MyProfilePage = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
-
-  return (
-    <>
-      <nav className="navbar navbar-dark bg-dark justify-content-between">
-        <a className="navbar-brand" href="#home">Your App</a>
-        <button className="btn btn-outline-light" onClick={toggleSidebar}>
-          ☰
-        </button>
-      </nav>
-
-      <div className="container-fluid">
-        <div className="row">
-          <aside className={`col-md-3 col-lg-2 d-md-block bg-dark sidebar ${sidebarOpen ? 'open' : ''}`}>
-            <div className="sidebar-sticky">
-              <ul className="nav flex-column">
-                <li className="nav-item">
-                  <a className="nav-link" href="/profile">Profile</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="/dashboard">Dashboard</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="/portfolio">Portfolio</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="/watchlist">Watchlist</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="/assets">Assets</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="/commodities">Commodities</a>
-                </li>
-              </ul>
-            </div>
-          </aside>
-
-          <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-            {/* Main content goes here */}
-            <h2>Main Content</h2>
-          </main>
-        </div>
-      </div>
-    </>
-  );
-};
-
-export default MyProfilePage;
-
+// export default Sidebar

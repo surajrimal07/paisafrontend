@@ -115,20 +115,11 @@ export const getNews = (page = 1, limit = 10) => {
   return api.get(url);
 };
 
+export const getDashboardItems = () =>  api.get(`/api/dashboard`);
 
-// export const notificationSocket = (messageCallback) => {
-//   const { lastMessage, sendJsonMessage } = useWebSocket('ws://localhost:8081');
-
-
-//   //const socket = io('http://localhost:8081');
-//   socket.on('message', (message) => {
-//     messageCallback(message);
-//   });
-//   return socket;
+// export const disconnectSocket = (socket) => {
+//   if (socket) {
+//     socket.disconnect();
+//   }
 // };
 
-export const disconnectSocket = (socket) => {
-  if (socket) {
-    socket.disconnect();
-  }
-};

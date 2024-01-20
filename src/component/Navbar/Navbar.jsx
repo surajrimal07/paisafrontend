@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FaBell } from 'react-icons/fa';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useWebSocket from 'react-use-websocket';
 import { getIndex } from '../../apis/api.js';
 import logo from '../images/logo.png';
-import './navbar.css';
+import './navbarO.css';
 import sound from './noti.mp3';
 
 const Navbar = () => {
@@ -15,6 +15,7 @@ const Navbar = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [notificationCount, setNotificationCount] = useState(0);
+  const [showDropdown, setShowDropdown] = useState(false);
   const notificationSound = useRef(new Audio(sound));
   const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ const Navbar = () => {
         localStorage.setItem('index', JSON.stringify(indexData));
         setIndex(indexedValue);
       } else {
-        toast.error("Index Error");
+        //toast.error("Index Error");
       }
     } catch (error) {
       console.error('Error fetching index:', error);
@@ -71,7 +72,7 @@ const Navbar = () => {
 
   //notification sound
   const handleDocumentClick = () => {
-    if (notificationSound.current && notificationSound.current.paused) {
+    if (notificationSound.current && notificationSound.current.paused && notifications.length > 0) {
       notificationSound.current.play();
     }
   };
@@ -203,17 +204,54 @@ const Navbar = () => {
                 </NavLink>
               </li>
 
+
               {user && (
-                <li className="nav-item">
-                  <NavLink
-                    className="nav-link"
-                    to="/myprofile"
-                    activeClassName="active"
-                  >
-                    Profile
-                  </NavLink>
-                </li>
-              )}
+  <li className="nav-item dropdown" onMouseEnter={() => setShowDropdown(true)} onMouseLeave={() => setShowDropdown(false)}>
+    <button
+      className="nav-link dropdown-toggle"
+      type="button"
+      id="profileDropdown"
+      data-bs-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      Profile
+    </button>
+
+    <div className={`dropdown-menu ${showDropdown ? 'show' : ''}`} aria-labelledby="profileDropdown">
+      <li>
+        <NavLink className="dropdown-item" to="/myprofile" activeClassName="active">
+          Profile
+        </NavLink>
+      </li>
+      <li>
+        <NavLink className="dropdown-item" to="/portfolio" activeClassName="active">
+          Portfolio
+        </NavLink>
+      </li>
+      <li>
+        <NavLink className="dropdown-item" to="/wishlist" activeClassName="active">
+          Wishlist
+        </NavLink>
+      </li>
+      <li>
+        <NavLink className="dropdown-item" to="/userdashboard" activeClassName="active">
+          Dashboard
+        </NavLink>
+      </li>
+      <li>
+        <NavLink className="dropdown-item" to="/stocks" activeClassName="active">
+          Trending
+        </NavLink>
+      </li>
+      <li>
+        <NavLink className="dropdown-item" to="/commodities" activeClassName="active">
+          Commodities
+        </NavLink>
+      </li>
+    </div>
+  </li>
+)}
 
               <li className="nav-item">
                 <NavLink className="nav-link" to="/feathures" activeClassName="active">
@@ -296,62 +334,62 @@ const Navbar = () => {
 
                   )}
                    </div>
-                  <div className="dropdown">
-                    <button
-                      className="btn btn-outline-dark dropdown-toggle"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                      style={{ border: 'none' }}
-                      onClick={handleWelcomeDropdownClick}
-                    >
-                      {profilePicture && (
-          <img
-            src={profilePicture}
-            alt={`${firstName}'s Profile`}
-            className="me-2 rounded-circle"
-            style={{ width: '30px', height: '30px' }}
-          />
-        )}
 
-                      Welcome, {firstName}!
-                    </button>
-                    <ul className="dropdown-menu">
-                      <li>
-                        <NavLink className="dropdown-item" to="/myprofile" activeClassName="active">
-                          Profile
-                        </NavLink>
-                      </li>
-                      {user.isAdmin ? (
-                        <li>
-                          <NavLink className="dropdown-item" to="/admin/dashboard" activeClassName="active">
-                            Admin Dashboard
-                          </NavLink>
-                        </li>
-                      ) : (
-                        <li>
-                          <NavLink className="dropdown-item" to="/dashboard" activeClassName="active">
-                            User Dashboard
-                          </NavLink>
-                        </li>
-                      )}
-                      <li>
-                        <NavLink className="dropdown-item" to="/changepp" activeClassName="active">
-                          Change password
-                        </NavLink>
-                      </li>
-                      <li>
-                        <button
-                          onClick={handleLogout}
-                          className="dropdown-item"
-                          to="/logout"
-                        >
-                          Logout
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
+
+                   <div className={`nav-item dropdown ${showDropdown ? 'show' : ''}`} onMouseEnter={() => setShowDropdown(true)} onMouseLeave={() => setShowDropdown(false)}>
+  <button
+    className="btn dropdown-toggle btn btn-outline-grey"
+    type="button"
+    data-bs-toggle="dropdown"
+    id="profileDropdown"
+    aria-haspopup="true"
+    aria-expanded="false"
+    style={{ border: 'none' }}
+    onClick={handleWelcomeDropdownClick}
+  >
+    {profilePicture && (
+      <img
+        src={profilePicture}
+        alt={`${firstName}'s Profile`}
+        className="me-2 rounded-circle"
+        style={{ width: '30px', height: '30px' }}
+      />
+    )}
+    Welcome, {firstName}
+  </button>
+  <ul className="dropdown-menu">
+    {user.isAdmin ? (
+      <li>
+        <NavLink className="dropdown-item" to="/admin/dashboard" activeClassName="active">
+          Admin Dashboard
+        </NavLink>
+      </li>
+    ) : (
+      <li>
+        <NavLink className="dropdown-item" to="/dashboard" activeClassName="active">
+          User Dashboard
+        </NavLink>
+      </li>
+    )}
+
+    <li>
+      <button
+        onClick={handleLogout}
+        className="dropdown-item"
+        to="/logout"
+      >
+        Logout
+      </button>
+    </li>
+  </ul>
+</div>
+
+
+
                 </>
+
+
+
               ) : !isLoginPage && (
                 <>
                   <NavLink className="btn btn-outline-primary me-2" to={'/login'} activeClassName="active">
