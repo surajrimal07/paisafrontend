@@ -178,7 +178,7 @@ const Navbar = () => {
         <div className="container-fluid">
           <NavLink className="navbar-brand text fw-bold" to="/" activeClassName="active" exact>
             <img src={logo} alt="Logo" className="me-2" style={{ width: '30px', height: '30px' }} />
-            10Paisa {index && <span className="index">{index}</span>}
+            10Paisa🚀 {index && <span className="index">{index}</span>}
           </NavLink>
           <button
             className="navbar-toggler"

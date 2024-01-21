@@ -117,9 +117,16 @@ export const getNews = (page = 1, limit = 10) => {
 
 export const getDashboardItems = () =>  api.get(`/api/dashboard`);
 
-// export const disconnectSocket = (socket) => {
-//   if (socket) {
-//     socket.disconnect();
-//   }
-// };
+export const otpLogin = (email) =>  api.post(`/api/otp-login`, email);
+
+export const otpVerify = (data) =>  api.post(`/api/otp-verify`, data);
+
+export const otpResend = (email) =>  api.post(`/api/otp-resend`, email);
+
+//forget part
+
+export const forgetPassword = (email) =>  api.post(`/api/forget`, email);
+
+//save new password
+export const savePassword = (data) =>  api.post(`/api/updateuser`, data);
 

@@ -298,13 +298,11 @@ function AdminDashboard() {
 
   const handleClearSearchUsers = () => {
     setSearchQueryUsers('');
-    // Reset users to the original list
     setUsers(JSON.parse(localStorage.getItem('Users')));
   };
 
   const handleClearSearchAssets = () => {
     setSearchQueryAssets('');
-    // Reset assets to the original list
     setAssets(JSON.parse(localStorage.getItem('Assets')));
   };
 

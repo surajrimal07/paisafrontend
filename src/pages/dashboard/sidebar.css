@@ -1,0 +1,107 @@
+@import url("//fonts.googleapis.com/css?family=Google+Sans:400,500,600,700");
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Google Sans", Helvetica, Arial, sans-serif;
+}
+
+:root {
+  --primaryClr: #282828;
+  --secondaryClr: #1f1f1f;
+  --txtClr: #aaaaaa;
+  --hoverClr: #1f1f1f;
+  --hoverClr2: #ff4e45;
+}
+
+body{
+  background-color: var(--secondaryClr);
+}
+
+img{
+  width: 70px;
+  border-radius: 50%;
+}
+
+
+header{
+  background-color: var(--primaryClr);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 0px;
+  height: 40px;
+  padding: 0 10px;
+  transition: .2s ease;
+
+}
+
+.sidebar{
+  width: 0px;
+  background-color: var(--primaryClr);
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  overflow: hidden;
+  left: 0;
+  border-right: 1px solid #3e3e3e;
+  transition: .2s ease;
+}
+
+header.open{
+  margin-left: 160px;
+}
+
+.sidebar.open{
+  width: 160px;
+}
+
+.profile{
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: white;
+  font-size: 12px;
+  align-items: center;
+}
+
+.info{
+  text-align: center;
+}
+
+li{
+  list-style: none;
+  padding: 4px;
+}
+
+li a{
+  text-decoration: none;
+  color: var(--txtClr);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 8px 20px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+i{
+  font-size: 17px !important;
+  color: var(--txtClr);
+  cursor: pointer;
+}
+
+li:hover{
+  background-color: var(--hoverClr);
+}
+
+li:hover a{
+  color: var(--hoverClr2);
+}
+
+li:hover a i{
+  color: var(--hoverClr2);
+
+}

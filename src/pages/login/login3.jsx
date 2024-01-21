@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { RegisterUser, loginUser, otpLogin, otpVerify } from '../../apis/api';
+import { RegisterUser, forgetPassword, loginUser, otpLogin, otpVerify, savePassword } from '../../apis/api';
+import logo from '../../component/images/hilogo.png';
 import './login2.css';
 
 const Login = () => {
   const [emailotpsent, setEmailOTPSent] = useState('');
   const [emailotpverified, setEmailOTPVerified] = useState('');
+  const [forgetotpsent , setForgetOTPSent] = useState('');
+  const [forgetotpverified, setForgetOTPVerified] = useState('');
   const [email, setEmail] = useState('suraj@rimal.com');
   const [otp, setOTP] = useState('');
   const [password, setPassword] = useState('000000');
@@ -19,7 +22,12 @@ const Login = () => {
 
   const showRegister = location.state && location.state.showRegister;
 
-  const [showLogin, setShowLogin] = useState(!showRegister);
+  const [showLogin, setShowLogin] = useState(!showRegister); //for login and register conditionally formatting
+
+
+  const [showResetForm, setShowResetForm] = useState(false); //to conditionally render login form and forget password
+
+  const [resetPassword, setResetPassword] = useState(false);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -163,6 +171,8 @@ const Login = () => {
     try {
       const response = await otpLogin({ email });
 
+      console.log(response.data);
+
       const { success, message, hash } = response.data;
 
       if (success) {
@@ -241,10 +251,127 @@ const handleResendOTP = async (event) => {
 }
 
 
+//forget password
+const hangleForgetPasswordSubmit = async (event) => {
+  event.preventDefault();
+
+  console.log('hangleForgetPasswordSubmit');
+
+  if (!validateEmail(email)) {
+    toast.error('Please enter a valid email');
+    return;
+  }
+
+  toast.info('Please Wait...');
+
+  try {
+    const response = await forgetPassword({ email });
+
+    const { success, message, data } = response.data;
+    if (success) {
+
+      localStorage.setItem('hash', data);
+      localStorage.setItem('email', email);
+      toast.success(message);
+      setForgetOTPSent(true);
+
+    } else {
+      toast.error(message);
+    }
+  } catch (err) {
+    const errorMessage =
+      err.response && err.response.data && err.response.data.message
+        ? err.response.data.message
+        : 'An error occurred.';
+    toast.error(errorMessage);
+  }
+
+}
+
+const handleOTPVerification = async (event) => {
+  event.preventDefault();
+
+  if (!validateOTP(otp)) {
+    toast.error('Please enter a valid OTP');
+    return;
+  }
+
+  try {
+    const response = await otpVerify({ email, otp, hash: localStorage.getItem('hash')});
+
+    console.log(response.data);
+
+//    const { message } = response.data;
+
+    if (response.status === 200 || (response.data && response.data.message === 'Success')) {
+
+      toast.success("Please Enter New Password");
+      setForgetOTPVerified(true);
+    }
+  } catch (err) {
+    const errorMessage =
+      err.response && err.response.data && err.response.data.message
+        ? err.response.data.message
+        : 'An error occurred.';
+    toast.error(errorMessage);
+  }
+
+};
+
+
+const handlePasswordchange = async () => {
+
+  if (!password || password.trim() === '' || password.length < 6){
+    toast.error('Please enter a valid passowrd');
+    return;
+  }
+
+  const email = localStorage.getItem('email');
+  const field = "password";
+  const value = password;
+
+  try {
+    const response = await savePassword({ email, field, value});
+
+    const { message } = response.data;
+    if (response.status === 200 || (response.data && response.data.message === 'Success')) {
+      toast.success(message);
+      setShowResetForm(false);
+      setForgetOTPSent(false);
+      setForgetOTPVerified(false);
+
+    }
+  } catch (err) {
+    const errorMessage =
+      err.response && err.response.data && err.response.data.message
+        ? err.response.data.message
+        : 'An error occurred.';
+    toast.error(errorMessage);
+  }
+};
+
+//forgot password? click garepaxi run hune code
+const handleForgetPasswordClick = () => {
+  setPassword('');
+  setShowResetForm(true);
+};
+
+const handleGoBackToLoginClick = () => {
+  setShowResetForm(false);
+  setForgetOTPSent(false);
+  setForgetOTPVerified(false);
+};
+
+
+
+//
+
+
 const validateEmail = (email) => {
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
   }
+
 
 const validateOTP = (otp) => {
 const re = /^[0-9]{4}$/;
@@ -255,11 +382,36 @@ return re.test(otp);
   //
   return (
     <div id="login-container">
-      <div className={`container2 ${showLogin ? '' : 'active'}`} id="container2">
+    <div className={`container2 ${showLogin ? '' : 'active'}`} id="container2">
+
+      {console.log('showLogin:', showLogin)}
+      {console.log('resetPassword:', resetPassword)}
+      {console.log('showResetForm:', showResetForm)}
+
         <div className="form-container sign-in">
-          <form onSubmit={handleLoginSubmit}>
-            <h1>Sign In</h1>
-            <span>Use your 10Paisa email and password to login</span>
+          <form onSubmit={(e) => {
+  e.preventDefault();
+  if (showResetForm) {
+    if (forgetotpsent) {
+      if (forgetotpverified) {
+        handlePasswordchange(e);
+      } else {
+        handleOTPVerification(e);
+      }
+    } else {
+      hangleForgetPasswordSubmit(e);
+    }
+  } else {
+    handleLoginSubmit(e);
+  }
+}}>
+            <h1>{showResetForm? 'Forget Password' : 'Sign In'}</h1>
+
+            {!showResetForm ? (
+  <span>Use your 10Paisa email and password to login</span>
+) : (
+  <span>Enter your email to reset your password</span>
+)}
             <input
               type="email"
               id="email"
@@ -269,27 +421,74 @@ return re.test(otp);
               required
               placeholder="Email"
             />
-            <input
-              type="password"
-              id="password"
-              className="form-control"
-              value={password}
-              onChange={handlePasswordChange}
-              required
-              placeholder="Password"
-            />
-            <a href="#">Forget Your Password? Reset</a>
-            <button
-              type="submit"
-              className="btn btn-primary btn-block"
-            >
-              Login
-            </button>
+
+{forgetotpsent && !forgetotpverified && (
+
+      <input
+        type="text"
+        id="otp"
+        placeholder="Enter OTP"
+        name="otp"
+        value={otp}
+        onChange={handleOTPChange}
+        required
+      />
+  )}
+
+{(!showResetForm || (showResetForm && forgetotpverified)) && (
+  <input
+    type="password"
+    id="password"
+    className="form-control"
+    value={password}
+    onChange={handlePasswordChange}
+    required
+    placeholder="Password"
+  />
+)}
+
+<button
+  type="button"
+  onClick={showResetForm ? handleGoBackToLoginClick : handleForgetPasswordClick}
+  style={{
+    background: 'none',
+    border: 'none',
+    padding: 0,
+    textDecoration: 'underline',
+    cursor: 'pointer',
+    color: 'black',
+    textTransform: 'none',
+  }}
+>
+  {showResetForm ? 'Back to Login' : 'Forget Password?'}
+</button>
+
+{forgetotpsent && !forgetotpverified && (
+  <p
+    style={{ cursor: 'pointer', textDecoration: 'underline' }}
+    onClick={hangleForgetPasswordSubmit}
+  >
+    Didn't receive OTP? Resend OTP.
+  </p>
+)}
+
+<button type="submit" className="btn btn-primary btn-block">
+  {showResetForm
+    ? forgetotpsent
+      ? forgetotpverified
+        ? 'Save Password'
+        : 'Verify OTP'
+      : 'Send Email OTP'
+    : 'Sign In'}
+</button>
+
+
           </form>
         </div>
 
-
         <div className="form-container sign-up">
+
+
 
         <form
   onSubmit={(e) => {
@@ -392,7 +591,13 @@ return re.test(otp);
         <div className="toggle-container">
   <div className="toggle">
     <div className="toggle-panel toggle-left">
-      <h1>Welcome to 10Paisa!</h1>
+    <img
+    src={logo}
+    alt="10Paisa Logo"
+    className="logo"
+    style={{ maxWidth: '150px', maxHeight: '150px' }}
+  />
+      <h1>Welcome to 10Paisa🚀</h1>
       <p>To register on 10Paisa and unlock all site features, follow these steps:</p>
       <ol>
         <li>Enter your valid email address</li>
@@ -409,11 +614,38 @@ return re.test(otp);
       </button>
     </div>
     <div className="toggle-panel toggle-right">
-      <h1>Hello, User!</h1>
-      <p>For returning users, please enter your login credentials to access all features on 10 Paisa.</p>
-      <ol>
-        <li>Enter your 10Paisa email and password</li>
-      </ol>
+
+    {showResetForm ? (
+  <>
+  <img
+    src={logo}
+    alt="10Paisa Logo"
+    className="logo"
+    style={{ maxWidth: '150px', maxHeight: '150px' }}
+  />
+     <h1>Forget Password</h1>
+    <p>Enter your email address to reset your password</p>
+    <ol>
+      <li>Enter your email</li>
+      <li>Receive OTP in your email</li>
+      <li>Verify OTP to reset your password</li>
+    </ol>
+  </>
+) : (
+  <>
+  <img
+    src={logo}
+    alt="10Paisa Logo"
+    className="logo"
+    style={{ maxWidth: '150px', maxHeight: '150px' }}
+  />
+    <h1>Welcome to 10Paisa🚀</h1>
+    <p>Enter your 10Paisa email and password to login</p>
+    <ol>
+      <li>Enter your 10Paisa email and password</li>
+    </ol>
+  </>
+)}
       <button
         className="hidden"
         id="register"
