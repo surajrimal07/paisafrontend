@@ -130,3 +130,16 @@ export const forgetPassword = (email) =>  api.post(`/api/forget`, email);
 //save new password
 export const savePassword = (data) =>  api.post(`/api/updateuser`, data);
 
+//get all portfolio
+
+export const getPortfolio = (email) => {
+  // const config = {
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': `Bearer ${token}`,
+  //   },
+  // };
+  const data = { email: email };
+
+  return api.post(`/api/getallportforuser`, data, config);
+};

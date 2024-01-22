@@ -19,7 +19,6 @@ const TopLosers = ({ stocks }) => {
   <div className="card mb-4">
     <div className="card-header d-flex justify-content-between">
       <h4>Top Losers</h4>
-      <button className="btn btn-primary">View All</button>
     </div>
     <div className="table-responsive" style={{ maxHeight: '300px', overflowY: 'auto' }}>
       <table className="table">

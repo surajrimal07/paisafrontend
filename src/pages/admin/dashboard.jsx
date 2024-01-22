@@ -13,7 +13,7 @@ function AdminDashboard() {
   const [users, setUsers] = useState([]);
   const [commodities, setCommodities] = useState([]);
   const [metals, setMetals] = useState([]);
-  const [currentPage, setCurrentPage] = useState({});
+  //const [currentPage, setCurrentPage] = useState({});
   const [currentUsersPage, setCurrentUsersPage] = useState(1);
   const [currentAssetsPage, setCurrentAssetsPage] = useState(1);
   const [currentCommoditiesPage, setCurrentCommoditiesPage] = useState(1);
@@ -76,7 +76,6 @@ function AdminDashboard() {
       } else {
         console.error('Error fetching commodities:', commodityResponse.error);
       }
-
 
     };
 
@@ -306,7 +305,6 @@ function AdminDashboard() {
   };
 
   const handleSearchUsers = () => {
-    console.log('Search query:', searchQueryUsers);
     const filteredUsers = users.filter((user) => {
       const lowerCaseQuery = searchQueryUsers.toLowerCase();
       return (

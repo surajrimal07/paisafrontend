@@ -10,16 +10,18 @@ import Review from './component/Review/Review';
 import Unique from './component/Unique/Unique';
 import NewsDisplay from './component/news/news';
 import Register from './pages/Register';
-import Stock from './pages/stockdashboard/stock';
+import AssetDashboard from './pages/commoditydashboard/comdashboard';
 import StockDetailView from './pages/stockdashboard/StockDetailView';
+import Stock from './pages/stockdashboard/stock';
 //import Signup from './pages/signup/newregister';
 
 import AboutUsPage from './component/about/about';
 import Feathures from './component/feathures/feathures';
 import Dashboard from './pages/admin/dashboard';
-import MyProfilePage from './pages/dashboard/userdashboard';
+import MyProfilePage from './pages/dashboard/myprofile';
 //import Login from './pages/login/Login';
 import Login from './pages/login/login3';
+import UserDashboard from './pages/home/userdashboard';
 
 import { AdminRoutes } from './protected/AdminRoutes';
 import { UserRoutes } from './protected/UserRoutes';
@@ -69,7 +71,9 @@ function App() {
           <Route path="/disclaimer" element={<Disclaimer />} />
           <Route path="/stockdetailview" element={<StockDetailView />} />
           <Route path="/career" element={<Career />} />
+          <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/complaint" element={<Complaint />} />
+          <Route path="/commodities" element={<AssetDashboard />} />
           <Route element = {<UserRoutes/>}>
             <Route path ='/profile' element={<h1> Profile </h1>} />
 
