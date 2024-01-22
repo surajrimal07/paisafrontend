@@ -11,6 +11,7 @@ import Unique from './component/Unique/Unique';
 import NewsDisplay from './component/news/news';
 import Register from './pages/Register';
 import Stock from './pages/stockdashboard/stock';
+import StockDetailView from './pages/stockdashboard/StockDetailView';
 //import Signup from './pages/signup/newregister';
 
 import AboutUsPage from './component/about/about';
@@ -66,6 +67,7 @@ function App() {
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
           <Route path="/termsandconditions" element={<TermsAndConditions />} />
           <Route path="/disclaimer" element={<Disclaimer />} />
+          <Route path="/stockdetailview" element={<StockDetailView />} />
           <Route path="/career" element={<Career />} />
           <Route path="/complaint" element={<Complaint />} />
           <Route element = {<UserRoutes/>}>

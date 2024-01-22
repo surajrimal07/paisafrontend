@@ -77,6 +77,17 @@ const Navbar = () => {
     }
   };
 
+  //request permission for notification
+      const requestNotificationPermission = async () => {
+        if (Notification.permission !== 'granted') {
+          const permission = await Notification.requestPermission();
+          if (permission === 'granted') {
+            new Notification('10Paisa', { body: 'Thanks for enabling notifications!' });
+          }
+        }
+      };
+
+
   useEffect(() => {
     document.addEventListener('click', handleDocumentClick);
     return () => {
@@ -89,6 +100,7 @@ const Navbar = () => {
       setNotifications([]);
       setNotificationCount(0);
       localStorage.removeItem('notifications');
+      localStorage.setItem('notificationCount', '0');
     };
 
   //
@@ -112,19 +124,60 @@ const Navbar = () => {
     };
   }, [showNotifications]);
 
+  useEffect(() => {
+    const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
+    setNotifications((prevNotifications) => [...storedNotifications, ...prevNotifications]);
+  }, []);
+
+
+
+  // useEffect(() => {
+  //   if (lastMessage) {
+  //     // Update notification list from local storage
+  //     const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
+  //     setNotifications((prevNotifications) => [JSON.parse(lastMessage.data), ...prevNotifications]);
+
+  //     // Update notification count from local storage
+  //     setNotificationCount((prevCount) => prevCount + 1);
+
+  //     // Save notifications to local storage
+  //     localStorage.setItem('notifications', JSON.stringify([...storedNotifications, JSON.parse(lastMessage.data)]));
+
+  //     // Browser permission for new notification.
+  //     if (Notification.permission === 'granted') {
+  //       new Notification(JSON.parse(lastMessage.data).title, { body: JSON.parse(lastMessage.data).description });
+  //     } else {
+  //       // Request permission
+  //       requestNotificationPermission();
+  //     }
+  //   }
+  // }, [lastMessage]);
 
   useEffect(() => {
     if (lastMessage) {
+
+      //update notification list from local storage
+      const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
+      setNotifications(storedNotifications);
+
       const newNotification = JSON.parse(lastMessage.data);
       setNotifications((prevNotifications) => [newNotification, ...prevNotifications]);
       setNotificationCount((prevCount) => prevCount + 1);
 
+      // Save notifications to local storage
+      localStorage.setItem('notifications', JSON.stringify([newNotification, ...notifications]));
+
+      //update notification count from local storage
       const storedCount = parseInt(localStorage.getItem('notificationCount')) || 0;
       const newCount = storedCount + 1;
       localStorage.setItem('notificationCount', newCount.toString());
 
-      // Save notifications to local storage
-      localStorage.setItem('notifications', JSON.stringify([newNotification, ...notifications]));
+      //browser permission for new notification.
+      if (Notification.permission === 'granted') {
+        new Notification(newNotification.title, { body: newNotification.description });
+      } else {
+        requestNotificationPermission();
+      }
     }
   }, [lastMessage]);
 
@@ -167,8 +220,9 @@ const Navbar = () => {
   const handleNotificationIconClick = (event) => {
     event.stopPropagation();
     setShowNotifications(!showNotifications);
-    setNotificationCount(0);
-    localStorage.setItem('notificationCount', '0');
+
+    // setNotificationCount(0);
+    // localStorage.setItem('notificationCount', '0');
   };
 
   const isLoginPage = location.pathname === '/login';
@@ -318,15 +372,26 @@ const Navbar = () => {
                         zIndex: '1000',
                       }}
                     >
-                     {/** Clear Notifications */}
-                     <div className="dropdown-header">
-            <span className="clear-icon" onClick={handleClearNotifications} role="button" tabIndex={0}>
-              <i className="fas fa-trash-alt"></i>
-            </span>
-          </div>
-          {/** end of clear notifications */}
+            {/** Clear Notifications */}
+            <div className="dropdown-header">
+            <span
+  className="clear-icon"
+  onClick={handleClearNotifications}
+  role="button"
+  tabIndex={0}
+  style={{
+    cursor: 'pointer',
+    fontSize: '14px',
+  }}
+>
+<p>❌</p>
+ <span className="clear-text" style={{ display: 'none' }}>Clear Notifications</span>
+</span>
+  </div>
+            {/** end of clear notifications */}
+
                        {notifications.length === 0 ? (
-            <div className="no-notifications">No notifications</div>
+            <div className="no-notifications">No notifications 🎉</div>
           ) : (
             <div className="notification-list">{notificationItems}</div>
           )}

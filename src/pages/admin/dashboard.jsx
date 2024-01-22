@@ -184,7 +184,6 @@ function AdminDashboard() {
         toast.error('Failed to delete user');
       }
     } catch (error) {
-      console.error('Error deleting user:', error);
       toast.error('An error occurred while deleting user');
     } finally {
       setDeletingUser(null);
