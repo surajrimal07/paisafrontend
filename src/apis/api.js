@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:5000";
-//const baseURL = "https://paisabackend.el.r.appspot.com"
+//const baseURL = "http://localhost:5000";
+const baseURL = "https://paisabackend.el.r.appspot.com"
 const token = localStorage.getItem('token');
 
 //testing logger
@@ -133,13 +133,14 @@ export const savePassword = (data) =>  api.post(`/api/updateuser`, data);
 //get all portfolio
 
 export const getPortfolio = (email) => {
-  // const config = {
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': `Bearer ${token}`,
-  //   },
-  // };
   const data = { email: email };
 
   return api.post(`/api/getallportforuser`, data, config);
+};
+
+export const renamePortfolio = (email, newname, id) => {
+  const data = { email: email,
+  name: newname, id: id};
+
+  return api.post(`/api/renameportfolio`, data, config);
 };

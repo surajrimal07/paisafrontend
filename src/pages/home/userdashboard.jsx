@@ -83,7 +83,8 @@ const InfoCard = ({ icon, value, label }) => {
         <img src={userData.dpImage} alt="User DP" />
         <h2>{userData.name}</h2>
         <p>{userData.email}</p>
-        <p>User Amount: ${userData.userAmount}</p>
+        <p>{userData.phone}</p>
+        <p>Balance: Rs {userData.userAmount}</p>
       </div>
       <div className="user-info-cards">
           <InfoCard icon={<FaCubes />} value={totalStockUnits} label="Total Stock Units" />

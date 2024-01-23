@@ -136,7 +136,7 @@ button.btn-outline-secondary {
   .user-info-cards {
     display: flex;
     justify-content: space-around;
-    margin-top: 20px;
+    margin-top: 0px;
   }
 
   .info-card {
