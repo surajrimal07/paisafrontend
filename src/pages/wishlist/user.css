@@ -1,0 +1,179 @@
+/* user.css */
+
+.user-watchlists {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+.user-info {
+    text-align: center;
+    margin-bottom: 0px;
+  }
+
+  .user-info img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+
+
+.watchlists {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-x: auto;
+    max-width: 90%;
+  }
+
+  .watchlist-header h4 {
+    margin-bottom: 10px;
+    margin-top: 5px;
+    font-size: 1.3rem;
+  }
+
+  .stocks h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    margin-top: 5px;
+  }
+  .watchlist-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .watchlist-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px;
+    width: calc(33.33% - 20px); /* 3 items per row with margin */
+  }
+
+  .watchlist-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .stocks {
+    margin-top: 10px;
+  }
+
+  .stock {
+    margin-bottom: 5px;
+  }
+
+.floating-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    z-index: 1000;
+  }
+
+  .icon-container {
+    background-color: #5e5e5e;
+    color: #fff;
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+  .icon-container:hover {
+    background-color: #525253;
+  }
+
+  .options-container {
+    position: absolute;
+    margin-top: 10px;
+    bottom: 60px;
+    right: 20px;
+    display: none;
+    width: 100px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .floating-icon:hover .options-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .options-container > * {
+    padding: 10px;
+    color: #080808;
+    cursor: pointer;
+  }
+
+  .options-container > *:hover {
+    background-color: #f0f0f0;
+    transition: display 0.5s ease;
+  }
+
+  .watchlist-options-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+  }
+
+  .watchlist-menu {
+    top: 0;
+    right: 0;
+  }
+
+  .watchlist-options-container div {
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  .watchlist-options-container div:hover {
+    background-color: #f1f1f1;
+  }
+
+
+  .watchlist-menu {
+    top: 5;
+  }
+
+  .dropdown-menu {
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .dropdown-menu li {
+    list-style: none;
+  }
+
+  .dropdown-menu button {
+    width: 100%;
+    text-align: left;
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    color: #333;
+  }
+
+  .dropdown-menu button:hover {
+    background-color: #f8f9fa;
+  }
+
+
+

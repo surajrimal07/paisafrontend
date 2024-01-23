@@ -40,6 +40,7 @@ const UserDashboard = () => {
 
     fetchPortfolio();
   }, []);
+
   const handleMenuOptionClick = (action) => {
     console.log('Selected option:', action);
     setShowOptions(false);
@@ -54,12 +55,11 @@ const UserDashboard = () => {
     );
   }
 
-  //countings for the dashboard
+//countings for the dashboard
 const totalPortfolios = userPort && userPort.portfolio ? userPort.portfolio.length : 0;
 const totalStockUnits = userPort && userPort.portfolio ? userPort.portfolio.reduce((total, portfolio) => total + (portfolio.totalunits || 0), 0) : 0;
 const totalPortfolioValue = userPort && userPort.portfolio ? userPort.portfolio.reduce((total, portfolio) => total + (portfolio.portfoliovalue || 0), 0) : 0;
 const totalPortfolioCost = userPort && userPort.portfolio ? userPort.portfolio.reduce((total, portfolio) => total + (portfolio.portfoliocost || 0), 0) : 0;
-
 
 const InfoCard = ({ icon, value, label }) => {
   return (
@@ -86,6 +86,7 @@ const InfoCard = ({ icon, value, label }) => {
         <p>{userData.phone}</p>
         <p>Balance: Rs {userData.userAmount}</p>
       </div>
+
       <div className="user-info-cards">
           <InfoCard icon={<FaCubes />} value={totalStockUnits} label="Total Stock Units" />
           <InfoCard icon={<FaDollarSign />} value={`Rs ${totalPortfolioValue}`} label="Total Portfolio Value" />

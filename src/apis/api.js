@@ -1,7 +1,7 @@
 import axios from "axios";
 
-//const baseURL = "http://localhost:5000";
-const baseURL = "https://paisabackend.el.r.appspot.com"
+const baseURL = "http://localhost:5000";
+//const baseURL = "https://paisabackend.el.r.appspot.com"
 const token = localStorage.getItem('token');
 
 //testing logger
@@ -144,3 +144,42 @@ export const renamePortfolio = (email, newname, id) => {
 
   return api.post(`/api/renameportfolio`, data, config);
 };
+
+//watchlist
+export const getWatchlist = (email) => {
+  const data = { email: email };
+
+  return api.post(`/api/getwatchlist`, data);
+}
+
+export const createWatchlist = (email, name) => {
+  const data = { email: email, name: name };
+
+  return api.post(`/api/createwatchlist`, data);
+}
+
+export const deleteWatchlist = (email, watchlistId) => {
+  const data = { email: email, watchlistId: watchlistId };
+
+  return api.post(`/api/deletewatchlist`, data);
+}
+
+export const renameWatchlist = (email,watchlistId, newName) => {
+  const data = { watchlistId: watchlistId, email: email, newName: newName };
+
+  return api.post(`/api/renamewatchlist`, data);
+}
+
+//add stock to watchlist
+export const addStockToWatchlist = (email, watchlistId, stockSymbol) => {
+  const data = { email: email, watchlistId: watchlistId, stockSymbol: stockSymbol };
+
+  return api.post(`/api/addstocktowatchlist`, data);
+}
+
+//remove stock from watchlist
+export const removeStockFromWatchlist = (email, watchlistId, stockSymbol) => {
+  const data = { email: email, watchlistId: watchlistId, stockSymbol: stockSymbol };
+
+  return api.post(`/api/remstockfromwatchlist`, data);
+}

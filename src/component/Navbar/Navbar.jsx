@@ -129,30 +129,6 @@ const Navbar = () => {
     setNotifications((prevNotifications) => [...storedNotifications, ...prevNotifications]);
   }, []);
 
-
-
-  // useEffect(() => {
-  //   if (lastMessage) {
-  //     // Update notification list from local storage
-  //     const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
-  //     setNotifications((prevNotifications) => [JSON.parse(lastMessage.data), ...prevNotifications]);
-
-  //     // Update notification count from local storage
-  //     setNotificationCount((prevCount) => prevCount + 1);
-
-  //     // Save notifications to local storage
-  //     localStorage.setItem('notifications', JSON.stringify([...storedNotifications, JSON.parse(lastMessage.data)]));
-
-  //     // Browser permission for new notification.
-  //     if (Notification.permission === 'granted') {
-  //       new Notification(JSON.parse(lastMessage.data).title, { body: JSON.parse(lastMessage.data).description });
-  //     } else {
-  //       // Request permission
-  //       requestNotificationPermission();
-  //     }
-  //   }
-  // }, [lastMessage]);
-
   useEffect(() => {
     if (lastMessage) {
 
@@ -161,8 +137,17 @@ const Navbar = () => {
       setNotifications(storedNotifications);
 
       const newNotification = JSON.parse(lastMessage.data);
-      setNotifications((prevNotifications) => [newNotification, ...prevNotifications]);
+
+      // only store 50 items //test code //
+      storedNotifications.unshift(newNotification);
+      const trimmedNotifications = storedNotifications.slice(0, 50);
+
+      setNotifications(trimmedNotifications);
+
+      //setNotifications((prevNotifications) => [newNotification, ...prevNotifications]);
       setNotificationCount((prevCount) => prevCount + 1);
+
+
 
       // Save notifications to local storage
       localStorage.setItem('notifications', JSON.stringify([newNotification, ...notifications]));
@@ -279,18 +264,8 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink className="dropdown-item" to="/portfolio" activeClassName="active">
-          Portfolio
-        </NavLink>
-      </li>
-      <li>
-        <NavLink className="dropdown-item" to="/wishlist" activeClassName="active">
-          Wishlist
-        </NavLink>
-      </li>
-      <li>
-        <NavLink className="dropdown-item" to="/userdashboard" activeClassName="active">
-          Dashboard
+        <NavLink className="dropdown-item" to="/watchlist" activeClassName="active">
+          Watchlist
         </NavLink>
       </li>
       <li>
@@ -322,7 +297,7 @@ const Navbar = () => {
                 <li className="nav-item">
                   <NavLink
                     className="nav-link"
-                    to={user.isAdmin ? '/admin/dashboard' : '/dashboard'}
+                    to={'/dashboard'}
                     activeClassName="active"
                   >
                     Dashboard

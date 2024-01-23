@@ -13,6 +13,7 @@ import Register from './pages/Register';
 import AssetDashboard from './pages/commoditydashboard/comdashboard';
 import StockDetailView from './pages/stockdashboard/StockDetailView';
 import Stock from './pages/stockdashboard/stock';
+import UserWatchlists from './pages/wishlist/wishlist';
 //import Signup from './pages/signup/newregister';
 
 import AboutUsPage from './component/about/about';
@@ -73,6 +74,7 @@ function App() {
           <Route path="/career" element={<Career />} />
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/complaint" element={<Complaint />} />
+          <Route path="/watchlist" element={<UserWatchlists />} />
           <Route path="/commodities" element={<AssetDashboard />} />
           <Route element = {<UserRoutes/>}>
             <Route path ='/profile' element={<h1> Profile </h1>} />
