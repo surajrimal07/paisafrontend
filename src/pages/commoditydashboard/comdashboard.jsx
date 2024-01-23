@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { FaSortDown, FaSortUp, FaUser, FaDollarSign, FaCommentSlash } from 'react-icons/fa';
+import { FaDollarSign, FaSortDown, FaSortUp } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import ScrollToTop from "react-scroll-to-top";
 import { ToastContainer } from 'react-toastify';
 import { getAllAssets, getCommo, getMetals } from '../../apis/api';
@@ -15,11 +16,8 @@ function AssetDashboard() {
   const [itemsPerPage] = useState(15);
   const [searchQueryAssets, setSearchQueryAssets] = useState('');
   const [searchQueryCommodities, setSearchQueryCommodities] = useState('');
-  const [selectedItem,setSelectedItem] = useState(null);
   const [sortOrderAssets, setSortOrderAssets] = useState({ column: null, ascending: true });
   const [sortOrderCommodities, setSortOrderCommodities] = useState({ column: null, ascending: true });
-
-
 
   const totalAssets = assets.length;
   const totalCommodities = commodities.length;
@@ -98,10 +96,6 @@ function AssetDashboard() {
     });
     setCommodities(sortOrderCommodity);
   }
-
-  const handleViewDetail = (item) => {
-    setSelectedItem(item);
-  };
 
   const indexOfLastAsset = currentAssetsPage * itemsPerPage;
   const indexOfFirstAsset = indexOfLastAsset - itemsPerPage;
@@ -187,32 +181,27 @@ function AssetDashboard() {
   };
 
 
-  const handleCloseDialog = () => {
-    setSelectedItem(null);
-  };
-
-
   return (
     <div className="m-4">
       <h2>Asset Dashboard</h2>
 
-      <div className="info-card-container">
+      <div className="user-info-cards">
   <div className="info-card">
-    <div className="info-item">
+    <div className="info-itemsxx">
       <div className="info-text">
         <FaDollarSign className="info-icon" />
         <div className="info-value">{totalAssets}</div>
         <div className="info-label">Total Assets</div>
       </div>
     </div>
-    <div className="info-item">
+    <div className="info-itemsxx">
       <div className="info-text">
         <FaDollarSign className="info-icon" />
         <div className="info-value">{totalCommodities}</div>
         <div className="info-label">Total Commodities</div>
       </div>
     </div>
-    <div className="info-item">
+    <div className="info-itemsxx">
       <div className="info-text">
         <FaDollarSign className="info-icon" />
         <div className="info-value">{totalMetals}</div>
@@ -222,6 +211,15 @@ function AssetDashboard() {
   </div>
 </div>
 
+<div style={{ padding: '20px' }}>
+      <iframe
+        src={`https://www.nepsealpha.com/trading/chart`}
+        title="Stock Chart"
+        width="100%"
+        height="500"
+        style={{ border: '1px solid #ccc' }}
+      ></iframe>
+    </div>
 
       <div className="search-container mb-4">
         <input
@@ -230,7 +228,7 @@ function AssetDashboard() {
           value={searchQueryAssets}
           onChange={(e) => setSearchQueryAssets(e.target.value)}
         />
-        <button className="search-button" onClick={handleSearchAssets}>
+        <button className="search-buttons" onClick={handleSearchAssets}>
           Search Assets
         </button>
       </div>
@@ -239,8 +237,8 @@ function AssetDashboard() {
       <div className="category-sector-box">
         <h3>Assets</h3>
         <div className="table-container" style={{ overflowY: 'auto', maxHeight: '400px' }}>
-          <table className="table mt-2">
-            <thead className="table-dark">
+          <table className="table mt-2" style={{ backgroundColor: 'transparent !important' }}>
+            <thead className="table-light" style={{ backgroundColor: 'transparent'}}>
               <tr>
                 <th>Symbol</th>
                 <th onClick={() => handleSortAssets('name')}>
@@ -264,18 +262,23 @@ function AssetDashboard() {
               </tr>
             </thead>
             <tbody>
-              {currentAssets.map((asset, index) => (
-                <tr key={index} onClick={() => handleViewDetail(asset)}>
-                  <td>{asset.symbol}</td>
-                  <td>{asset.name}</td>
-                  <td>{asset.sector}</td>
-                  <td>{asset.symbol}</td>
-                  <td>{asset.ltp}</td>
-                  <td>{asset.pointchange}</td>
-                  <td>{asset.percentchange}%</td>
-                </tr>
-              ))}
-            </tbody>
+
+  {currentAssets.map((asset, index) => (
+    <tr key={index}>
+      <td>
+      <Link to={`/stockdetailview?symbol=${asset.symbol}`} style={{ color: 'black' }}>
+          {asset.symbol}
+        </Link>
+      </td>
+      <td>{asset.name}</td>
+      <td>{asset.sector}</td>
+      <td>{asset.symbol}</td>
+      <td>{asset.ltp}</td>
+      <td>{asset.pointchange}</td>
+      <td>{asset.percentchange}%</td>
+    </tr>
+  ))}
+</tbody>
           </table>
         </div>
         <div className="pagination-container">
@@ -291,7 +294,7 @@ function AssetDashboard() {
           value={searchQueryCommodities}
           onChange={(e) => setSearchQueryCommodities(e.target.value)}
         />
-        <button className="search-button" onClick={handleSearchCommodities}>
+        <button className="search-buttons" onClick={handleSearchCommodities}>
           Search Commodities
         </button>
       </div>
@@ -301,7 +304,7 @@ function AssetDashboard() {
         <h3>Commodities</h3>
         <div className="table-container" style={{ overflowY: 'auto', maxHeight: '400px' }}>
           <table className="table mt-2">
-            <thead className="table-dark">
+            <thead className="table-light">
               <tr>
                 <th>Symbol</th>
                 <th onClick={() => handleSortCommodities('ltp')}>
@@ -315,7 +318,7 @@ function AssetDashboard() {
             </thead>
             <tbody>
               {currentCommodity.map((currentCommodity, index) => (
-                <tr key={index} onClick={() => handleViewDetail(currentCommodity)}>
+                <tr key={index} >
                   <td>{currentCommodity.symbol}</td>
                   <td>{currentCommodity.ltp}</td>
                   <td>{currentCommodity.unit}</td>
@@ -335,7 +338,7 @@ function AssetDashboard() {
         <h3>Metals</h3>
         <div className="table-container" style={{ overflowY: 'auto', maxHeight: '400px' }}>
           <table className="table mt-2">
-            <thead className="table-dark">
+            <thead className="table-light">
               <tr>
                 <th>Name</th>
                 <th>LTP</th>
@@ -345,7 +348,7 @@ function AssetDashboard() {
             </thead>
             <tbody>
               {metals.map((metal, index) => (
-                <tr key={index} onClick={() => handleViewDetail(metal)}>
+                <tr key={index}>
                   <td>{metal.symbol}</td>
                   <td>{metal.ltp}</td>
                   <td>{metal.unit}</td>

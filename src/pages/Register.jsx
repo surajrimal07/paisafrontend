@@ -6,9 +6,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { RegisterUser } from '../apis/api.js';
 import { default as quote1, default as quote2, default as quote3, default as quote4 } from "../component/images/hilogo.png";
 
-
-
-
 const quotes = [
   { image: quote1, text: 'Compound interest is the eighth wonder of the world; he who understands it, earns it, he who doesn’t pays it.' },
   { image: quote2, text: 'An investment in knowledge pays the best interest.' },

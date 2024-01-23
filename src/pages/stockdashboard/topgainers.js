@@ -8,8 +8,6 @@ const TopGainers = ({ stocks }) => {
   const handleClick = (event, stock) => {
     event.stopPropagation();
 
-    console.log("selected stock is ", stock.symbol);
-
     navigate(`/stockdetailview?symbol=${stock.symbol}`);
   };
 

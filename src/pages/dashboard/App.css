@@ -1,115 +1,51 @@
-@import url("//fonts.googleapis.com/css?family=Google+Sans:400,500,600,700");
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  font-family: "Google Sans", Helvetica, Arial, sans-serif;
+
+.container {
+  margin: 0 auto;
 }
 
-:root {
-  --primaryClr: #282828;
-  --secondaryClr: #1f1f1f;
-  --txtClr: #aaaaaa;
-  --hoverClr: #1f1f1f;
-  --hoverClr2: #ff4e45;
+.row {
+  margin-bottom: 20px;
 }
 
-body{
-  background-color: var(--secondaryClr);
+.card {
+  margin-bottom: 20px;
+  background-color: rgb(253, 245, 243);
 }
 
-img{
-  width: 70px;
-  border-radius: 50%;
+.card-img-top {
+  width: 80%;
+  height: auto;
+  margin: 0 auto;
 }
 
-
-header{
-  background-color: var(--primaryClr);
-  color: white;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-left: 0px;
-  height: 40px;
-  padding: 0 10px;
-  transition: .2s ease;
-
-}
-
-.sidebar{
-  width: 0px;
-  background-color: var(--primaryClr);
-  position: fixed;
-  height: 100vh;
-  top: 0;
-  overflow: hidden;
-  left: 0;
-  border-right: 1px solid #3e3e3e;
-  transition: .2s ease;
-}
-
-header.open{
-  margin-left: 160px;
-}
-
-.sidebar.open{
-  width: 160px;
-}
-
-.profile{
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  color: white;
-  font-size: 12px;
-  align-items: center;
-}
-
-.info{
+.card-title {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
   text-align: center;
 }
 
-li{
-  list-style: none;
-  padding: 4px;
+.card-text {
+  font-size: 1rem;
+  color: #777;
+  text-align: center;
 }
 
-li a{
-  text-decoration: none;
-  color: var(--txtClr);
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 8px 20px;
-  font-size: 10px;
-  font-weight: bold;
+h4 {
+  margin-bottom: 15px;
 }
 
-i{
-  font-size: 17px !important;
-  color: var(--txtClr);
+.edit-button {
+  position: absolute;
+  top: 22px;
+  right: 10px;
+  background-color: #858585;
+  border: none;
+  padding: 4px 8px;
   cursor: pointer;
+  font-size: 1rem;
+  border-radius: 4px;
 }
 
-li:hover{
-  background-color: var(--hoverClr);
-}
-
-li:hover a{
-  color: var(--hoverClr2);
-}
-
-li:hover a i{
-  color: var(--hoverClr2);
-
-}
-
-.sidebar {
-  z-index: 1; /* Ensure the sidebar is on top of other elements */
-}
-
-.footer {
-  z-index: 0; /* Ensure the footer is behind other elements */
+.edit-button:hover {
+  background-color: #0056b3;
 }

@@ -79,6 +79,7 @@ const InfoCard = ({ icon, value, label }) => {
 
   return (
     <div className="user-dashboard">
+
       <div className="user-info">
         <img src={userData.dpImage} alt="User DP" />
         <h2>{userData.name}</h2>
@@ -105,6 +106,7 @@ const InfoCard = ({ icon, value, label }) => {
                 <button
                   type="button"
                   className="btn btn-sm btn-outline-secondary"
+                  style={{ color: 'black' }}
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >

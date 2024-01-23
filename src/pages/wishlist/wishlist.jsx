@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FaCubes, FaPlus } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import { createWatchlist,deleteWatchlist, getWatchlist, renameWatchlist } from '../../apis/api.js';
+import { addStockToWatchlist, createWatchlist, deleteWatchlist, getWatchlist, removeStockFromWatchlist, renameWatchlist } from '../../apis/api.js';
+import HandleAddStock from './handleaddstock.jsx';
 import HandleCreate from './handlecreate.jsx';
-import HandleRename from './handlerename.jsx';
 import HandleDelete from './handledelete.jsx';
+import HandleRemoveStock from './handledeletestock.jsx';
+import HandleRename from './handlerename.jsx';
 
 import './user.css';
 
@@ -13,13 +16,15 @@ const UserWatchlists = () => {
   const [showRenameDialog, setShowRenameDialog] = useState(false);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showAddStockDialog, setshowAddStockDialog] = useState(false);
+  const [showRemoveStockDialog, setRemoveStockDialog] = useState(false);
   const [selectedWatchlist, setSelectedWatchlist] = useState(null);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 //   const [isMenuOpen, setIsMenuOpen] = useState(false);
 //   const menuRef = useRef(null);
   const wrapperRef = useRef(null);
-  const [showOptions, setShowOptions] = useState(false);
+  //const [showOptions, setShowOptions] = useState(false);
 
   useEffect(() => {
     const fetchWatchlists = async () => {
@@ -76,11 +81,6 @@ const UserWatchlists = () => {
         setShowCreateDialog(true);
     };
 
-  const handleMenuOptionClick = (action) => {
-    console.log('Selected option:', action);
-    setShowOptions(false);
-  };
-
   const handleRenameClick = (watchlistId) => {
     setSelectedWatchlist(watchlistId);
     setShowRenameDialog(true);
@@ -91,9 +91,18 @@ const UserWatchlists = () => {
     setShowDeleteDialog(true);
     };
 
+  const handleAddStockClick = (watchlistId) => {
+    setSelectedWatchlist(watchlistId);
+    setshowAddStockDialog(true);
+    };
+
+  const handleRemoveStockClick = (watchlistId) => {
+    setSelectedWatchlist(watchlistId);
+    setRemoveStockDialog(true);
+    };
+
     const handleDeleteSave = async (event, email, watchlistId) => {
         event.preventDefault();
-        console.log("email and watchlistId", email, watchlistId)
         try {
             const res = await deleteWatchlist(email, watchlistId);
             const { success, message } = res.data;
@@ -118,6 +127,81 @@ const UserWatchlists = () => {
           }
 
         setShowDeleteDialog(false);
+      };
+
+      const handleRemoveStockSave = async (event, email, watchlistId, stockSymbol) => {
+        event.preventDefault();
+        try {
+          const res = await removeStockFromWatchlist(email, watchlistId, stockSymbol);
+          const { success, message } = res.data;
+
+          if (success) {
+            toast.success(message);
+            setUserWatchlists((prevWatchlists) => {
+              const updatedWatchlists = prevWatchlists.map((watchlist) => {
+                if (watchlist._id === watchlistId) {
+                  return {
+                    ...watchlist,
+                    stocks: watchlist.stocks.filter((stock) => stock !== stockSymbol),
+                  };
+                }
+
+                return watchlist;
+              });
+
+              return updatedWatchlists;
+            });
+          } else {
+            toast.error(message);
+          }
+
+        } catch (err) {
+          const errorMessage =
+            err.response && err.response.data && err.response.data.message
+              ? err.response.data.message
+              : 'An error occurred.';
+          toast.error(errorMessage);
+        }
+        setRemoveStockDialog(false);
+      };
+
+      const handleAddStockSave = async (event, email, watchlistId, stockSymbol) => {
+        event.preventDefault();
+
+        console.log ("email, watchlistId, stockSymbol", email, watchlistId, stockSymbol)
+
+        try {
+          const res = await addStockToWatchlist(email, watchlistId, stockSymbol);
+          const { success, message } = res.data;
+
+          if (success) {
+            toast.success(message);
+            setUserWatchlists((prevWatchlists) => {
+              const updatedWatchlists = prevWatchlists.map((watchlist) => {
+                if (watchlist._id === watchlistId) {
+                  return {
+                    ...watchlist,
+                    stocks: [...watchlist.stocks, stockSymbol],
+                  };
+                }
+
+                return watchlist;
+              });
+
+              return updatedWatchlists;
+            });
+          } else {
+            toast.error(message);
+          }
+        } catch (err) {
+          const errorMessage =
+            err.response && err.response.data && err.response.data.message
+              ? err.response.data.message
+              : 'An error occurred.';
+          toast.error(errorMessage);
+        }
+
+        setshowAddStockDialog(false);
       };
 
   const handleRenameSave = async (event, email, watchlistId, newName) => {
@@ -189,6 +273,8 @@ const UserWatchlists = () => {
 
     };
 
+  //cancel functions
+
   const handleRenameCancel = () => {
     setShowRenameDialog(false);
   };
@@ -200,6 +286,14 @@ const UserWatchlists = () => {
     const handleDeleteCancel = () => {
         setShowDeleteDialog(false);
     };
+
+  const handleAddStockCancel = () => {
+    setshowAddStockDialog(false);
+  };
+
+  const handleRemoveStockCancel = () => {
+    setRemoveStockDialog(false);
+  };
 
   if (loading) {
     return (
@@ -268,7 +362,7 @@ const UserWatchlists = () => {
                   <li>
                     <button
                       className="dropdown-item"
-                      onClick={() => handleRenameClick(watchlistItem._id)}
+                      onClick={() => handleAddStockClick(watchlistItem._id)}
                     >
                       Add Stock
                     </button>
@@ -276,7 +370,7 @@ const UserWatchlists = () => {
                   <li>
                     <button
                       className="dropdown-item"
-                      onClick={() => handleMenuOptionClick(watchlistItem._id, 'RemoveStock')}
+                      onClick={() => handleRemoveStockClick(watchlistItem._id)}
                     >
                       Remove Stock
                     </button>
@@ -299,11 +393,16 @@ const UserWatchlists = () => {
 
               {watchlistItem.stocks && watchlistItem.stocks.length > 0 ? (
                 <div className="stocks">
-                  <h3>Stocks</h3>
+                  <h3>Stocks:</h3>
                   {watchlistItem.stocks.map((stockSymbol) => (
                     <div key={stockSymbol} className="stock">
-                      <p>Symbol: {stockSymbol}</p>
-                    </div>
+<p>
+  Symbol:{' '}
+  <Link to={`/stockdetailview?symbol=${stockSymbol}`} style={{ color: 'black', textDecoration: 'none' }}>
+    {stockSymbol}
+  </Link>
+</p>
+</div>
                   ))}
                 </div>
               ) : (
@@ -343,6 +442,24 @@ const UserWatchlists = () => {
         onCancel={handleDeleteCancel}
         />
       )}
+            {showAddStockDialog && (
+          <HandleAddStock
+            userEmail={userData.email}
+            watchlistId={selectedWatchlist}
+            watchlistName={userWatchlists.find(w => w._id === selectedWatchlist)?.name || ''}
+            onAdd={handleAddStockSave}
+            onCancel={handleAddStockCancel}
+          />
+        )}
+    {showRemoveStockDialog && (
+  <HandleRemoveStock
+    userEmail={userData.email}
+    watchlistId={selectedWatchlist}
+    stocks={userWatchlists.find(w => w._id === selectedWatchlist)?.stocks || []}
+    onSave={handleRemoveStockSave}
+    onCancel={handleRemoveStockCancel}
+  />
+)}
           </div>
         </div>
       </div>

@@ -1,0 +1,78 @@
+.add-stock-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 300px;
+  }
+
+  .add-stock-popup h4 {
+    margin-bottom: 10px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .add-stock-popup button {
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .add-stock-popup button.add-button {
+    background-color: #28a745;
+    color: #fff;
+  }
+
+  .add-stock-popup button.cancel-button {
+    background-color: #6c757d;
+    color: #fff;
+  }
+
+  .add-stock-popup button:hover {
+    opacity: 0.8;
+  }
+
+  /* ... (existing styles) */
+
+.add-stock-popup label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.add-stock-popup input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.matching-assets {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow-y: auto;
+  max-height: 100px;
+}
+
+.asset-item {
+  padding: 8px;
+  cursor: pointer;
+  background-color: #f8f9fa; /* Light gray background */
+  border-bottom: 1px solid #ddd;
+}
+
+.asset-item:hover {
+  background-color: #e2e6ea; /* Darker gray background on hover */
+}

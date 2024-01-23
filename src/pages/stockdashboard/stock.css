@@ -1,5 +1,30 @@
 .table thead th {
     position: sticky;
     top: 0;
-    background-color: #f4f4f4;
+    background-color: rgb(253, 245, 243);
+  }
+
+  .table thead {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 1;
+  }
+
+  .table tbody td {
+    position: sticky;
+    top: 0;
+    background-color: rgb(253, 245, 243);
+  }
+
+  .card-header {
+    background-color: rgb(253, 245, 243);
+  }
+
+  .card.mb-4 {
+    background-color: rgb(253, 245, 243);
+  }
+
+  .card-body {
+    background-color: rgb(253, 245, 243);
   }

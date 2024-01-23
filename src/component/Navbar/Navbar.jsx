@@ -275,7 +275,7 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink className="dropdown-item" to="/commodities" activeClassName="active">
-          Commodities
+          Stocks
         </NavLink>
       </li>
     </div>

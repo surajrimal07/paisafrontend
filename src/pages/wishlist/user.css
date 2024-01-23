@@ -37,8 +37,8 @@
 
   .stocks h3 {
     font-size: 1.1rem;
-    margin-bottom: 10px;
-    margin-top: 5px;
+    margin-bottom: 0px;
+    margin-top: 0px;
   }
   .watchlist-container {
     display: flex;
@@ -61,11 +61,16 @@
   }
 
   .stocks {
-    margin-top: 10px;
+    margin-top: 0px;
   }
 
   .stock {
-    margin-bottom: 5px;
+    padding: 3px;
+    margin: 2px 0;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    line-height: 1;
+    font-size: 14px;
   }
 
 .floating-icon {
@@ -76,6 +81,10 @@
     flex-direction: column;
     align-items: flex-end;
     z-index: 1000;
+  }
+
+  .watchlist-menu button {
+    color: black;
   }
 
   .icon-container {

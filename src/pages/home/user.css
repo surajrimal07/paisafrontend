@@ -40,7 +40,7 @@
     padding: 15px;
     margin: 0 10px 20px;
     position: relative;
-    flex: 0 1 calc(33.333% - 20px); /* Adjust the percentage as needed */
+    flex: 0 1 calc(33.333% - 20px);
   }
 
   .portfolio-header {
@@ -128,7 +128,6 @@ button.btn-outline-secondary {
     margin-right: 10px;
   }
 
-
   /* InfoCard.css */
 .info-card-container {
     margin-right: 10px;
@@ -169,6 +168,7 @@ button.btn-outline-secondary {
   .info-value {
     font-size: 18px;
     font-weight: bold;
+    color: rgb(97, 97, 97);
   }
 
   .info-label {

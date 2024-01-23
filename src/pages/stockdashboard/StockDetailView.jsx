@@ -1,16 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+import Popover from '@mui/material/Popover';
+import MenuItem from '@mui/material/MenuItem';
+
+import './stock.css';
 
 const StockDetailView = () => {
   const location = useLocation();
   const stockSymbol = new URLSearchParams(location.search).get('symbol');
   const [completeStockInfo, setCompleteStockInfo] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
     const assets = JSON.parse(localStorage.getItem('Assets'));
     const stockInfo = assets.find(item => item.symbol === stockSymbol);
     setCompleteStockInfo(stockInfo);
   }, [stockSymbol]);
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleAddToPortfolio = () => {
+    // Add logic to handle "Add to Portfolio"
+    console.log('Adding to Portfolio');
+    handleMenuClose();
+  };
+
+  const handleAddToWatchlist = () => {
+    // Add logic to handle "Add to Watchlist"
+    console.log('Adding to Watchlist');
+    handleMenuClose();
+  };
+
 
   if (!completeStockInfo) {
     return null;
@@ -19,7 +47,7 @@ const StockDetailView = () => {
   return (
     <div className="container mt-4">
 
-<h2 className="mb-4">{completeStockInfo.name} ({completeStockInfo.symbol})</h2>
+<h2 className=" ">{completeStockInfo.name} ({completeStockInfo.symbol})</h2>
 
 <div style={{ padding: '20px' }}>
       <iframe
@@ -75,6 +103,28 @@ const StockDetailView = () => {
         <p><strong>Point Change:</strong> Rs {completeStockInfo.pointchange}</p>
       </div>
     </div>
+    <Fab color="primary" aria-label="add" style={{ position: 'fixed', bottom: 16, right: 16 }} onClick={handleMenuOpen}>
+        <AddIcon />
+      </Fab>
+
+      <Popover
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handleMenuClose}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+      >
+        <MenuItem onClick={handleAddToPortfolio} >Add to Portfolio</MenuItem>
+        <MenuItem onClick={handleAddToWatchlist} >Add to Watchlist</MenuItem>
+        <MenuItem onClick={handleAddToPortfolio} >Remove From Portfolio</MenuItem>
+        <MenuItem onClick={handleAddToWatchlist} >Remove From Watchlist</MenuItem>
+      </Popover>
   </div>
 );
   };
