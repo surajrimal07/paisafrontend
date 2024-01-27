@@ -42,7 +42,7 @@
 }
 
 .container2 button{
-    background-color: #512da8;
+    background-color: rgba(14, 179, 179, 0.952);
     color: #fff;
     font-size: 12px;
     padding: 10px 45px;
@@ -55,9 +55,19 @@
     cursor: pointer;
 }
 
+.container2 button:hover{
+    background-color: #512da8;
+}
+
 .container2 button.hidden{
-    background-color: transparent;
-    border-color: #fff;
+    background-color: rgba(14, 179, 179, 0.952);
+    color: black;
+    border: 1px solid black;
+}
+
+.container2 button.hidden:hover{
+    background-color: #512da8;
+    color: white;
 }
 
 .container2 form{
@@ -205,6 +215,10 @@
 }
 
 .form-container.sign-up button {
-    background-color: rgba(14, 179, 179, 0.952) !important; /* Background color */
-    color: black !important; /* Text color */
+    background-color: rgba(14, 179, 179, 0.952);
+    color: rgb(255, 255, 255);
   }
+
+    .form-container.sign-up button:hover {
+        background-color: #512da8;
+    }

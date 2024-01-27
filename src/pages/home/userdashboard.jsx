@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaCubes, FaDollarSign, FaMoneyBill, FaMoneyCheck, FaPlus, FaUser } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
-import { addStockToPortfolio, createPortfolio, deletePortfolio, getPortfolio, removeStockFromPortfolio, renamePortfolio } from '../../apis/api.js';
+import { addStockToPortfolio,getMetals,getCommo,getAllAssets, createPortfolio, deletePortfolio, getPortfolio, removeStockFromPortfolio, renamePortfolio } from '../../apis/api.js';
 import NoImage from '../wishlist/a.png';
 import HandleAddStock from './handleaddstock';
 import HandleCreate from './handlecreate';
@@ -16,7 +16,6 @@ const UserDashboard = () => {
   const [userData, setUserData] = useState(null);
   const [totalStocksCount, setTotalStocksCount] = useState(0);
   const [portfolioStockCounts, setPortfolioStockCounts] = useState({});
-  const [showOptions, setShowOptions] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showRenameDialog, setShowRenameDialog] = useState(false);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
@@ -27,6 +26,46 @@ const UserDashboard = () => {
   const [selectedPortfolioName, setSelectedPortfolioName] = useState(null);
   const [selectedStock, setSelectedStock] = useState(null);
 
+  const fetchData = async () => {
+    try {
+      const assetResponse = await getAllAssets();
+      if (assetResponse.status === 200 && Array.isArray(assetResponse.data.data)) {
+        const jsonDecode = JSON.stringify(assetResponse.data.data);
+        localStorage.setItem('Assets', jsonDecode);
+      } else {
+        toast.error('Error fetching assets');
+        console.error('Error fetching assets:', assetResponse.error);
+      }
+
+      const metalsResponse = await getMetals();
+      if (metalsResponse.status === 200 && Array.isArray(metalsResponse.data.metalPrices)) {
+        const jsonDecode = JSON.stringify(metalsResponse.data.metalPrices);
+        localStorage.setItem('Metals', jsonDecode);
+      } else {
+        toast.error('Error fetching metals');
+        console.error('Error fetching metals:', metalsResponse.error);
+      }
+
+      const commodityResponse = await getCommo();
+      if (commodityResponse.status === 200 && Array.isArray(commodityResponse.data.data)) {
+        const jsonDecode = JSON.stringify(commodityResponse.data.data);
+        localStorage.setItem('Commodities', jsonDecode);
+      } else {
+        toast.error('Error fetching commodities');
+        console.error('Error fetching commodities:', commodityResponse.error);
+      }
+
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const fetchPortfolio = async () => {
     try {
