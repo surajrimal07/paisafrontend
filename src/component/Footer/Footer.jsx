@@ -70,11 +70,11 @@ const Footer = () => {
                                 </div>
                                 <div className="fContact">
                                     <RiWhatsappLine color='black' size='20px' />
-                                    <span className="fCon">++9779840220290</span>
+                                    <span className="fCon">+9779840220290</span>
                                 </div>
                                 <div className="fContact">
                                     <CgMail color='black' size='20px' />
-                                    <span className="fCon">Davidparkedme@gmail.com</span>
+                                    <span className="fCon">10paisaservices@gmail.com</span>
                                 </div>
                                 <div className="fContact">
                                     <BiTimeFive color='black' size='20px' />

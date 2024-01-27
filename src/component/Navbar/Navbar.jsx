@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FaBell } from 'react-icons/fa';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useWebSocket from 'react-use-websocket';
 import { getIndex } from '../../apis/api.js';
 import logo from '../images/logo.png';
 import './navbarO.css';
 import sound from './noti.mp3';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Navbar = () => {
   const { lastMessage } = useWebSocket('ws://localhost:8081');
@@ -63,7 +63,7 @@ const Navbar = () => {
         localStorage.setItem('index', JSON.stringify(indexData));
         setIndex(indexedValue);
       } else {
-        //toast.error("Index Error");
+        toast.error("Index Error");
       }
     } catch (error) {
       console.error('Error fetching index:', error);
@@ -86,7 +86,6 @@ const Navbar = () => {
           }
         }
       };
-
 
   useEffect(() => {
     document.addEventListener('click', handleDocumentClick);
@@ -242,8 +241,6 @@ const Navbar = () => {
                   News
                 </NavLink>
               </li>
-
-
               {user && (
   <li className="nav-item dropdown" onMouseEnter={() => setShowDropdown(true)} onMouseLeave={() => setShowDropdown(false)}>
     <button
@@ -281,8 +278,7 @@ const Navbar = () => {
     </div>
   </li>
 )}
-
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <NavLink className="nav-link" to="/feathures" activeClassName="active">
                   Features
                 </NavLink>
@@ -291,7 +287,7 @@ const Navbar = () => {
                 <NavLink className="nav-link" to="/aboutus" activeClassName="active">
                   About Us
                 </NavLink>
-              </li>
+              </li> */}
 
               {user && (
                 <li className="nav-item">
@@ -397,21 +393,16 @@ const Navbar = () => {
     )}
     Welcome, {firstName}
   </button>
-  <ul className="dropdown-menu">
-    {user.isAdmin ? (
-      <li>
-        <NavLink className="dropdown-item" to="/admin/dashboard" activeClassName="active">
-          Admin Dashboard
-        </NavLink>
-      </li>
-    ) : (
-      <li>
-        <NavLink className="dropdown-item" to="/dashboard" activeClassName="active">
-          User Dashboard
-        </NavLink>
-      </li>
-    )}
 
+  <ul className="dropdown-menu">
+
+{user.isAdmin ? (
+  <li>
+    <NavLink className="dropdown-item" to="/admin/dashboard" activeClassName="active">
+      Admin Dashboard
+    </NavLink>
+  </li>
+) : null}
     <li>
       <button
         onClick={handleLogout}

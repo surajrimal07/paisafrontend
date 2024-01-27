@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
-import Popover from '@mui/material/Popover';
-import MenuItem from '@mui/material/MenuItem';
+// import Fab from '@mui/material/Fab';
+// import AddIcon from '@mui/icons-material/Add';
+// import Popover from '@mui/material/Popover';
+// import MenuItem from '@mui/material/MenuItem';
+import { FaArrowUp, FaArrowDown, FaArrowsAltH } from 'react-icons/fa';
+
 
 import './stock.css';
 
@@ -11,7 +13,7 @@ const StockDetailView = () => {
   const location = useLocation();
   const stockSymbol = new URLSearchParams(location.search).get('symbol');
   const [completeStockInfo, setCompleteStockInfo] = useState(null);
-  const [anchorEl, setAnchorEl] = useState(null);
+ // const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
     const assets = JSON.parse(localStorage.getItem('Assets'));
@@ -19,26 +21,23 @@ const StockDetailView = () => {
     setCompleteStockInfo(stockInfo);
   }, [stockSymbol]);
 
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleMenuOpen = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+  // const handleMenuClose = () => {
+  //   setAnchorEl(null);
+  // };
 
-  const handleAddToPortfolio = () => {
-    // Add logic to handle "Add to Portfolio"
-    console.log('Adding to Portfolio');
-    handleMenuClose();
-  };
+  // const handleAddToPortfolio = () => {
+  //   console.log('Adding to Portfolio');
+  //   handleMenuClose();
+  // };
 
-  const handleAddToWatchlist = () => {
-    // Add logic to handle "Add to Watchlist"
-    console.log('Adding to Watchlist');
-    handleMenuClose();
-  };
-
+  // const handleAddToWatchlist = () => {
+  //   console.log('Adding to Watchlist');
+  //   handleMenuClose();
+  // };
 
   if (!completeStockInfo) {
     return null;
@@ -86,6 +85,7 @@ const StockDetailView = () => {
               <p><strong>Open:</strong>Rs {completeStockInfo.open}</p>
               <p><strong>High:</strong>Rs {completeStockInfo.high}</p>
               <p><strong>Low:</strong>Rs {completeStockInfo.low}</p>
+              <p><strong>Intraday Volatility:</strong>Rs {completeStockInfo.high-completeStockInfo.low}</p>
               <p><strong>Previous Close:</strong>Rs {completeStockInfo.previousclose}</p>
               <p><strong>Week 52 High:</strong>Rs {completeStockInfo.week52high}</p>
               <p><strong>Week 52 Low:</strong>Rs {completeStockInfo.week52low}</p>
@@ -99,11 +99,23 @@ const StockDetailView = () => {
         <h4>Price Changes</h4>
       </div>
       <div className="card-body">
-        <p><strong>Percent Change:</strong> {completeStockInfo.percentchange}%</p>
-        <p><strong>Point Change:</strong> Rs {completeStockInfo.pointchange}</p>
-      </div>
+  <p>
+    <strong>Percent Change:</strong>
+    <span style={{ color: completeStockInfo.percentchange > 0 ? 'green' : completeStockInfo.percentchange < 0 ? 'red' : 'black' }}>
+      {completeStockInfo.percentchange}%
+      {completeStockInfo.percentchange > 0 ? <FaArrowUp style={{ color: 'green' }} /> : completeStockInfo.percentchange < 0 ? <FaArrowDown style={{ color: 'red' }} /> : <FaArrowsAltH style={{ color: 'black' }} />}
+    </span>
+  </p>
+  <p>
+    <strong>Point Change:</strong>
+    <span style={{ color: completeStockInfo.pointchange > 0 ? 'green' : completeStockInfo.pointchange < 0 ? 'red' : 'black' }}>
+      Rs {completeStockInfo.pointchange}
+      {completeStockInfo.pointchange > 0 ? <FaArrowUp style={{ color: 'green' }} /> : completeStockInfo.pointchange < 0 ? <FaArrowDown style={{ color: 'red' }} /> : <FaArrowsAltH style={{ color: 'black' }} />}
+    </span>
+  </p>
+</div>
     </div>
-    <Fab color="primary" aria-label="add" style={{ position: 'fixed', bottom: 16, right: 16 }} onClick={handleMenuOpen}>
+    {/* <Fab color="primary" aria-label="add" style={{ position: 'fixed', bottom: 16, right: 16 }} onClick={handleMenuOpen}>
         <AddIcon />
       </Fab>
 
@@ -124,7 +136,7 @@ const StockDetailView = () => {
         <MenuItem onClick={handleAddToWatchlist} >Add to Watchlist</MenuItem>
         <MenuItem onClick={handleAddToPortfolio} >Remove From Portfolio</MenuItem>
         <MenuItem onClick={handleAddToWatchlist} >Remove From Watchlist</MenuItem>
-      </Popover>
+      </Popover> */}
   </div>
 );
   };

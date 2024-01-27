@@ -3,7 +3,6 @@ import { toast } from 'react-toastify';
 import { updateUser } from '../../apis/api';
 import './dashboard.css';
 
-
 const EditUserDialogBox = ({ user, onCancel}) => {
   const [editedUser, setEditedUser] = useState({ ...user,password: '******' });
   const [isDropdownOpen, setDropdownOpen] = useState(false);

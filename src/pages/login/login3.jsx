@@ -13,7 +13,7 @@ const Login = () => {
   const [forgetotpverified, setForgetOTPVerified] = useState('');
   const [email, setEmail] = useState('suraj@rimal.com');
   const [otp, setOTP] = useState('');
-  const [password, setPassword] = useState('000000');
+  const [password, setPassword] = useState('111111');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -22,12 +22,13 @@ const Login = () => {
 
   const showRegister = location.state && location.state.showRegister;
 
-  const [showLogin, setShowLogin] = useState(!showRegister); //for login and register conditionally formatting
+  const [showLogin, setShowLogin] = useState(!showRegister);
 
+  const [showResetForm, setShowResetForm] = useState(false);
 
-  const [showResetForm, setShowResetForm] = useState(false); //to conditionally render login form and forget password
+  //const [resetPassword, setResetPassword] = useState(false);
 
-  const [resetPassword, setResetPassword] = useState(false);
+  const [resetPassword] = useState(false);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -365,11 +366,6 @@ const handleGoBackToLoginClick = () => {
   setForgetOTPVerified(false);
 };
 
-
-
-//
-
-
 const validateEmail = (email) => {
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
@@ -381,8 +377,6 @@ const re = /^[0-9]{4}$/;
 return re.test(otp);
 }
 
-
-  //
   return (
     <div id="login-container">
     <div className={`container2 ${showLogin ? '' : 'active'}`} id="container2">
@@ -484,15 +478,10 @@ return re.test(otp);
       : 'Send Email OTP'
     : 'Sign In'}
 </button>
-
-
           </form>
         </div>
 
         <div className="form-container sign-up">
-
-
-
         <form
   onSubmit={(e) => {
     e.preventDefault();

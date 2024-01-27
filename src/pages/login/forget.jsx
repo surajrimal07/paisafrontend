@@ -28,7 +28,6 @@ const ForgetPassword = ({ handleBackToLoginClick }) => {
         localStorage.setItem('hash', hash);
         localStorage.setItem('email', email);
         toast.success(message);
-        // Handle the OTP sent successfully
       } else {
         toast.error(message);
       }

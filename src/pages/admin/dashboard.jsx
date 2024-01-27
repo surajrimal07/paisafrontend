@@ -26,11 +26,11 @@ function AdminDashboard() {
   const [deletingUser, setDeletingUser] = useState(null);
   const [isEditingUser, setEditingUser] = useState(null);
   const [isEditingDialogOpen, setEditingDialogOpen] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [loading, setLoading] = useState(true);
   const [sortOrderUsers, setSortOrderUsers] = useState({ column: null, ascending: true });
   const [sortOrderAssets, setSortOrderAssets] = useState({ column: null, ascending: true });
   const [sortOrderCommodities, setSortOrderCommodities] = useState({ column: null, ascending: true });
-
 
   const totalUsers = users.length;
   const totalAssets = assets.length;
@@ -159,12 +159,13 @@ function AdminDashboard() {
 
   const handleDeleteUser = (userId) => {
     setDeletingUser(userId);
+    setShowDeleteConfirmation(true);
   };
 
   function DeleteConfirmationModal({ confirmDelete, cancelDelete }) {
     return (
       <div className="modal-container">
-        <div className="modal-box">
+        <div className="modal-box delete-confirmation-modal">
           <p>Are you sure you want to delete this user?</p>
           <div>
             <button className="confirm-button" onClick={confirmDelete}>
@@ -181,6 +182,7 @@ function AdminDashboard() {
 
   const handleCancelDelete = () => {
     setDeletingUser(null);
+    setShowDeleteConfirmation(false);
   };
 
   const confirmDelete = async () => {
@@ -197,6 +199,7 @@ function AdminDashboard() {
       toast.error('An error occurred while deleting user');
     } finally {
       setDeletingUser(null);
+      setShowDeleteConfirmation(false);
     }
   };
 
@@ -342,14 +345,12 @@ function AdminDashboard() {
     return buttons;
   }
 
-  const handleEditDialogClose = () => {
-    setEditingDialogOpen(false);
-  };
+  // const handleEditDialogClose = () => {
+  //   setEditingDialogOpen(false);
+  // };
 
-  const handleSaveEdit = (editedUser) => {
-
-
-  };
+  // const handleSaveEdit = (editedUser) => {
+  // };
 
   const handleClearSearchUsers = () => {
     setSearchQueryUsers('');

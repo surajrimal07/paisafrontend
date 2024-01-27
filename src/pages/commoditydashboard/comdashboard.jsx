@@ -342,7 +342,7 @@ function AssetDashboard() {
       </div>
 
       {/* Commodities Section */}
-      <div className="category-sector-box">
+      <div className="category-sector-box users-section">
         <h3>Commodities</h3>
         <div className="table-responsive" style={{ maxHeight: '500px', overflowY: 'auto' }}>          <table className="table mt-2">
             <thead className="table-light">
@@ -376,7 +376,7 @@ function AssetDashboard() {
 
       {/* Metals Section*/}
       <div className="search-container mb-4"></div>
-      <div className="category-sector-box">
+      <div className="category-sector-box users-section">
         <h3>Metals</h3>
         <div className="table-container" style={{ overflowY: 'auto', maxHeight: '400px' }}>
           <table className="table mt-2">
