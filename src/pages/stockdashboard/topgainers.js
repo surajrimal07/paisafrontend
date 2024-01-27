@@ -15,7 +15,7 @@ const TopGainers = ({ stocks }) => {
 
   return (
     <div>
-      <div className="card mb-4">
+      <div className="card mb-4 test">
         <div className="card-header d-flex justify-content-between">
           <h4>Top Gainers</h4>
         </div>
@@ -39,7 +39,7 @@ const TopGainers = ({ stocks }) => {
   <span style={{ color: '#15AD4C' }}>{stock.percentchange}%</span>
   {stock.percentchange > 0 && <FaArrowUp style={{ color: '#15AD4C', marginLeft: '5px' }} />}
 </td>
-                  <td>{stock.pointchange}</td>
+<td>{stock.pointchange? `Rs ${stock.pointchange}` : '' }</td>
                   <td>{stock.ltp ? `Rs ${stock.ltp}` : ''}</td>
                 </tr>
               ))}

@@ -8,13 +8,11 @@ const navigate = useNavigate();
 const handleClick = (event, stock) => {
 event.stopPropagation();
 
-console.log("selected stock is ", stock.symbol);
-
 navigate(`/stockdetailview?symbol=${stock.symbol}`);
 };
 
 return (
-  <div className="card mb-4">
+  <div className="card mb-4 test">
     <div className="card-header d-flex justify-content-between">
       <h4>Top Transaction</h4>
     </div>

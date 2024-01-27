@@ -1,5 +1,3 @@
-dashboard.css
-
 .category-sector-boxes {
   display: flex;
   flex-wrap: wrap;
@@ -48,11 +46,9 @@ dashboard.css
   cursor: pointer;
 }
 
-/* Additional styling for user section */
 .users-section {
-  width: 100%;
+  width: 95%;
 }
-
 
 .delete-button {
   margin-right: 5px;
@@ -100,11 +96,6 @@ dashboard.css
   background-color: #0056b3;
 }
 
-
-/* new changes
-/* Add the following styles to your existing CSS file or create a new one */
-
-/* Search container styles */
 .search-container {
   margin-bottom: 20px;
 }
@@ -114,9 +105,21 @@ dashboard.css
   margin-right: 10px;
 }
 
+.view-buttons {
+  margin-right: 5px;
+  background-color: #858585;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
 
+.view-buttons:hover {
+  background-color: #0056b3;
+  color: white;
+}
 
-/* Search button styles */
 .search-button {
   background-color: #858585;
   color: white;
@@ -126,40 +129,45 @@ dashboard.css
   cursor: pointer;
 }
 
-.search-buttons:hover {
+.edit-buttons {
+  margin-right: 5px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.edit-buttons:hover {
   background-color: #0056b3;
   color: white;
 }
 
-/* Edit button styles */
-.edit-buttons {
-  margin-right: 5px;
-  background-color: #28a745; /* Green background color */
-  color: #fff; /* White text color */
-  border: none;
-  padding: 5px 10px;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-/* Delete button styles */
 .delete-button {
   margin-right: 5px;
-  background-color: #dc3545; /* Red background color */
-  color: #fff; /* White text color */
+  background-color: #dc3545;
+  color: #fff;
   border: none;
   padding: 5px 10px;
   border-radius: 3px;
   cursor: pointer;
 }
 
-/* Active pagination button styles */
-.pagination-container button.active {
-  background-color: #007bff; /* Blue background color for active page */
-  color: #fff; /* White text color for active page */
+.delete-button:hover {
+  background-color: #0056b3;
+  color: white;
 }
 
-/* Dialog styles */
+.pagination-container button.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.pagination-container button:hover {
+  background-color: #0056b3;
+  color: white;
+}
 
 .dialog-container {
   position: fixed;
@@ -187,7 +195,6 @@ dashboard.css
   white-space: normal;
   backdrop-filter: blur(5px);
 }
-/* Close button in the dialog */
 
 .close-button {
   background-color: #dc3545; /* Red background color for close button */
@@ -202,15 +209,11 @@ dashboard.css
   margin-top: 10px;
 }
 
-
-
-/* Dialog content (pre tag for displaying JSON) */
 .dialog-box pre {
   overflow: auto;
   max-height: 300px;
 }
 
-/* dashboard.css */
 .modal-container {
   position: fixed;
   top: 0;
@@ -251,10 +254,6 @@ dashboard.css
   border-radius: 4px;
 }
 
-/* Add any additional styles as needed */
-
-
-
 .edit-button-diaglog{
   bottom: 10px;
   right: 100px;
@@ -267,7 +266,6 @@ dashboard.css
   cursor: pointer;
   position: absolute;
 }
-
 
 .user-image {
   max-width: 50px; /* Adjust the value based on your preference */
@@ -323,15 +321,13 @@ h3 {
   margin-bottom: 5px;
 }
 
-/* Add this to your existing dashboard.css file */
-
 .edit-dialog-input {
   margin-bottom: 10px;
 }
 
 .edit-dialog-input input,
 .edit-dialog-input select {
-  border: 1px solid #ccc; /* or any other default border style you prefer */
+  border: 1px solid #ccc;
   padding: 8px;
   width: 100%;
   box-sizing: border-box;
@@ -363,7 +359,6 @@ h3 {
   background-color: #f1f1f1;
 }
 
-
 strong {
   margin-right: 5px;
 }
@@ -375,18 +370,17 @@ input {
   margin-top: 5px;
 }
 
-
 .edit-dialog-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.5); /* Adjust the alpha value for transparency */
+  background: rgba(255, 255, 255, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* /* Ensure the overlay is above other elements */
+  z-index: 1000;
 }
 
 .edit-dialog-container {
@@ -436,7 +430,7 @@ input {
   left: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(10px); /* Adjust the blur amount as needed */
+  backdrop-filter: blur(10px);
   z-index: 1000;
 }
 
@@ -453,8 +447,6 @@ input {
   z-index: 1000;
 }
 
-
-
 .user-details {
   margin-top: 20px;
   font-size: 16px;
@@ -469,11 +461,87 @@ input {
   color: black;
 }
 
+.info-card-container {
+  margin-right: 10px;
+  margin-bottom: 20px;
+}
+
 .user-info-cards {
   display: flex;
   justify-content: space-around;
   margin-top: 0px;
 }
-.info-card-container {
+
+.info-card {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.info-icon {
+  font-size: 24px;
   margin-right: 10px;
 }
+
+.info-text {
+  text-align: center;
+}
+
+.info-value {
+  font-size: 18px;
+  font-weight: bold;
+  color: rgb(97, 97, 97);
+}
+
+.info-label {
+  font-size: 14px;
+}
+
+.user-dashboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* for search bar*/
+
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 95%;
+}
+
+.search-container input {
+  flex: 1;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  width: 100%;
+}
+
+.clear-search-button {
+  background-color: #858585;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.clear-search-button svg {
+  font-size: 14px;
+  color: #fff;
+}
+
+/* .info-item:hover {
+  background-color: #0056b3;
+  color: white;
+} */

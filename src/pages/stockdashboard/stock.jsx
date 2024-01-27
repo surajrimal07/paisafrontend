@@ -59,7 +59,7 @@ const StockDashboard = () => {
   return (
     <div className="container mt-4">
       <h2 className="mb-4">Stock Dashboard</h2>
-      <div style={{ padding: '20px' }}>
+      <div className = "iframe-container" style={{ padding: '20px' }}>
       <iframe
         src={`https://www.nepsealpha.com/trading/chart`}
         title="Stock Chart"

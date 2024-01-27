@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { FaSortDown, FaSortUp, FaTimes } from 'react-icons/fa';
+import { FaArrowDown, FaArrowUp, FaCubes, FaDollarSign, FaExchangeAlt, FaSortDown, FaSortUp, FaTimes, FaUser, FaUsersCog } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import ScrollToTop from "react-scroll-to-top";
 import { ToastContainer, toast } from 'react-toastify';
 import { deleteUser, getAllAssets, getAllUsers, getCommo, getMetals } from '../../apis/api';
 import './dashboard.css';
 import UserDialogBox from './dialogbox_admin.jsx';
 import EditUserDialogBox from './editingbox_admin.jsx';
-import InfoCard from './infocard.jsx';
-import { Link } from 'react-router-dom';
-import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 
 function AdminDashboard() {
   const [assets, setAssets] = useState([]);
@@ -37,6 +35,8 @@ function AdminDashboard() {
   const totalAssets = assets.length;
   const totalAmount = users.reduce((total, user) => total + user.userAmount, 0);
   const totalAdmins = users.filter(user => user.isAdmin).length;
+  const totalCommodity = commodities.length;
+  const totalMetals = metals.length;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -350,6 +350,11 @@ function AdminDashboard() {
     setAssets(JSON.parse(localStorage.getItem('Assets')));
   };
 
+  const handleClearSearchCommodity = () => {
+    setSearchQueryCommodities('');
+    setCommodities  (JSON.parse(localStorage.getItem('Commodities')));
+  };
+
   const handleSearchUsers = () => {
     const filteredUsers = users.filter((user) => {
       const lowerCaseQuery = searchQueryUsers.toLowerCase();
@@ -373,7 +378,6 @@ function AdminDashboard() {
     setAssets(filteredAssets);
     setCurrentAssetsPage(1);
   };
-
 
   const handleSearchCommodities = () => {
     const filteredCommodities = commodities.filter((commodity) => {
@@ -402,26 +406,43 @@ function AdminDashboard() {
     );
   };
 
+  const InfoCard = ({ icon, value, label }) => {
+    return (
+      <div className="info-card-container">
+        <div className="info-card">
+          <div className="info-item">
+            {icon && <div className="info-icon">{icon}</div>}
+            <div className="info-text">
+              <div className="info-value">{value}</div>
+              <div className="info-label">{label}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <div className="m-4">
+    <div className="user-dashboard">
       <h2>Admin Panel</h2>
 
-      {/* Info Card */}
       <div className="user-info-cards">
-      <InfoCard
-        totalUsers={totalUsers}
-        totalAssets={totalAssets}
-        totalAmount={totalAmount}
-        totalAdmins={totalAdmins}
-      />
+      <InfoCard icon={<FaUser />} value={totalUsers} label="Total Users" />
+      <InfoCard icon={<FaCubes />} value={totalAssets} label="Total Assets" />
+      <InfoCard icon={<FaCubes />} value={totalCommodity} label="Total Commodities" />
+      <InfoCard icon={<FaCubes />} value={totalMetals} label="Total Metals" />
+      <InfoCard icon={<FaDollarSign />} value={totalAmount} label="Total Amount" />
+      <InfoCard icon={<FaUsersCog />} value={totalAdmins} label="Total Admins" />
+
       </div>
 
-      <div className="search-container mb-4">
+      <div className="search-container">
         <input
           type="text"
           placeholder="Search users by name, email, phone, or token..."
           value={searchQueryUsers}
           onChange={(e) => setSearchQueryUsers(e.target.value)}
+          style={{ outline: 'none' }}
         />
         {searchQueryUsers && (
           <button className="clear-search-button" onClick={handleClearSearchUsers}>
@@ -437,7 +458,7 @@ function AdminDashboard() {
       <div className="category-sector-box users-section">
         <h3>Users</h3>
         <table className="table mt-2">
-          <thead className="table-dark">
+          <thead className="table-light">
             <tr>
               <th>Picture</th>
 
@@ -469,7 +490,7 @@ function AdminDashboard() {
                 <td>{JSON.stringify(user.isAdmin)}</td>
                 <td>{user.userAmount}</td>
                 <td>
-                  <button className="edit-buttons" onClick={() => handleViewDetail(user)}>
+                  <button className="view-buttons" onClick={() => handleViewDetail(user)}>
                     View
                   </button>
                   <button
@@ -511,16 +532,22 @@ function AdminDashboard() {
           placeholder="Search assets by symbol or name..."
           value={searchQueryAssets}
           onChange={(e) => setSearchQueryAssets(e.target.value)}
+          style={{ outline: 'none' }}
         />
+                {searchQueryAssets && (
+          <button className="clear-search-button" onClick={handleClearSearchAssets}>
+            <FaTimes />
+          </button>
+        )}
         <button className="search-button" onClick={handleSearchAssets}>
           Search Assets
         </button>
       </div>
 
       {/* Assets Section */}
-      <div className="category-sector-box">
+      <div className="category-sector-box users-section">
         <h3>Assets</h3>
-        <div className="table-container" style={{ overflowY: 'auto', maxHeight: '400px' }}>
+        <div className="table-responsive" style={{ maxHeight: '500px', overflowY: 'auto' }}>
           <table className="table mt-2">
             <thead className="table-light" >
               <tr>
@@ -559,9 +586,19 @@ function AdminDashboard() {
       <td>{asset.ltp}</td>
       <td>{asset.pointchange}</td>
       <td>
-  <span style={{ color: asset.percentchange >= 0 ? '#15AD4C' : '#A71111' }}>{asset.percentchange}%</span>
-  {asset.percentchange > 0 && <FaArrowUp style={{ color: '#15AD4C', marginLeft: '5px' }} />}
-  {asset.percentchange < 0 && <FaArrowDown style={{ color: '#B91212', marginLeft: '5px' }} />}
+      <td>
+  <span style={{ color: asset.percentchange > 0 ? '#15AD4C' : (asset.percentchange < 0 ? '#B91212' : 'black') }}>
+    {asset.percentchange}%
+    {(asset.percentchange !== 0 || asset.percentchange === 0) && (
+      <>
+        {asset.percentchange > 0 && <FaArrowUp style={{ color: '#15AD4C', marginLeft: '5px' }} />}
+        {asset.percentchange < 0 && <FaArrowDown style={{ color: '#B91212', marginLeft: '5px' }} />}
+        {asset.percentchange === 0 && <FaExchangeAlt style={{ color: 'black', marginLeft: '5px' }} />}
+      </>
+    )}
+  </span>
+</td>
+
 </td>
     </tr>
   ))}
@@ -580,17 +617,24 @@ function AdminDashboard() {
           placeholder="Search commodities by symbol or name..."
           value={searchQueryCommodities}
           onChange={(e) => setSearchQueryCommodities(e.target.value)}
+          style={{ outline: 'none' }}  //remove the blue outline on focus
         />
+      {searchQueryCommodities && (
+          <button className="clear-search-button" onClick={handleClearSearchCommodity}>
+            <FaTimes />
+          </button>
+        )}
         <button className="search-button" onClick={handleSearchCommodities}>
           Search Commodities
         </button>
       </div>
 
       {/* Commodities Section */}
-      <div className="category-sector-box">
+      <div className="category-sector-box users-section">
         <h3>Commodities</h3>
+        <div className="table-responsive" style={{ maxHeight: '500px', overflowY: 'auto' }}>
         <table className="table mt-2">
-          <thead className="table-dark">
+          <thead className="table-light">
             <tr>
               <th>Symbol</th>
 
@@ -600,7 +644,6 @@ function AdminDashboard() {
         <th onClick={() => handleSortCommodities('ltp')}>
         Unit {renderSortIcon('ltp', sortOrderCommodities)}
         </th>
-
             <th >
             Category
             </th>
@@ -617,17 +660,19 @@ function AdminDashboard() {
             ))}
           </tbody>
         </table>
+        </div>
         <div className="pagination-container">
           {renderCommodityPaginationButtons()}
         </div>
       </div>
 
+
       {/* Metals Section*/}
       <div className="search-container mb-4"></div>
-      <div className="category-sector-box">
+      <div className="category-sector-box users-section">
         <h3>Metals</h3>
         <table className="table mt-2">
-          <thead className="table-dark">
+          <thead className="table-light">
             <tr>
               <th>Name</th>
 

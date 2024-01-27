@@ -10,13 +10,11 @@ const TopLosers = ({ stocks }) => {
   const handleClick = (event, stock) => {
     event.stopPropagation();
 
-    console.log("selected stock is ", stock.symbol);
-
     navigate(`/stockdetailview?symbol=${stock.symbol}`);
   };
 
   return (
-  <div className="card mb-4">
+  <div className="card mb-4 test">
     <div className="card-header d-flex justify-content-between">
       <h4>Top Losers</h4>
     </div>
@@ -41,8 +39,7 @@ const TopLosers = ({ stocks }) => {
   {stock.percentchange > 0 && <FaArrowUp style={{ color: '#15AD4C', marginLeft: '5px' }} />}
   {stock.percentchange < 0 && <FaArrowDown style={{ color: '#B91212', marginLeft: '5px' }} />}
 </td>
-
-              <td>{stock.pointchange}</td>
+              <td>{stock.pointchange? `Rs ${stock.pointchange}` : '' }</td>
               <td>{stock.ltp ? `Rs ${stock.ltp}` : ''}</td>
             </tr>
           ))}

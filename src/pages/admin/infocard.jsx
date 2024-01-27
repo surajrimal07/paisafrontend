@@ -24,7 +24,7 @@ const InfoCard = ({ totalUsers, totalAssets, totalAmount, totalAdmins }) => {
           <FaDollarSign className="info-icon" />
           <div className="info-text">
           <div className="info-value">
-              Rs {totalAmount.toLocaleString()} {/* Display totalAmount with Rs symbol */}
+              Rs {totalAmount.toLocaleString()}
             </div>
             <div className="info-label">Total Amount</div>
           </div>

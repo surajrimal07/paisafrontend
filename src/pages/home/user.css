@@ -142,6 +142,7 @@ button.btn-outline-secondary {
   /* InfoCard.css */
 .info-card-container {
     margin-right: 10px;
+    margin-bottom: 20px;
   }
 
   .user-info-cards {

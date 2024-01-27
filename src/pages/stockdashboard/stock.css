@@ -32,3 +32,29 @@
   .table-responsive::-webkit-scrollbar {
     display: none;
   }
+
+  .iframe-container {
+    width: 97%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    padding-top: 56.25%;
+
+  }
+
+  .user-dashboards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  .table-responsive {
+    width: 95%;
+  }
+
+  .test {
+    margin-left: 14px;
+    width: 95%;
+  }

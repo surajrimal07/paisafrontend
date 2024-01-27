@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { FaDollarSign, FaSortDown, FaSortUp } from 'react-icons/fa';
+import { FaCubes, FaSortDown, FaSortUp, FaTimes } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import ScrollToTop from "react-scroll-to-top";
 import { ToastContainer } from 'react-toastify';
 import { getAllAssets, getCommo, getMetals } from '../../apis/api';
 import './dashboard.css';
+
 
 
 function AssetDashboard() {
@@ -188,6 +189,11 @@ function AssetDashboard() {
     setAssets(JSON.parse(localStorage.getItem('Assets')));
   };
 
+  const handleClearSearchCommodities = () => {
+    setSearchQueryCommodities('');
+    setCommodities(JSON.parse(localStorage.getItem('Commodities')));
+  };
+
   const handleSearchAssets = () => {
     const filteredAssets = assets.filter(
       (asset) =>
@@ -197,7 +203,6 @@ function AssetDashboard() {
     setAssets(filteredAssets);
     setCurrentAssetsPage(1);
   };
-
 
   const handleSearchCommodities = () => {
     const filteredCommodities = commodities.filter((commodity) => {
@@ -211,38 +216,34 @@ function AssetDashboard() {
     setCurrentCommoditiesPage(1);
   };
 
+  const InfoCard = ({ icon, value, label }) => {
+    return (
+      <div className="info-card-container">
+        <div className="info-card">
+          <div className="info-item">
+            {icon && <div className="info-icon">{icon}</div>}
+            <div className="info-text">
+              <div className="info-value">{value}</div>
+              <div className="info-label">{label}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div className="m-4">
+    <div className="user-dashboards">
       <h2>Asset Dashboard</h2>
 
       <div className="user-info-cards">
-  <div className="info-card">
-    <div className="info-itemsxx">
-      <div className="info-text">
-        <FaDollarSign className="info-icon" />
-        <div className="info-value">{totalAssets}</div>
-        <div className="info-label">Total Assets</div>
+      <InfoCard icon={<FaCubes />} value={totalAssets} label="Total Assets" />
+      <InfoCard icon={<FaCubes />} value={totalCommodities} label="Total Commodities" />
+      <InfoCard icon={<FaCubes />} value={totalMetals} label="Total Metals" />
       </div>
-    </div>
-    <div className="info-itemsxx">
-      <div className="info-text">
-        <FaDollarSign className="info-icon" />
-        <div className="info-value">{totalCommodities}</div>
-        <div className="info-label">Total Commodities</div>
-      </div>
-    </div>
-    <div className="info-itemsxx">
-      <div className="info-text">
-        <FaDollarSign className="info-icon" />
-        <div className="info-value">{totalMetals}</div>
-        <div className="info-label">Total Metals</div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<div style={{ padding: '20px' }}>
+
+    <div className = "iframe-container" style={{ padding: '20px' }}>
       <iframe
         src={`https://www.nepsealpha.com/trading/chart`}
         title="Stock Chart"
@@ -252,23 +253,28 @@ function AssetDashboard() {
       ></iframe>
     </div>
 
-      <div className="search-container mb-4">
+      <div className="search-container">
         <input
           type="text"
           placeholder="Search assets by symbol or name..."
           value={searchQueryAssets}
+          style={{ outline: 'none' }}
           onChange={(e) => setSearchQueryAssets(e.target.value)}
         />
+      {searchQueryAssets && (
+          <button className="clear-search-button" onClick={handleClearSearchAssets}>
+            <FaTimes />
+          </button>
+        )}
         <button className="search-buttons" onClick={handleSearchAssets}>
           Search Assets
         </button>
       </div>
 
       {/* Assets Section */}
-      <div className="category-sector-box">
+      <div className="category-sector-box users-section">
         <h3>Assets</h3>
-        <div className="table-container" style={{ overflowY: 'auto', maxHeight: '400px' }}>
-          <table className="table mt-2">
+        <div className="table-responsive" style={{ maxHeight: '500px', overflowY: 'auto' }}>          <table className="table mt-2">
             <thead className="table-light" >
               <tr>
                 <th>Symbol</th>
@@ -322,8 +328,14 @@ function AssetDashboard() {
           type="text"
           placeholder="Search commodities by symbol or name..."
           value={searchQueryCommodities}
+          style={{ outline: 'none' }}
           onChange={(e) => setSearchQueryCommodities(e.target.value)}
         />
+        {searchQueryCommodities && (
+          <button className="clear-search-button" onClick={handleClearSearchCommodities}>
+            <FaTimes />
+          </button>
+        )}
         <button className="search-buttons" onClick={handleSearchCommodities}>
           Search Commodities
         </button>
@@ -332,8 +344,7 @@ function AssetDashboard() {
       {/* Commodities Section */}
       <div className="category-sector-box">
         <h3>Commodities</h3>
-        <div className="table-container" style={{ overflowY: 'auto', maxHeight: '400px' }}>
-          <table className="table mt-2">
+        <div className="table-responsive" style={{ maxHeight: '500px', overflowY: 'auto' }}>          <table className="table mt-2">
             <thead className="table-light">
               <tr>
                 <th>Symbol</th>
