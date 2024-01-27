@@ -43,15 +43,9 @@ dashboard.css
 .pagination-container button {
   margin: 0 5px;
   padding: 8px 12px;
-  background-color: #007bff;
-  color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}
-
-.pagination-container button.active {
-  background-color: #0056b3;
 }
 
 /* Additional styling for user section */
@@ -59,15 +53,6 @@ dashboard.css
   width: 100%;
 }
 
-.edit-button {
-  margin-right: 5px;
-  background-color: #28a745; /* Green background color */
-  color: #fff; /* White text color */
-  border: none;
-  padding: 5px 10px;
-  border-radius: 3px;
-  cursor: pointer;
-}
 
 .delete-button {
   margin-right: 5px;
@@ -129,18 +114,25 @@ dashboard.css
   margin-right: 10px;
 }
 
+
+
 /* Search button styles */
 .search-button {
-  background-color: #007bff; /* Blue background color */
-  color: #fff; /* White text color */
+  background-color: #858585;
+  color: white;
   border: none;
   padding: 5px 10px;
   border-radius: 3px;
   cursor: pointer;
 }
 
+.search-buttons:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
 /* Edit button styles */
-.edit-button {
+.edit-buttons {
   margin-right: 5px;
   background-color: #28a745; /* Green background color */
   color: #fff; /* White text color */
@@ -196,9 +188,6 @@ dashboard.css
   backdrop-filter: blur(5px);
 }
 /* Close button in the dialog */
-
-
-
 
 .close-button {
   background-color: #dc3545; /* Red background color for close button */
@@ -478,4 +467,13 @@ input {
 
 .category-sector-box table th {
   color: black;
+}
+
+.user-info-cards {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 0px;
+}
+.info-card-container {
+  margin-right: 10px;
 }

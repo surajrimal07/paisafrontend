@@ -7,6 +7,8 @@ import './dashboard.css';
 import UserDialogBox from './dialogbox_admin.jsx';
 import EditUserDialogBox from './editingbox_admin.jsx';
 import InfoCard from './infocard.jsx';
+import { Link } from 'react-router-dom';
+import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 
 function AdminDashboard() {
   const [assets, setAssets] = useState([]);
@@ -25,6 +27,7 @@ function AdminDashboard() {
   const [deletingUser, setDeletingUser] = useState(null);
   const [isEditingUser, setEditingUser] = useState(null);
   const [isEditingDialogOpen, setEditingDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [sortOrderUsers, setSortOrderUsers] = useState({ column: null, ascending: true });
   const [sortOrderAssets, setSortOrderAssets] = useState({ column: null, ascending: true });
   const [sortOrderCommodities, setSortOrderCommodities] = useState({ column: null, ascending: true });
@@ -76,9 +79,10 @@ function AdminDashboard() {
       } else {
         console.error('Error fetching commodities:', commodityResponse.error);
       }
-
-    };
-
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      }
     fetchData();
   }, []);
 
@@ -218,12 +222,26 @@ function AdminDashboard() {
     let endPage = Math.min(totalUsersPageCount, startPage + maxButtonsToShow - 1);
     startPage = Math.max(1, endPage - maxButtonsToShow + 1);
 
+    const buttonStyle = {
+      color: 'white',
+      backgroundColor: '#858585',
+      border: 'none',
+      borderRadius: '5px',
+      padding: '5px 10px',
+      cursor: 'pointer',
+    };
+
+    const activeButtonStyle = {
+      backgroundColor: '#0056b3',
+      color: 'white',
+    };
+
     for (let i = startPage; i <= endPage; i++) {
       buttons.push(
         <button
           key={i}
           onClick={() => setCurrentUsersPage(i)}
-          className={currentUsersPage === i ? 'active' : ''}
+          style={{ ...buttonStyle, ...(currentUsersPage === i ? activeButtonStyle : {}) }}
         >
           {i}
         </button>
@@ -251,12 +269,26 @@ function AdminDashboard() {
     let endPage = Math.min(totalAssetsPageCount, startPage + maxButtonsToShow - 1);
     startPage = Math.max(1, endPage - maxButtonsToShow + 1);
 
+    const buttonStyle = {
+      color: 'white',
+      backgroundColor: '#858585',
+      border: 'none',
+      borderRadius: '5px',
+      padding: '5px 10px',
+      cursor: 'pointer',
+    };
+
+    const activeButtonStyle = {
+      backgroundColor: '#0056b3',
+      color: 'white',
+    };
+
     for (let i = startPage; i <= endPage; i++) {
       buttons.push(
         <button
           key={i}
           onClick={() => setCurrentAssetsPage(i)}
-          className={currentAssetsPage === i ? 'active' : ''}
+          style={{ ...buttonStyle, ...(currentAssetsPage === i ? activeButtonStyle : {}) }}
         >
           {i}
         </button>
@@ -273,12 +305,26 @@ function AdminDashboard() {
     let endPage = Math.min(totalCommoditiesPageCount, startPage + maxButtonsToShow - 1);
     startPage = Math.max(1, endPage - maxButtonsToShow + 1);
 
+    const buttonStyle = {
+      color: 'white',
+      backgroundColor: '#858585',
+      border: 'none',
+      borderRadius: '5px',
+      padding: '5px 10px',
+      cursor: 'pointer',
+    };
+
+    const activeButtonStyle = {
+      backgroundColor: '#0056b3',
+      color: 'white',
+    };
+
     for (let i = startPage; i <= endPage; i++) {
       buttons.push(
         <button
           key={i}
           onClick={() => setCurrentCommoditiesPage(i)}
-          className={currentCommoditiesPage === i ? 'active' : ''}
+          style={{ ...buttonStyle, ...(currentCommoditiesPage === i ? activeButtonStyle : {}) }}
         >
           {i}
         </button>
@@ -346,21 +392,29 @@ function AdminDashboard() {
     setSelectedItem(null);
   };
 
-  const handleEditDetail = () => {
-    // Implement edit functionality for the selected item
-    console.log(`Edit item:`, selectedItem);
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p>Loading...</p>
+      </div>
+    );
   };
 
   return (
     <div className="m-4">
       <h2>Admin Panel</h2>
 
+      {/* Info Card */}
+      <div className="user-info-cards">
       <InfoCard
         totalUsers={totalUsers}
         totalAssets={totalAssets}
         totalAmount={totalAmount}
         totalAdmins={totalAdmins}
       />
+      </div>
 
       <div className="search-container mb-4">
         <input
@@ -415,11 +469,11 @@ function AdminDashboard() {
                 <td>{JSON.stringify(user.isAdmin)}</td>
                 <td>{user.userAmount}</td>
                 <td>
-                  <button className="edit-button" onClick={() => handleViewDetail(user)}>
+                  <button className="edit-buttons" onClick={() => handleViewDetail(user)}>
                     View
                   </button>
                   <button
-                    className="edit-button"
+                    className="edit-buttons"
                     onClick={() => handleEditUser(user)}
 
                   >
@@ -466,46 +520,54 @@ function AdminDashboard() {
       {/* Assets Section */}
       <div className="category-sector-box">
         <h3>Assets</h3>
-        <table className="table mt-2">
-          <thead className="table-dark">
-            <tr>
-              <th>Symbol</th>
-
-              <th onClick={() => handleSortAssets('name')}>
-              Name {renderSortIcon('name', sortOrderAssets)}
-        </th>
-        <th onClick={() => handleSortAssets('sector')}>
-        Sector {renderSortIcon('sector', sortOrderAssets)}
-        </th>
-              <th onClick={() => handleSortAssets('symbol')}>
-                Symbol {renderSortIcon('symbol', sortOrderAssets)}
-              </th>
-
-            <th onClick={() => handleSortAssets('ltp')}>
-            LTP {renderSortIcon('ltp', sortOrderAssets)}
-            </th>
-            <th onClick={() => handleSortAssets('pointchange')}>
-            Point Change {renderSortIcon('pointchange', sortOrderAssets)}
-            </th>
-            <th onClick={() => handleSortAssets('percentchange')}>
-            Percent Change {renderSortIcon('percentchange', sortOrderAssets)}
-            </th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentAssets.map((asset, index) => (
-              <tr key={index} onClick={() => handleViewDetail(asset)}>
-                <td>{asset.symbol}</td>
-                <td>{asset.name}</td>
-                <td>{asset.sector}</td>
-                <td>{asset.symbol}</td>
-                <td>{asset.ltp}</td>
-                <td>{asset.pointchange}</td>
-                <td>{asset.percentchange}%</td>
+        <div className="table-container" style={{ overflowY: 'auto', maxHeight: '400px' }}>
+          <table className="table mt-2">
+            <thead className="table-light" >
+              <tr>
+                <th>Symbol</th>
+                <th onClick={() => handleSortAssets('name')}>
+                  Name {renderSortIcon('name', sortOrderAssets)}
+                </th>
+                <th onClick={() => handleSortAssets('sector')}>
+                  Sector {renderSortIcon('sector', sortOrderAssets)}
+                </th>
+                <th onClick={() => handleSortAssets('symbol')}>
+                  Symbol {renderSortIcon('symbol', sortOrderAssets)}
+                </th>
+                <th onClick={() => handleSortAssets('ltp')}>
+                  LTP {renderSortIcon('ltp', sortOrderAssets)}
+                </th>
+                <th onClick={() => handleSortAssets('pointchange')}>
+                  Point Change {renderSortIcon('pointchange', sortOrderAssets)}
+                </th>
+                <th onClick={() => handleSortAssets('percentchange')}>
+                  Percent Change {renderSortIcon('percentchange', sortOrderAssets)}
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+  {currentAssets.map((asset, index) => (
+    <tr key={index}>
+      <td>
+      <Link to={`/stockdetailview?symbol=${asset.symbol}`} style={{ color: 'black' }}>
+          {asset.symbol}
+        </Link>
+      </td>
+      <td>{asset.name}</td>
+      <td>{asset.sector}</td>
+      <td>{asset.symbol}</td>
+      <td>{asset.ltp}</td>
+      <td>{asset.pointchange}</td>
+      <td>
+  <span style={{ color: asset.percentchange >= 0 ? '#15AD4C' : '#A71111' }}>{asset.percentchange}%</span>
+  {asset.percentchange > 0 && <FaArrowUp style={{ color: '#15AD4C', marginLeft: '5px' }} />}
+  {asset.percentchange < 0 && <FaArrowDown style={{ color: '#B91212', marginLeft: '5px' }} />}
+</td>
+    </tr>
+  ))}
+</tbody>
+          </table>
+        </div>
         <div className="pagination-container">
           {renderAssetPaginationButtons()}
         </div>
@@ -561,6 +623,7 @@ function AdminDashboard() {
       </div>
 
       {/* Metals Section*/}
+      <div className="search-container mb-4"></div>
       <div className="category-sector-box">
         <h3>Metals</h3>
         <table className="table mt-2">

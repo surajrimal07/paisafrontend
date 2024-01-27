@@ -1,0 +1,54 @@
+.handle-dp-change {
+    max-width: 400px;
+    margin: auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Center text in the modal */
+  }
+
+  .current-image-container {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 0%;
+    margin: 0 auto 20px;
+  }
+
+  .current-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 10%;
+  }
+
+  .modal-header {
+    margin-left: 90px;
+    text-align: center;
+    padding: auto;
+  }
+
+  .modal-title {
+    margin: 0;
+  }
+  .input-group {
+    margin-bottom: 20px;
+    margin-left: 120px;
+  }
+
+  .modal-footer .btn-primary {
+    margin: 0 auto; /* Center the Save button */
+    background-color: #28a745 !important; /* Green background color for Save button */
+    border-color: #28a745 !important; /* Green border color for Save button */
+  }
+
+  /* Hide the file input */
+  .input-group input[type="file"] {
+    display: none;
+  }
+
+  /* Style for Choose Image label */
+  .input-group-label {
+    display: none; /* Hide the Choose Image label */
+  }

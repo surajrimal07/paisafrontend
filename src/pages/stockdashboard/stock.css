@@ -28,3 +28,7 @@
   .card-body {
     background-color: rgb(253, 245, 243);
   }
+
+  .table-responsive::-webkit-scrollbar {
+    display: none;
+  }

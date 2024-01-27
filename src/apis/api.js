@@ -138,11 +138,8 @@ export const getPortfolio = (email) => {
   return api.post(`/api/getallportforuser`, data, config);
 };
 
-export const renamePortfolio = (email, newname, id) => {
-  const data = { email: email,
-  name: newname, id: id};
-
-  return api.post(`/api/renameportfolio`, data, config);
+export const renamePortfolio = (data) => {
+  return api.post(`/api/renameportfolio`, data);
 };
 
 //watchlist
@@ -182,4 +179,39 @@ export const removeStockFromWatchlist = (email, watchlistId, stockSymbol) => {
   const data = { email: email, watchlistId: watchlistId, stockSymbol: stockSymbol };
 
   return api.post(`/api/remstockfromwatchlist`, data);
+}
+
+//update user
+export const updateUser = (data) =>  api.post(`/api/updateAllUserData`, data);
+
+export const updateDPImage = (data) => {
+  const config = {
+    headers: {
+      "Content-Type" : "multipart/form-data",
+    },
+  };
+return api.post(`/api/updateprofilepic`,data, config);
+}
+
+//portfolio
+
+export const createPortfolio = (email, name) => {
+  const data = { email: email, name: name };
+
+  return api.post(`/api/newport`, data, config);
+}
+//delete portfolio
+
+export const deletePortfolio = async (data) => {
+    return api.delete('/api/delport', { data });
+};
+
+//add stock to portfolio
+export const addStockToPortfolio = (data) => {
+  return api.post(`/api/addstock`, data);
+}
+
+//remove stock from portfolio
+export const removeStockFromPortfolio = (data) => {
+  return api.post(`/api/remstock`, data);
 }

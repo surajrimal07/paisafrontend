@@ -115,12 +115,28 @@ function AssetDashboard() {
     let endPage = Math.min(totalAssetsPageCount, startPage + maxButtonsToShow - 1);
     startPage = Math.max(1, endPage - maxButtonsToShow + 1);
 
+    const buttonStyle = {
+      color: 'white',
+      backgroundColor: '#858585',
+      border: 'none',
+      borderRadius: '5px',
+      padding: '5px 10px',
+      cursor: 'pointer',
+    };
+
+    const activeButtonStyle = {
+      backgroundColor: '#0056b3',
+      color: 'white',
+    };
+
+
     for (let i = startPage; i <= endPage; i++) {
       buttons.push(
         <button
           key={i}
           onClick={() => setCurrentAssetsPage(i)}
-          className={currentAssetsPage === i ? 'active' : ''}
+          style={{ ...buttonStyle, ...(currentAssetsPage === i ? activeButtonStyle : {}) }}
+         // className={currentAssetsPage === i ? 'active' : ''}
         >
           {i}
         </button>
@@ -137,12 +153,27 @@ function AssetDashboard() {
     let endPage = Math.min(totalCommoditiesPageCount, startPage + maxButtonsToShow - 1);
     startPage = Math.max(1, endPage - maxButtonsToShow + 1);
 
+    const buttonStyle = {
+      color: 'white',
+      backgroundColor: '#858585',
+      border: 'none',
+      borderRadius: '5px',
+      padding: '5px 10px',
+      cursor: 'pointer',
+    };
+
+    const activeButtonStyle = {
+      backgroundColor: '#0056b3',
+      color: 'white',
+    };
+
+
     for (let i = startPage; i <= endPage; i++) {
       buttons.push(
         <button
           key={i}
           onClick={() => setCurrentCommoditiesPage(i)}
-          className={currentCommoditiesPage === i ? 'active' : ''}
+          style={{ ...buttonStyle, ...(currentCommoditiesPage === i ? activeButtonStyle : {}) }}
         >
           {i}
         </button>
@@ -237,8 +268,8 @@ function AssetDashboard() {
       <div className="category-sector-box">
         <h3>Assets</h3>
         <div className="table-container" style={{ overflowY: 'auto', maxHeight: '400px' }}>
-          <table className="table mt-2" style={{ backgroundColor: 'transparent !important' }}>
-            <thead className="table-light" style={{ backgroundColor: 'transparent'}}>
+          <table className="table mt-2">
+            <thead className="table-light" >
               <tr>
                 <th>Symbol</th>
                 <th onClick={() => handleSortAssets('name')}>
@@ -262,7 +293,6 @@ function AssetDashboard() {
               </tr>
             </thead>
             <tbody>
-
   {currentAssets.map((asset, index) => (
     <tr key={index}>
       <td>
@@ -334,6 +364,7 @@ function AssetDashboard() {
       </div>
 
       {/* Metals Section*/}
+      <div className="search-container mb-4"></div>
       <div className="category-sector-box">
         <h3>Metals</h3>
         <div className="table-container" style={{ overflowY: 'auto', maxHeight: '400px' }}>

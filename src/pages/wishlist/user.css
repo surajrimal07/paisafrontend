@@ -20,37 +20,55 @@
     object-fit: cover;
   }
 
+  .btn-hover-blue:hover {
+    background-color: #0056b3;
+    color: white;
+  }
 
 .watchlists {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     overflow-x: auto;
+    white-space: nowrap;
     max-width: 90%;
   }
 
   .watchlist-header h4 {
-    margin-bottom: 10px;
-    margin-top: 5px;
     font-size: 1.3rem;
   }
 
   .stocks h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0px;
-    margin-top: 0px;
+    width: 100%;
+    font-size: 1.1em;
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
+
   .watchlist-container {
-    display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
   }
 
   .watchlist-item {
     border: 1px solid #ddd;
-    padding: 10px;
-    margin: 10px;
-    width: calc(33.33% - 20px); /* 3 items per row with margin */
+    border-radius: 8px;
+    padding: 15px;
+    margin: 0 10px 20px;
+    position: relative;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: top;
+    width: 300px;
+    max-height: 250px;
+    overflow-y: auto;
+    min-width: 350px;
+
+  }
+
+  .watchlist-item::-webkit-scrollbar {
+    display: none;
   }
 
   .watchlist-header {
@@ -62,11 +80,11 @@
 
   .stocks {
     margin-top: 0px;
+    margin-bottom: 0px;
   }
 
   .stock {
-    padding: 3px;
-    margin: 2px 0;
+    padding-bottom: 2px;
     border: 1px solid #ddd;
     border-radius: 2px;
     line-height: 1;
@@ -83,8 +101,10 @@
     z-index: 1000;
   }
 
-  .watchlist-menu button {
-    color: black;
+  .watchlist-menu {
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 
   .icon-container {
@@ -163,8 +183,24 @@
   }
 
   .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
     background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+    overflow-y: hidden; /* Hide the vertical scrollbar */
   }
 
   .dropdown-menu li {
@@ -177,12 +213,10 @@
     padding: 8px 16px;
     border: none;
     background: none;
-    color: #333;
+    color: #282828;
   }
 
   .dropdown-menu button:hover {
     background-color: #f8f9fa;
   }
-
-
 

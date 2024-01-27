@@ -1,0 +1,54 @@
+.create-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 300px; /* Adjust the width as needed */
+  }
+
+  .create-popup label {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .create-popup input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+
+  .create-popup button {
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .create-popup .save-button {
+    background-color: #28a745;
+    color: #fff;
+  }
+
+  .create-popup .cancel-button {
+    background-color: #dc3545;
+    color: #fff;
+  }
+
+  .create-popup button:hover {
+    opacity: 0.8;
+  }

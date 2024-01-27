@@ -15,6 +15,7 @@ const StockDashboard = () => {
   const [topTurnover, setTopTurnover] = useState([]);
   const [topTransaction, setTopTransaction] = useState([]);
 
+
   // Fetch data
   const fetchData = async () => {
     try {
@@ -53,6 +54,7 @@ const StockDashboard = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
 
   return (
     <div className="container mt-4">

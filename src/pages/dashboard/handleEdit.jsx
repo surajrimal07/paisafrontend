@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
 
 const EditProfileForm = ({ userData, onSave, onCancel }) => {
-  const [editedData, setEditedData] = useState({
-    name: userData.name,
-    email: userData.email,
-    phone: userData.phone,
-    password: userData.password,
-  });
+  const initialEditedData = userData
+    ? {
+        name: userData.name,
+        email: userData.email,
+        phone: userData.phone,
+        password: '',
+      }
+    : {
+        name: '',
+        email: '',
+        phone: '',
+        password: '',
+      };
+
+  const [editedData, setEditedData] = useState(initialEditedData);
 
   const [validationErrors, setValidationErrors] = useState({
     name: '',
@@ -21,7 +30,6 @@ const EditProfileForm = ({ userData, onSave, onCancel }) => {
       ...prevData,
       [name]: value,
     }));
-    // Clear validation errors when the input changes
     setValidationErrors((prevErrors) => ({
       ...prevErrors,
       [name]: '',
@@ -39,7 +47,7 @@ const EditProfileForm = ({ userData, onSave, onCancel }) => {
       errors.email = 'Please enter a valid email address';
     }
 
-    if (!editedData.phone.match(/^\d{10}$/)) {
+    if (typeof editedData.phone === 'string' && !editedData.phone.match(/^\d{10}$/)) {
       errors.phone = 'Please enter a 10-digit phone number';
     }
 
@@ -49,12 +57,12 @@ const EditProfileForm = ({ userData, onSave, onCancel }) => {
 
     setValidationErrors(errors);
 
-    return Object.keys(errors).length === 0; // Form is valid if there are no errors
+    return Object.keys(errors).length === 0;
   };
 
-  const handleSave = () => {
+  const handleSave = (event) => {
     if (validateForm()) {
-      onSave(editedData);
+      onSave(event,editedData);
     }
   };
 
@@ -85,6 +93,7 @@ const EditProfileForm = ({ userData, onSave, onCancel }) => {
             name="email"
             value={editedData.email}
             onChange={handleInputChange}
+            autoComplete="username"
           />
           <div className="invalid-feedback">
             {validationErrors.email}
@@ -113,6 +122,7 @@ const EditProfileForm = ({ userData, onSave, onCancel }) => {
             name="password"
             value={editedData.password}
             onChange={handleInputChange}
+            autoComplete="current-password"
           />
           <div className="invalid-feedback">
             {validationErrors.password}

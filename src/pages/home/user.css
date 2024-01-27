@@ -34,6 +34,10 @@
     margin-bottom: 10px;
   }
 
+  .stocks h4 {
+    font-size: 1.2em;
+  }
+
   .portfolio-item {
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -41,6 +45,13 @@
     margin: 0 10px 20px;
     position: relative;
     flex: 0 1 calc(33.333% - 20px);
+    max-height: 250px;
+    overflow-y: auto;
+    min-width: 350px;
+  }
+
+  .portfolio-item::-webkit-scrollbar {
+    display: none;
   }
 
   .portfolio-header {
@@ -174,3 +185,38 @@ button.btn-outline-secondary {
   .info-label {
     font-size: 14px;
   }
+
+
+  .floating-icon {
+    position: fixed;
+    bottom: 40px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    z-index: 1000;
+  }
+
+    .icon-container {
+    background-color: #5e5e5e;
+    color: #fff;
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+  .icon-container:hover {
+    background-color: #525253;
+  }
+
+  .profit {
+    color: green;
+  }
+
+  .loss {
+    color: red;
+  }
+

@@ -1,0 +1,58 @@
+.remove-stock-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 300px; /* Adjust the width as needed */
+  }
+
+  .remove-stock-popup h4 {
+    margin-bottom: 10px;
+  }
+
+  .remove-stock-popup label {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .remove-stock-popup select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+  }
+
+  .remove-stock-popup .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+
+  .remove-stock-popup button {
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .remove-stock-popup .remove-button {
+    background-color: #dc3545; /* Red color */
+    color: #fff;
+  }
+
+  .remove-stock-popup .cancel-button {
+    background-color: #ccc; /* Grey color */
+    color: #fff;
+  }
+
+  .remove-stock-popup button:hover {
+    opacity: 0.8;
+  }

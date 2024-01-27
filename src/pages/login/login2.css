@@ -158,8 +158,8 @@
 .toggle{
     background-color: #512da8;
     height: 100%;
-    background: linear-gradient(to right, #5c6bc0, #512da8);
-    color: #fff;
+    background-color: rgba(14, 179, 179, 0.952);
+    color: rgb(2, 2, 2);
     position: relative;
     left: -100%;
     height: 100%;
@@ -203,3 +203,8 @@
 .container2.active .toggle-right{
     transform: translateX(200%);
 }
+
+.form-container.sign-up button {
+    background-color: rgba(14, 179, 179, 0.952) !important; /* Background color */
+    color: black !important; /* Text color */
+  }

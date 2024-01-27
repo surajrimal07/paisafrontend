@@ -1,9 +1,9 @@
 .search-buttons {
-  background-color: grey;
   border: none;
   border-radius: 5px;
   padding: 5px 5px;
   cursor: pointer;
+  background-color: #858585;
   color: white;
 }
 
@@ -12,9 +12,11 @@
   align-items: center;
 }
 
-.search-button:hover {
+.search-buttons:hover {
   background-color: #0056b3;
+  color: white;
 }
+
 
 .table-container table thead {
   position: sticky;

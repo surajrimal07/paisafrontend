@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './stock.css';
-
+import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 
 const TopLosers = ({ stocks }) => {
 
@@ -36,7 +36,12 @@ const TopLosers = ({ stocks }) => {
             <tr key={index} onClick={(event) => handleClick(event, stock)}>
               <td>{stock.symbol}</td>
               <td>{stock.name}</td>
-              <td>{stock.percentchange}%</td>
+              <td>
+  <span style={{ color: stock.percentchange >= 0 ? '#15AD4C' : '#A71111' }}>{stock.percentchange}%</span>
+  {stock.percentchange > 0 && <FaArrowUp style={{ color: '#15AD4C', marginLeft: '5px' }} />}
+  {stock.percentchange < 0 && <FaArrowDown style={{ color: '#B91212', marginLeft: '5px' }} />}
+</td>
+
               <td>{stock.pointchange}</td>
               <td>{stock.ltp ? `Rs ${stock.ltp}` : ''}</td>
             </tr>

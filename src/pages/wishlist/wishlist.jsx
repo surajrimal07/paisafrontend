@@ -8,6 +8,7 @@ import HandleCreate from './handlecreate.jsx';
 import HandleDelete from './handledelete.jsx';
 import HandleRemoveStock from './handledeletestock.jsx';
 import HandleRename from './handlerename.jsx';
+import  NoImage from './a.png';
 
 import './user.css';
 
@@ -19,6 +20,8 @@ const UserWatchlists = () => {
   const [showAddStockDialog, setshowAddStockDialog] = useState(false);
   const [showRemoveStockDialog, setRemoveStockDialog] = useState(false);
   const [selectedWatchlist, setSelectedWatchlist] = useState(null);
+  const [totalStocksCount, setTotalStocksCount] = useState(0);
+  const [portfolioStockCounts, setPortfolioStockCounts] = useState({});
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 //   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -36,8 +39,19 @@ const UserWatchlists = () => {
           const watchlists = await getWatchlist(storedUserData.email);
 
           if (watchlists.status === 200 && watchlists.data.success) {
-            console.log('Watchlists:', watchlists.data.data);
+            const allStocks = watchlists.data.data.reduce(
+              (acc, watchlist) => acc.concat(watchlist.stocks || []),
+              []
+            );
+            //indi stock count inside watchlist
+            const stockCounts = {};
+            watchlists.data.data.forEach((watchlist) => {
+              stockCounts[watchlist._id] = watchlist.stocks ? watchlist.stocks.length : 0;
+            });
+            setPortfolioStockCounts(stockCounts);
             setUserWatchlists(watchlists.data.data);
+            setTotalStocksCount(allStocks.length);
+
           } else {
             toast.error('Error fetching watchlists');
             console.error(watchlists.data.message);
@@ -99,6 +113,20 @@ const UserWatchlists = () => {
   const handleRemoveStockClick = (watchlistId) => {
     setSelectedWatchlist(watchlistId);
     setRemoveStockDialog(true);
+    };
+
+    const getStockLTP = (stockSymbol) => {
+      const assets = JSON.parse(localStorage.getItem('Assets'));
+
+      if (assets) {
+        const stockData = assets.find(stock => stock.symbol === stockSymbol);
+
+        if (stockData && stockData.ltp !== undefined) {
+          return ` Rs ${stockData.ltp}`;
+        }
+      }
+
+      return '';
     };
 
     const handleDeleteSave = async (event, email, watchlistId) => {
@@ -333,24 +361,29 @@ const UserWatchlists = () => {
       </div>
       <div className="user-info-cards">
           <InfoCard icon={<FaCubes />} value={totalwatchlist} label="Total Watchlist" />
+          <InfoCard icon={<FaCubes />} value={totalStocksCount} label="Total Stocks" />
         </div>
       <div className="watchlists">
         <div className="watchlist-container" ref={wrapperRef}>
+
           {userWatchlists.map((watchlistItem) => (
             <div key={watchlistItem._id} className="watchlist-item">
               <div className="watchlist-header">
                 <h4>Name: {watchlistItem.name}</h4>
 
                 <div className="watchlist-menu">
+
                 <button
-                  type="button"
-                  className="btn btn-sm btn-outline-secondary"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Options
-                </button>
+  type="button"
+  className="btn btn-sm btn-outline-secondary btn-hover-blue"
+  data-bs-toggle="dropdown"
+  aria-expanded="false"
+>
+  Options
+</button>
                 <ul className="dropdown-menu">
+
+
                   <li>
                     <button
                       className="dropdown-item"
@@ -392,21 +425,34 @@ const UserWatchlists = () => {
               </div>
 
               {watchlistItem.stocks && watchlistItem.stocks.length > 0 ? (
-                <div className="stocks">
-                  <h3>Stocks:</h3>
+                <div className="stocks" >
+                  <h3>Stocks: {portfolioStockCounts[watchlistItem._id] || 0}</h3>
                   {watchlistItem.stocks.map((stockSymbol) => (
                     <div key={stockSymbol} className="stock">
 <p>
-  Symbol:{' '}
+  {' '}
   <Link to={`/stockdetailview?symbol=${stockSymbol}`} style={{ color: 'black', textDecoration: 'none' }}>
-    {stockSymbol}
-  </Link>
+            {stockSymbol+':'}
+            {getStockLTP(stockSymbol)}
+          </Link>
 </p>
 </div>
                   ))}
                 </div>
               ) : (
-                <p>No stocks available for this watchlist.</p>
+
+<div style={{ textAlign: 'center' }}>
+  <img
+    src={NoImage}
+    alt="No stocks available"
+    height={100}
+    width={100}
+    style={{ display: 'block', margin: 'auto' }}
+  />
+  <p>No Stocks found</p>
+</div>
+
+
               )}
             </div>
           ))}
