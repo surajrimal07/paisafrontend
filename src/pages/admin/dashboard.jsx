@@ -39,30 +39,26 @@ function AdminDashboard() {
   const totalCommodity = commodities.length;
   const totalMetals = metals.length;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const assetResponse = await getAllAssets();
-        if (assetResponse.status === 200 && Array.isArray(assetResponse.data.data)) {
-          const jsonDecode = JSON.stringify(assetResponse.data.data);
-          localStorage.setItem('Assets', jsonDecode);
-          setAssets(assetResponse.data.data);
-        } else {
-          toast.error('Error fetching assets');
-          console.error('Error fetching assets:', assetResponse.error);
-        }
+  const fetchData = async () => {
+    try {
+      const assetResponse = await getAllAssets();
+      if (assetResponse.status === 200 && Array.isArray(assetResponse.data.data)) {
+        const jsonDecode = JSON.stringify(assetResponse.data.data);
+        localStorage.setItem('Assets', jsonDecode);
+        setAssets(assetResponse.data.data);
+      } else {
+        toast.error('Error fetching assets');
+        console.error('Error fetching assets:', assetResponse.error);
+      }
 
-        const userResponse = await getAllUsers();
-        if (userResponse.status === 200 && Array.isArray(userResponse.data.data)) {
-          const jsonDecode = JSON.stringify(userResponse.data.data);
-          localStorage.setItem('Users', jsonDecode);
-          setUsers(userResponse.data.data);
-        } else {
-          toast.error('Error fetching users');
-          console.error('Error fetching users:', userResponse.error);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
+      const userResponse = await getAllUsers();
+      if (userResponse.status === 200 && Array.isArray(userResponse.data.data)) {
+        const jsonDecode = JSON.stringify(userResponse.data.data);
+        localStorage.setItem('Users', jsonDecode);
+        setUsers(userResponse.data.data);
+      } else {
+        toast.error('Error fetching users');
+        console.error('Error fetching users:', userResponse.error);
       }
 
       const metalsResponse = await getMetals();
@@ -84,12 +80,70 @@ function AdminDashboard() {
         toast.error('Error fetching commodities');
         console.error('Error fetching commodities:', commodityResponse.error);
       }
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000);
-      }
+
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
   }, []);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const assetResponse = await getAllAssets();
+  //       if (assetResponse.status === 200 && Array.isArray(assetResponse.data.data)) {
+  //         const jsonDecode = JSON.stringify(assetResponse.data.data);
+  //         localStorage.setItem('Assets', jsonDecode);
+  //         setAssets(assetResponse.data.data);
+  //       } else {
+  //         toast.error('Error fetching assets');
+  //         console.error('Error fetching assets:', assetResponse.error);
+  //       }
+
+  //       const userResponse = await getAllUsers();
+  //       if (userResponse.status === 200 && Array.isArray(userResponse.data.data)) {
+  //         const jsonDecode = JSON.stringify(userResponse.data.data);
+  //         localStorage.setItem('Users', jsonDecode);
+  //         setUsers(userResponse.data.data);
+  //       } else {
+  //         toast.error('Error fetching users');
+  //         console.error('Error fetching users:', userResponse.error);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+
+  //     const metalsResponse = await getMetals();
+  //     if (metalsResponse.status === 200 && Array.isArray(metalsResponse.data.metalPrices)) {
+  //       const jsonDecode = JSON.stringify(metalsResponse.data.metalPrices);
+  //       localStorage.setItem('Metals', jsonDecode);
+  //       setMetals(metalsResponse.data.metalPrices);
+  //     } else {
+  //       toast.error('Error fetching metals');
+  //       console.error('Error fetching metals:', metalsResponse.error);
+  //     }
+
+  //     const commodityResponse = await getCommo();
+  //     if (commodityResponse.status === 200 && Array.isArray(commodityResponse.data.data)) {
+  //       const jsonDecode = JSON.stringify(commodityResponse.data.data);
+  //       localStorage.setItem('Commodities', jsonDecode);
+  //       setCommodities(commodityResponse.data.data);
+  //     } else {
+  //       toast.error('Error fetching commodities');
+  //       console.error('Error fetching commodities:', commodityResponse.error);
+  //     }
+  //       setTimeout(() => {
+  //         setLoading(false);
+  //       }, 1000);
+  //     }
+  //   fetchData();
+  // }, []);
 
   const renderSortIcon = (column, sortOrder) => {
     if (sortOrder.column === column) {
@@ -208,6 +262,7 @@ function AdminDashboard() {
     setEditingDialogOpen(false);
     setEditingUser(null);
     setSelectedItem(null);
+    fetchData();
   };
 
   const handleViewDetail = (item) => {
@@ -721,8 +776,9 @@ function AdminDashboard() {
       )}
 
 {isEditingUser && isEditingDialogOpen && (
-  <EditUserDialogBox onClose={handleEditDialogClose} />
+  <EditUserDialogBoxWithOverlay user={isEditingUser} onCancel={handleCancelEdit} />
 )}
+
       <ToastContainer position="top-right" />
       <ScrollToTop smooth />
     </div>

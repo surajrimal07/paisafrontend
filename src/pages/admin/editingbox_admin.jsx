@@ -4,10 +4,10 @@ import { updateUser } from '../../apis/api';
 import './dashboard.css';
 
 
-const EditUserDialogBox = ({ user, onSave, onCancel, onClose  }) => {
+const EditUserDialogBox = ({ user, onCancel}) => {
   const [editedUser, setEditedUser] = useState({ ...user });
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const [oldEmail, setOldEmail] = useState(user.email);
+  const [oldEmail] = useState(user.email);
   const dropdownRef = useRef(null);
 
   const editableFields = ['name', 'email', 'phone', 'isAdmin', 'userAmount'];
@@ -52,8 +52,7 @@ const EditUserDialogBox = ({ user, onSave, onCancel, onClose  }) => {
 
         if (success) {
           toast.success(message);
-          onSave();
-          onClose();
+          onCancel();
         } else {
           toast.error(message);
         }
@@ -105,6 +104,7 @@ const EditUserDialogBox = ({ user, onSave, onCancel, onClose  }) => {
                     value={editedUser[key] ? 'True' : 'False'}
                     readOnly
                     onClick={handleDropdownToggle}
+                    style={{ outline: 'none' }}
                   />
                   {isDropdownOpen && (
                     <div className="dropdown-options">
@@ -117,6 +117,7 @@ const EditUserDialogBox = ({ user, onSave, onCancel, onClose  }) => {
                 <input
                   type="text"
                   value={editedUser[key]}
+                  style={{ outline: 'none' }}
                   onChange={(e) => setEditedUser({ ...editedUser, [key]: e.target.value })}
                 />
               )}
