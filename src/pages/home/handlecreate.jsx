@@ -6,7 +6,7 @@ const HandleCreate = ({ userEmail, onSave, onCancel }) => {
 
   const handleSave = (event) => {
     if (!watchlistName.trim()) {
-      alert('Watchlist name cannot be empty');
+      alert('Portfolio name cannot be empty');
       return;
     }
 
@@ -15,7 +15,7 @@ const HandleCreate = ({ userEmail, onSave, onCancel }) => {
 
   return (
     <div className="create-popup">
-        <h4>Create Watchlist</h4>
+        <h4>Create Portfolio</h4>
       <label htmlFor="watchlistName">Name:</label>
       <input
         type="text"

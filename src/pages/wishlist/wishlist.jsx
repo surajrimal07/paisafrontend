@@ -359,6 +359,7 @@ const UserWatchlists = () => {
         <p>{userData.phone}</p>
         <p>Balance: Rs {userData.userAmount}</p>
       </div>
+      <h4>Your Portfolios: </h4>
       <div className="user-info-cards">
           <InfoCard icon={<FaCubes />} value={totalwatchlist} label="Total Watchlist" />
           <InfoCard icon={<FaCubes />} value={totalStocksCount} label="Total Stocks" />

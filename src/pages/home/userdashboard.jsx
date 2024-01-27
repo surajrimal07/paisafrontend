@@ -243,7 +243,6 @@ try {
 setRemoveStockDialog(false);
 };
 
-
 //handle cancel
 const handleRenameCancel = () => {
   setShowRenameDialog(false);
@@ -297,7 +296,7 @@ const InfoCard = ({ icon, value, label }) => {
 };
 
   return (
-    <div className="user-dashboard">
+    <div className="user-dashboardxx">
       <div className="user-info">
         <img src={userData.dpImage} alt="User DP" />
         <h2>{userData.name}</h2>
@@ -305,6 +304,7 @@ const InfoCard = ({ icon, value, label }) => {
         <p>Phone: {userData.phone}</p>
         <p>Balance: Rs {userData.userAmount}</p>
       </div>
+      <h4>Your Portfolios: </h4>
 
       <div className="user-info-cards">
           <InfoCard icon={<FaCubes />} value={totalStockUnits} label="Total Stock Units" />
@@ -396,7 +396,6 @@ const InfoCard = ({ icon, value, label }) => {
     </span>
   </p>
 )}
-
             {portfolioItem.stocks && portfolioItem.stocks.length > 0 ? (
 
               <div className="stocks">

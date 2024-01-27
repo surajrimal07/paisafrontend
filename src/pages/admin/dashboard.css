@@ -8,7 +8,7 @@
   border: 1px solid #ccc;
   padding: 20px;
   border-radius: 8px;
-  width: 100%; /* Modified to occupy full width */
+  width: 100%;
 }
 
 .category-sector-box h3 {
@@ -293,22 +293,8 @@
   padding: 10px;
   cursor: pointer;
   border: none;
-  border-radius: 4px;
-  background: green;
-  color: #fff;
-}
-
-
-.edit-button-dialog,
-.close-button-dialog {
-  padding: 10px;
-  cursor: pointer;
-  border: none;
-  border-radius: 4px;
-}
-
-.close-button-dialog {
-  background: #e74c3c;
+  border-radius: 8px;
+  background: rgb(73, 164, 73);
   color: #fff;
 }
 
@@ -407,11 +393,11 @@ input {
 }
 
 .close-button-dialog {
-  background-color: black;
+  background-color: #858585;
   color: white;
   border: none;
   padding: 8px 16px;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
@@ -420,7 +406,7 @@ input {
   color: white;
   border: none;
   padding: 8px 16px;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
 }
 

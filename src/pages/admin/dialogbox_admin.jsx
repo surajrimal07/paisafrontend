@@ -24,7 +24,6 @@ function UserDialogBox({ user, onEdit, onClose, isEditing }) {
     onClose();
   };
 
-  // Configuration object to manage which fields to exclude
   const fieldsToExclude = ['_id', '__v'];
 
   return (
@@ -42,7 +41,6 @@ function UserDialogBox({ user, onEdit, onClose, isEditing }) {
           <h3>{isEditing ? 'Edit' : 'Details'}</h3>
           <div className="user-details">
             {Object.entries(user).map(([key, value]) => (
-              // Only render if the key is not in the fieldsToExclude array
               !fieldsToExclude.includes(key) && (
                 <div key={key}>
                   <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong> {key === 'isAdmin' ? (value ? 'True' : 'False') : value}

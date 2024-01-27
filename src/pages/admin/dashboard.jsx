@@ -8,6 +8,7 @@ import './dashboard.css';
 import UserDialogBox from './dialogbox_admin.jsx';
 import EditUserDialogBox from './editingbox_admin.jsx';
 
+
 function AdminDashboard() {
   const [assets, setAssets] = useState([]);
   const [users, setUsers] = useState([]);
@@ -47,6 +48,7 @@ function AdminDashboard() {
           localStorage.setItem('Assets', jsonDecode);
           setAssets(assetResponse.data.data);
         } else {
+          toast.error('Error fetching assets');
           console.error('Error fetching assets:', assetResponse.error);
         }
 
@@ -56,6 +58,7 @@ function AdminDashboard() {
           localStorage.setItem('Users', jsonDecode);
           setUsers(userResponse.data.data);
         } else {
+          toast.error('Error fetching users');
           console.error('Error fetching users:', userResponse.error);
         }
       } catch (error) {
@@ -68,6 +71,7 @@ function AdminDashboard() {
         localStorage.setItem('Metals', jsonDecode);
         setMetals(metalsResponse.data.metalPrices);
       } else {
+        toast.error('Error fetching metals');
         console.error('Error fetching metals:', metalsResponse.error);
       }
 
@@ -77,6 +81,7 @@ function AdminDashboard() {
         localStorage.setItem('Commodities', jsonDecode);
         setCommodities(commodityResponse.data.data);
       } else {
+        toast.error('Error fetching commodities');
         console.error('Error fetching commodities:', commodityResponse.error);
       }
         setTimeout(() => {
@@ -334,9 +339,12 @@ function AdminDashboard() {
     return buttons;
   }
 
+  const handleEditDialogClose = () => {
+    setEditingDialogOpen(false);
+  };
+
   const handleSaveEdit = (editedUser) => {
 
-    console.log('Saving changes:', editedUser);
 
   };
 
@@ -395,7 +403,6 @@ function AdminDashboard() {
   const handleCloseDialog = () => {
     setSelectedItem(null);
   };
-
 
   if (loading) {
     return (
@@ -703,8 +710,6 @@ function AdminDashboard() {
         </div>
       </div>
 
-
-
       {/* Dialog Boxes */}
       {selectedItem && (
         <UserDialogBox
@@ -716,9 +721,8 @@ function AdminDashboard() {
       )}
 
 {isEditingUser && isEditingDialogOpen && (
-  <EditUserDialogBoxWithOverlay user={isEditingUser} onSave={handleSaveEdit} onCancel={handleCancelEdit} />
+  <EditUserDialogBox onClose={handleEditDialogClose} />
 )}
-
       <ToastContainer position="top-right" />
       <ScrollToTop smooth />
     </div>
