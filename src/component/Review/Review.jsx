@@ -18,7 +18,7 @@ const Review = () => {
                                 <span className="desc">{item.desc}</span>
                                 <div className="client">
 
-                                    <BsPersonCircle size='45px' color='rgb(87, 86, 86)' />
+                                    <BsPersonCircle size='40px' color='rgb(87, 86, 86)' />
                                     <h4 className="clientName">{item.client}</h4>
 
                                 </div>
@@ -28,7 +28,6 @@ const Review = () => {
 
 
                     </div>
-
                     <div className="more">
                         <CgChevronLeftO size='28px' cursor='pointer' />
                         <CgChevronRightO size='28px' cursor='pointer' />

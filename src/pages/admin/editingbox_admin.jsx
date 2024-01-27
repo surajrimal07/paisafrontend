@@ -5,12 +5,12 @@ import './dashboard.css';
 
 
 const EditUserDialogBox = ({ user, onCancel}) => {
-  const [editedUser, setEditedUser] = useState({ ...user });
+  const [editedUser, setEditedUser] = useState({ ...user,password: '******' });
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [oldEmail] = useState(user.email);
   const dropdownRef = useRef(null);
 
-  const editableFields = ['name', 'email', 'phone', 'isAdmin', 'userAmount'];
+  const editableFields = ['name', 'email', 'phone', 'isAdmin', 'userAmount', 'password', 'style'];
 
   const validations = {
     name: (value) => /^[a-zA-Z]+ [a-zA-Z]+$/.test(value),
@@ -19,6 +19,7 @@ const EditUserDialogBox = ({ user, onCancel}) => {
     isAdmin: (value) => typeof value === 'boolean',
     userAmount: (value) => /^\d+$/.test(value),
     style: (value) => /^[0-4]$/.test(value),
+    password: (value) => value.length >= 6,
   };
 
   const handleSave = async () => {
@@ -114,12 +115,23 @@ const EditUserDialogBox = ({ user, onCancel}) => {
                   )}
                 </div>
               ) : (
-                <input
-                  type="text"
-                  value={editedUser[key]}
-                  style={{ outline: 'none' }}
-                  onChange={(e) => setEditedUser({ ...editedUser, [key]: e.target.value })}
-                />
+                <>
+                  {key === 'password' ? (
+                    <input
+                      type="password"
+                      value={editedUser[key]}
+                      style={{ outline: 'none' }}
+                      onChange={(e) => setEditedUser({ ...editedUser, [key]: e.target.value })}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      value={editedUser[key]}
+                      style={{ outline: 'none' }}
+                      onChange={(e) => setEditedUser({ ...editedUser, [key]: e.target.value })}
+                    />
+                  )}
+                </>
               )}
             </div>
           ))}

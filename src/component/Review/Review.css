@@ -67,7 +67,6 @@
     margin-top: 35px;
     width: 90%;
     object-fit: contain;
-    justify-content: space-between;
     align-items: center;
     margin-left: 25px;
     margin-bottom: 35px;
@@ -75,6 +74,8 @@
 }
 
 .client .clientName {
+    margin-left: 25px;
+    margin-top: 10px;
     font-size: 15px;
     font-weight: bold;
     text-align: start;

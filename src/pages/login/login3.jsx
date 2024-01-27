@@ -93,12 +93,15 @@ const Login = () => {
         toast.success(message);
         const { token } = responseData;
         localStorage.setItem('token', token);
-       // navigate('/admin/dashboard');
         const jsonDecode = JSON.stringify(responseData);
         localStorage.setItem('user', jsonDecode);
         setTimeout(() => {
+          if (responseData.isAdmin) {
 
             navigate('/admin/dashboard');
+          } else {
+            navigate('/dashboard');
+          }
           }, 1000);
 
       } else {
