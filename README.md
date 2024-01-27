@@ -33,13 +33,9 @@ The Smart Investment web application is a state-of-the-art web application that 
 
 - Portfolio Comparison: comparing portfolios in terms of their dividend yield, yearly returns, capital web appreciation, and liquidity.
  
-- Transaction History: View the transaction history for all investments.
- 
 - Financial News and Insights: Up-to-date financial news and articles; data aggregation from third-party related news sites
  
 - Personalized Recommendations: Simple algorithm-driven investment recommendations based on the user's financial criteria and goals
- 
-- Demo buy sell: The web app facilitates easy buying and selling of available asset classes and listed securities for learning purposes.
  
 - Stock search and sorting: The web app facilitates users looking up stocks and investment opportunities.
 
