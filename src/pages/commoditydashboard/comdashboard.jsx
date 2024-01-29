@@ -5,7 +5,7 @@ import ScrollToTop from "react-scroll-to-top";
 import { ToastContainer } from 'react-toastify';
 import { getAllAssets, getCommo, getMetals } from '../../apis/api';
 import './dashboard.css';
-
+import { AlignCenter } from 'lucide-react';
 
 
 function AssetDashboard() {
@@ -242,12 +242,11 @@ function AssetDashboard() {
       <InfoCard icon={<FaCubes />} value={totalMetals} label="Total Metals" />
       </div>
 
-
-    <div className = "iframe-container" style={{ padding: '20px' }}>
+    <div className = "iframe-container" style={{ padding: '0px' }}>
       <iframe
         src={`https://www.nepsealpha.com/trading/chart`}
         title="Stock Chart"
-        width="100%"
+        width="98%"
         height="500"
         style={{ border: '1px solid #ccc' }}
       ></iframe>

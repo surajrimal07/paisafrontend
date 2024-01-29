@@ -46,9 +46,9 @@ const StockDetailView = () => {
   return (
     <div className="container mt-4">
 
-<h2 className=" ">{completeStockInfo.name} ({completeStockInfo.symbol})</h2>
+<h2 className="stocktitle">{completeStockInfo.name} ({completeStockInfo.symbol})</h2>
 
-<div style={{ padding: '20px' }}>
+<div style={{ padding: '10px' }}>
       <iframe
         src={`https://www.nepsealpha.com/trading/chart?symbol=${completeStockInfo.symbol}`}
         title="Stock Chart"

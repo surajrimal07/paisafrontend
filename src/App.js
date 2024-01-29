@@ -38,8 +38,7 @@ import TermsAndConditions from './component/terms/terms';
 
 import PortfolioView from './pages/portfolio/portfolio';
 import PortfolioCompare from './pages/portfolio/portfoliocompare';
-
-
+import NotFound from './pages/404/notfound';
 const Homepage = () => {
 
   return (
@@ -65,30 +64,30 @@ function App() {
           <Route path="/signup" element={<Register />} />
           <Route path="/aboutus" element={<AboutUsPage />} />
           <Route path="/feathures" element={<Feathures />} />
-          <Route path="/myprofile" element={<MyProfilePage />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/news" element={<NewsDisplay />} />
           <Route path="/disclosure" element={<Disclosure />} />
-          <Route path="/stocks" element={<Stock />} />
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
           <Route path="/termsandconditions" element={<TermsAndConditions />} />
           <Route path="/disclaimer" element={<Disclaimer />} />
-          <Route path="/stockdetailview" element={<StockDetailView />} />
           <Route path="/career" element={<Career />} />
-          <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/complaint" element={<Complaint />} />
-          <Route path="/watchlist" element={<UserWatchlists />} />
-          <Route path="/commodities" element={<AssetDashboard />} />
-          <Route path="/portfolio/:id" element={<PortfolioView />} />
-          <Route path="/portfoliocompare/:id" element={<PortfolioCompare />} />
 
           <Route element = {<UserRoutes/>}>
-            <Route path ='/profile' element={<h1> Profile </h1>} />
+            <Route path="/myprofile" element={<MyProfilePage />} />
+            <Route path="/watchlist" element={<UserWatchlists />} />
+            <Route path="/commodities" element={<AssetDashboard />} />
+            <Route path="/portfolio/:id" element={<PortfolioView />} />
+            <Route path="/portfoliocompare/:id" element={<PortfolioCompare />} />
+            <Route path="/dashboard" element={<UserDashboard />} />
+            <Route path="/stockdetailview" element={<StockDetailView />} />
+            <Route path="/stocks" element={<Stock />} />
+          </Route>
 
-            </Route>
           <Route element = {<AdminRoutes/>} >
             <Route path ='/admin/dashboard' element={<Dashboard/>} />
-            </Route>
+          </Route>
+          <Route path="*" element={<NotFound />} />
 
         </Routes>
         </div>

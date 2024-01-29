@@ -26,12 +26,10 @@ const api = axios.create({
   headers: {
     'Authorization': `Bearer ${token}`,
    'Content-Type': 'application/json',
-    //"Content-Type" : "multipart/form-data",
   },
 });
 
 //seperate header for auth
-
 const config = {
     headers : {
         'authorization' : `Bearer ${token}`,

@@ -44,14 +44,12 @@
   width: 95%;
 }
 
-.iframe-container {
+/* .iframe-container {
   width: 97%;
   height: 100%;
   overflow: hidden;
   position: relative;
-  padding-top: 56.25%;
-
-}
+} */
 
 .info-card-container {
   margin-right: 10px;

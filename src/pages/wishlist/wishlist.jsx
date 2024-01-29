@@ -355,8 +355,8 @@ const UserWatchlists = () => {
       <div className="user-info">
         <img src={userData.dpImage} alt="User DP" />
         <h2>{userData.name}</h2>
-        <p>{userData.email}</p>
-        <p>{userData.phone}</p>
+        <p>Email: {userData.email}</p>
+        <p>Phone: {userData.phone}</p>
         <p>Balance: Rs {userData.userAmount}</p>
       </div>
       <h4>Your Watchlists: </h4>

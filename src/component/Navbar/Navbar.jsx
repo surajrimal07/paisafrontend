@@ -10,12 +10,14 @@ import './navbarO.css';
 import sound from './noti.mp3';
 
 const Navbar = () => {
-  const { lastMessage } = useWebSocket('ws://localhost:8081');
+  //const { lastMessage } = useWebSocket('ws://localhost:8081');
+  const { lastMessage } = useWebSocket('ws://https://paisabackend.el.r.appspot.com/:8081');
   const [index, setIndex] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [notificationCount, setNotificationCount] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
+  const[connected,setConnected]=useState(false);
   const notificationSound = useRef(new Audio(sound));
   const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
@@ -130,7 +132,7 @@ const Navbar = () => {
 
   useEffect(() => {
     if (lastMessage) {
-
+      setConnected(true);
       //update notification list from local storage
       const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
       setNotifications(storedNotifications);
@@ -360,12 +362,13 @@ const Navbar = () => {
 </span>
   </div>
             {/** end of clear notifications */}
-
-                       {notifications.length === 0 ? (
-            <div className="no-notifications">No notifications 🎉</div>
-          ) : (
-            <div className="notification-list">{notificationItems}</div>
-          )}
+            {!connected ? (
+  <div className="socket-error">Socket Error</div>
+) : notifications.length === 0 ? (
+  <div className="no-notifications">No notifications 🎉</div>
+) : (
+  <div className="notification-list">{notificationItems}</div>
+)}
                     </div>
 
                   )}

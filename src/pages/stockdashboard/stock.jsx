@@ -59,20 +59,22 @@ const StockDashboard = () => {
   return (
     <div className="container mt-4">
       <h2 className="mb-4">Stock Dashboard</h2>
-      <div className = "iframe-container" style={{ padding: '20px' }}>
+      <div className = "iframe-container" style={{ padding: '0px' }}>
       <iframe
         src={`https://www.nepsealpha.com/trading/chart`}
         title="Stock Chart"
-        width="100%"
+        width="98%"
         height="500"
         style={{ border: '1px solid #ccc' }}
       ></iframe>
     </div>
+    <div className='stockto'>
       <TopGainers stocks={gainers} />
       <TopLosers stocks={losers} />
       <TopVolume stocks={topVolume} />
       <TopTurnover stocks={topTurnover} />
       <TopTransaction stocks={topTransaction} />
+      </div>
     </div>
   );
 };
