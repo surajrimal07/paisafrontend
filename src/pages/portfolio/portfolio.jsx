@@ -40,7 +40,6 @@ const PortfolioView = () => {
         ) : (
           <div>
             <h2 className="portfolio-title">{portfolio.name} Portfolio</h2>
-
             <div className="portfolio-info-container">
             <div className="card-container">
             <div className="card">
