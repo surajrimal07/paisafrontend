@@ -393,20 +393,16 @@ const InfoCard = ({ icon, value, label }) => {
                       Rename Portfolio
                     </button>
 
-
                   </li>
                   <li key={portfolioItem._id}>
             <Link to={`/portfolio/${portfolioItem._id}`} className="dropdown-link">
               <button className="dropdown-item">View Portfolio</button>
             </Link>
           </li>
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => handleRenameClick(portfolioItem._id, portfolioItem.name)}
-                    >
-                      Compare Portfolio
-                    </button>
+                  <li key={portfolioItem._id}>
+                  <Link to={`/portfoliocompare/${portfolioItem._id}`} className="dropdown-link">
+              <button className="dropdown-item">Compare Portfolio</button>
+            </Link>
                   </li>
                   <li>
                     <button

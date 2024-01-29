@@ -21,8 +21,8 @@ import Feathures from './component/feathures/feathures';
 import Dashboard from './pages/admin/dashboard';
 import MyProfilePage from './pages/dashboard/myprofile';
 //import Login from './pages/login/Login';
-import Login from './pages/login/login3';
 import UserDashboard from './pages/home/userdashboard';
+import Login from './pages/login/login3';
 
 import { AdminRoutes } from './protected/AdminRoutes';
 import { UserRoutes } from './protected/UserRoutes';
@@ -37,6 +37,7 @@ import PrivacyPolicy from './component/privacy/privacy';
 import TermsAndConditions from './component/terms/terms';
 
 import PortfolioView from './pages/portfolio/portfolio';
+import PortfolioCompare from './pages/portfolio/portfoliocompare';
 
 
 const Homepage = () => {
@@ -79,6 +80,7 @@ function App() {
           <Route path="/watchlist" element={<UserWatchlists />} />
           <Route path="/commodities" element={<AssetDashboard />} />
           <Route path="/portfolio/:id" element={<PortfolioView />} />
+          <Route path="/portfoliocompare/:id" element={<PortfolioCompare />} />
 
           <Route element = {<UserRoutes/>}>
             <Route path ='/profile' element={<h1> Profile </h1>} />

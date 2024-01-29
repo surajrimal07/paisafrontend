@@ -1,0 +1,102 @@
+/* PortfolioCompare.css */
+
+.portfolio-compare {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .loading-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .portfolio-title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .portfolio-info {
+    margin-top: 20px;
+  }
+
+  /* Add styling for the select dropdown */
+  #comparePortfolio {
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+  }
+
+  /* Center and style the label */
+  label {
+    display: block;
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  /* Center the "Select Portfolio to Compare" message */
+  .select-portfolio-message {
+    font-size: 18px;
+    color: #777;
+    margin-top: 20px;
+  }
+
+  /* PortfolioCompare.css */
+
+.portfolio-compare {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .compare-button {
+    background-color: #525253;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    margin-left: 10px;
+  }
+
+  .compare-button:hover {
+    background-color: #0056b3;
+  }
+
+  .comparison-table {
+    margin-top: 20px;
+  }
+
+  .comparison-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+
+  .comparison-table th, .comparison-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .comparison-table th {
+    background-color: rgba(14, 179, 179, 0.952);;
+    color: #fff;
+  }
+
+  .select-portfolio-message {
+    color: #ff0000;
+    margin-top: 10px;
+  }
