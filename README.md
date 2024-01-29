@@ -86,9 +86,9 @@ Before you start, make sure you have the following installed:
 -  Mongo DB
 -  Express JS
 -  Hashing
--  testing
--  web scarping
--  cloud deployment
+-  Testing
+-  Web scarping
+-  Cloud deployment
 
 ## Requirements
 - Node JS runtime v20.8.1
