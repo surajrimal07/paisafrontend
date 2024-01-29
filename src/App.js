@@ -36,6 +36,8 @@ import FAQ from './component/faq/faq';
 import PrivacyPolicy from './component/privacy/privacy';
 import TermsAndConditions from './component/terms/terms';
 
+import PortfolioView from './pages/portfolio/portfolio';
+
 
 const Homepage = () => {
 
@@ -76,6 +78,8 @@ function App() {
           <Route path="/complaint" element={<Complaint />} />
           <Route path="/watchlist" element={<UserWatchlists />} />
           <Route path="/commodities" element={<AssetDashboard />} />
+          <Route path="/portfolio/:id" element={<PortfolioView />} />
+
           <Route element = {<UserRoutes/>}>
             <Route path ='/profile' element={<h1> Profile </h1>} />
 

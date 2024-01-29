@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FaBell } from 'react-icons/fa';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useWebSocket from 'react-use-websocket';
 import { getIndex } from '../../apis/api.js';
 import logo from '../images/logo.png';
 import './navbarO.css';
 import sound from './noti.mp3';
-import { ToastContainer, toast } from 'react-toastify';
 
 const Navbar = () => {
   const { lastMessage } = useWebSocket('ws://localhost:8081');
@@ -296,7 +296,7 @@ const Navbar = () => {
                     to={'/dashboard'}
                     activeClassName="active"
                   >
-                    Dashboard
+                    Portfolio
                   </NavLink>
                 </li>
               )}

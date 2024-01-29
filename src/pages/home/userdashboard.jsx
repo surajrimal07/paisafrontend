@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { FaCubes, FaDollarSign, FaMoneyBill, FaMoneyCheck, FaPlus, FaUser } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
-import { addStockToPortfolio,getMetals,getCommo,getAllAssets, createPortfolio, deletePortfolio, getPortfolio, removeStockFromPortfolio, renamePortfolio } from '../../apis/api.js';
+import { addStockToPortfolio, createPortfolio, deletePortfolio, getAllAssets, getCommo, getMetals, getPortfolio, removeStockFromPortfolio, renamePortfolio } from '../../apis/api.js';
 import NoImage from '../wishlist/a.png';
 import HandleAddStock from './handleaddstock';
 import HandleCreate from './handlecreate';
 import HandleDelete from './handledelete';
 import HandleRemoveStock from './handledeletestock';
 import HandleRename from './handlerename';
+import { Link } from 'react-router-dom';
 
 import './user.css';
 
@@ -84,6 +85,9 @@ const UserDashboard = () => {
 
           setPortfolioStockCounts(stockCounts);
 
+          const jsonDecode = JSON.stringify(port.data);
+          localStorage.setItem('Portfolio', jsonDecode);
+
           const allStocks = port.data.portfolio.reduce(
             (acc, portfolioItem) => acc.concat(portfolioItem.stocks || []),
             []
@@ -121,6 +125,8 @@ const handleRenameClick = (portfolioId,portfolioName ) => {
   setSelectedPortfolioName(portfolioName);
   setShowRenameDialog(true);
 };
+
+
 
 const handleDeleteClick = (portfolioId, portfolioName) => {
   setSelectedPortfolio(portfolioId);
@@ -385,6 +391,21 @@ const InfoCard = ({ icon, value, label }) => {
                       onClick={() => handleRenameClick(portfolioItem._id, portfolioItem.name)}
                     >
                       Rename Portfolio
+                    </button>
+
+
+                  </li>
+                  <li key={portfolioItem._id}>
+            <Link to={`/portfolio/${portfolioItem._id}`} className="dropdown-link">
+              <button className="dropdown-item">View Portfolio</button>
+            </Link>
+          </li>
+                  <li>
+                    <button
+                      className="dropdown-item"
+                      onClick={() => handleRenameClick(portfolioItem._id, portfolioItem.name)}
+                    >
+                      Compare Portfolio
                     </button>
                   </li>
                   <li>
