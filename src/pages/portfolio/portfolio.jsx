@@ -44,12 +44,12 @@ const PortfolioView = () => {
             <div className="card-container">
             <div className="card">
               <h3>Total Units:</h3>
-              <p>{portfolio.totalunits}</p>
+              <p>{portfolio.totalunits} Kittas</p>
             </div>
 
             <div className="card">
               <h3>Portfolio Cost:</h3>
-              <p>{portfolio.portfoliocost}</p>
+              <p>Rs {portfolio.portfoliocost}</p>
             </div>
 
             <div className="card">
@@ -61,7 +61,15 @@ const PortfolioView = () => {
 
             <div className="card">
               <h3>Portfolio Value:</h3>
-              <p>{portfolio.portfoliovalue}</p>
+              <p>Rs {portfolio.portfoliovalue}</p>
+            </div>
+            <div className="card">
+  <h3>Percentage P&L:</h3>
+  <p style={{ color: portfolio.percentage >= 0 ? 'green' : 'red' }}>{portfolio.percentage >= 0 ? '+' : '-'}{Math.abs(portfolio.percentage)}%</p>
+</div>
+<div className="card">
+              <h3>Recommendation:</h3>
+              <p>{portfolio.recommendation}</p>
             </div>
           </div>
             </div>

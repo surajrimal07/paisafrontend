@@ -323,6 +323,7 @@ const totalPortfolios = userPort && userPort.portfolio ? userPort.portfolio.leng
 const totalStockUnits = userPort && userPort.portfolio ? userPort.portfolio.reduce((total, portfolio) => total + (portfolio.totalunits || 0), 0) : 0;
 const totalPortfolioValue = userPort && userPort.portfolio ? userPort.portfolio.reduce((total, portfolio) => total + (portfolio.portfoliovalue || 0), 0) : 0;
 const totalPortfolioCost = userPort && userPort.portfolio ? userPort.portfolio.reduce((total, portfolio) => total + (portfolio.portfoliocost || 0), 0) : 0;
+const percentage = (Math.abs(totalPortfolioValue - totalPortfolioCost) / totalPortfolioCost * 100).toFixed(1) + '%';
 
 const InfoCard = ({ icon, value, label }) => {
   return (
@@ -365,6 +366,17 @@ const InfoCard = ({ icon, value, label }) => {
   }
   label="Total Net Gain/Loss"
 />
+<InfoCard
+  icon={<FaMoneyBill />}
+  value={
+    <span style={{ color: totalPortfolioValue - totalPortfolioCost >= 0 ? 'green' : 'red' }}>
+      Rs {totalPortfolioValue - totalPortfolioCost >= 0 ? '' : '-'}
+      {percentage}
+    </span>
+  }
+  label="Percentage P/L"
+/>
+
           <InfoCard icon={<FaMoneyCheck />} value={` ${totalPortfolios}`} label="Total Portfolios" />
           <InfoCard icon={<FaCubes />} value={totalStocksCount} label="Total Stocks" />
         </div>
@@ -444,14 +456,24 @@ const InfoCard = ({ icon, value, label }) => {
             {portfolioItem.portfoliovalue !== undefined && portfolioItem.stocks && portfolioItem.stocks.length > 0 &&(
               <p>Portfolio Value: Rs {portfolioItem.portfoliovalue}</p>
             )}
+            {portfolioItem.portfoliovalue !== undefined && portfolioItem.stocks && portfolioItem.stocks.length > 0 && (
+              <p>
+                Percentage: <span className={portfolioItem.portfoliovalue - portfolioItem.portfoliocost >= 0 ? 'profit' : 'loss'}>
+                  {portfolioItem.percentage}%
+                </span>
+              </p>
+            )}
 
-{portfolioItem.portfoliovalue !== undefined && portfolioItem.stocks && portfolioItem.stocks.length > 0 && (
-  <p>
-    Profit / Loss: <span className={portfolioItem.portfoliovalue - portfolioItem.portfoliocost >= 0 ? 'profit' : 'loss'}>
-      Rs {portfolioItem.portfoliovalue - portfolioItem.portfoliocost}
-    </span>
-  </p>
-)}
+            {portfolioItem.portfoliovalue !== undefined && portfolioItem.stocks && portfolioItem.stocks.length > 0 && (
+              <p>
+                Profit / Loss: <span className={portfolioItem.portfoliovalue - portfolioItem.portfoliocost >= 0 ? 'profit' : 'loss'}>
+                  Rs {portfolioItem.portfoliovalue - portfolioItem.portfoliocost}
+                </span>
+              </p>
+            )}
+            {portfolioItem.portfoliocost !== undefined &&  portfolioItem.stocks && portfolioItem.stocks.length > 0 &&(
+              <p>Recommendation: {portfolioItem.recommendation}</p>
+            )}
             {portfolioItem.stocks && portfolioItem.stocks.length > 0 ? (
 
               <div className="stocks">

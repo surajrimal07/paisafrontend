@@ -68,6 +68,14 @@ const PortfolioCompare = () => {
           portfolio: portfolio.portfoliovalue,
           comparePortfolio: comparePortfolio.portfoliovalue,
         },
+        percentage: {
+            portfolio: portfolio.percentage,
+            comparePortfolio: comparePortfolio.percentage,
+          },
+          recom: {
+            portfolio: portfolio.recommendation,
+            comparePortfolio: comparePortfolio.recommendation,
+          },
       };
 
       setComparisonResult(result);
@@ -134,6 +142,16 @@ const PortfolioCompare = () => {
                     <td>Portfolio Value</td>
                     <td>Rs {comparisonResult.portfolioValue.portfolio}</td>
                     <td>Rs {comparisonResult.portfolioValue.comparePortfolio}</td>
+                  </tr>
+                  <tr>
+                    <td>Percentage P&L</td>
+                    <td>{comparisonResult.percentage.portfolio}%</td>
+                    <td>{comparisonResult.percentage.comparePortfolio}%</td>
+                  </tr>
+                  <tr>
+                    <td>Recommendation</td>
+                    <td>{comparisonResult.recom.portfolio}</td>
+                    <td>{comparisonResult.recom.comparePortfolio}</td>
                   </tr>
                 </tbody>
               </table>
