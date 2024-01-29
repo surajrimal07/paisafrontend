@@ -37,7 +37,7 @@ The Smart Investment web application is a state-of-the-art web application that 
 - Stock search and sorting: The web app facilitates users looking up stocks and investment opportunities.
 
 ## Screenshots
-<img src="public/Screenshots/home.jpeg?raw=true" width="400"/> <img src="figma/grid/Screenshots/2.jpg?raw=true" width="400"/>
+<img src="public/Screenshots/homepage.jpeg?raw=true" width="400"/> <img src="figma/grid/Screenshots/2.jpg?raw=true" width="400"/>
 <img src="figma/grid/Screenshots/3.jpg?raw=true" width="400"/> <img src="figma/grid/Screenshots/4.jpg?raw=true" width="400"/>
 <img src="figma/grid/Screenshots/5.jpg?raw=true" width="400"/>
 
