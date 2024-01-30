@@ -218,7 +218,7 @@ const Navbar = () => {
     <>
       <nav className="navbar navbar-expand-lg fixed-top custom-navbar">
         <div className="container-fluid">
-          <NavLink className="navbar-brand text fw-bold" to="/" activeClassName="active" exact>
+          <NavLink className="navbar-brand text fw-bold" to="/" activeclassname="active" exact="true">
             <img src={logo} alt="Logo" className="me-2" style={{ width: '30px', height: '30px' }} />
             10Paisa🚀 {index && <span className="index">{index}</span>}
           </NavLink>
@@ -236,12 +236,12 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <NavLink className="nav-link" to="/" activeClassName="active" exact>
+                <NavLink className="nav-link" to="/" activeclassname="active" exact="true">
                   Home
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link" to="/news" activeClassName="active" exact>
+                <NavLink className="nav-link" to="/news" activeclassname="active" exact="true">
                   News
                 </NavLink>
               </li>
@@ -260,50 +260,50 @@ const Navbar = () => {
 
     <div className={`dropdown-menu ${showDropdown ? 'show' : ''}`} aria-labelledby="profileDropdown">
       <li>
-        <NavLink className="dropdown-item" to="/myprofile" activeClassName="active">
+        <NavLink className="dropdown-item" to="/myprofile" activeclassname="active">
           Profile
         </NavLink>
       </li>
       <li>
-        <NavLink className="dropdown-item" to="/watchlist" activeClassName="active">
+        <NavLink className="dropdown-item" to="/watchlist" activeclassname="active">
           Watchlist
         </NavLink>
       </li>
       <li>
-        <NavLink className="dropdown-item" to="/stocks" activeClassName="active">
+        <NavLink className="dropdown-item" to="/stocks" activeclassname="active">
           Trending
         </NavLink>
       </li>
       <li>
-        <NavLink className="dropdown-item" to="/commodities" activeClassName="active">
+        <NavLink className="dropdown-item" to="/commodities" activeclassname="active">
           Stocks
         </NavLink>
       </li>
     </div>
   </li>
 )}
-              {/* <li className="nav-item">
-                <NavLink className="nav-link" to="/feathures" activeClassName="active">
-                  Features
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/aboutus" activeClassName="active">
-                  About Us
-                </NavLink>
-              </li> */}
 
               {user && (
                 <li className="nav-item">
                   <NavLink
                     className="nav-link"
                     to={'/dashboard'}
-                    activeClassName="active"
+                    activeclassname="active"
                   >
                     Portfolio
                   </NavLink>
                 </li>
               )}
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/feathures" activeclassname="active">
+                  Features
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/aboutus" activeclassname="active">
+                  About Us
+                </NavLink>
+              </li>
             </ul>
             <form className="d-flex" role="search">
               {user ? (
@@ -328,7 +328,7 @@ const Navbar = () => {
         )}
         {/** end of notification count */}
                                   {/* Notification Dropdown */}
-                                  {showNotifications && (
+          {showNotifications && (
                     <div
                     ref={notificationDropdownRef}
                     className="notification-dropdown"
@@ -408,14 +408,13 @@ const Navbar = () => {
   </button>
 
   <ul className="dropdown-menu">
-
-{user.isAdmin ? (
-  <li>
-    <NavLink className="dropdown-item" to="/admin/dashboard" activeClassName="active">
-      Admin Dashboard
-    </NavLink>
-  </li>
-) : null}
+    {user.isAdmin && (
+      <li>
+        <NavLink className="dropdown-item" to="/admin/dashboard" activeclassname="active">
+          Admin Dashboard
+        </NavLink>
+      </li>
+    )}
     <li>
       <button
         onClick={handleLogout}
@@ -428,15 +427,10 @@ const Navbar = () => {
   </ul>
 </div>
 
-
-
                 </>
-
-
-
               ) : !isLoginPage && (
                 <>
-                  <NavLink className="btn btn-outline-primary me-2" to={'/login'} activeClassName="active">
+                  <NavLink className="btn btn-outline-primary me-2" to={'/login'} activeclassname="active">
                     Login
                   </NavLink>
                   <button

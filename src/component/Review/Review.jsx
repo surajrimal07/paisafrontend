@@ -13,20 +13,15 @@ const Review = () => {
                     <span className="subTitle">Our Client's word say everything</span>
                     <div className="reviewBoxContainer">
                         {data.map((item) => (
-                            <div className="rCard" id={item.id} >
+                            <div key={item.id} className="rCard">
                                 <span className="desc">{item.desc1}</span>
                                 <span className="desc">{item.desc}</span>
                                 <div className="client">
-
                                     <BsPersonCircle size='40px' color='rgb(87, 86, 86)' />
                                     <h4 className="clientName">{item.client}</h4>
-
                                 </div>
-
                             </div>
                         ))}
-
-
                     </div>
                     <div className="more">
                         <CgChevronLeftO size='28px' cursor='pointer' />

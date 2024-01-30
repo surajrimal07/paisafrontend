@@ -186,13 +186,15 @@ const Footer = () => {
                                       <div className="google-map">
               </div>
               <div className="middleFooter" style={{ display: 'flex', justifyContent: 'space-around' }}>
-            <div className="google-map">
-              <iframe
-                title="Google Map"
-                width="450"
-                height="300"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.7173622488464!2d85.32441701506173!3d27.717368382839795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19bb09ebc50b%3A0x98e49d824c13c675!2sSamakushi%20Road%2C%20Kathmandu%2044600!5e0!3m2!1sen!2snp!4v1648277850934!5m2!1sen!2snp"
-              ></iframe>
+              <div className="google-map">
+                <iframe
+                    title="Google Map"
+                    width="450"
+                    height="300"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.7173622488464!2d85.32441701506173!3d27.717368382839795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19bb09ebc50b%3A0x98e49d824c13c675!2sSamakushi%20Road%2C%20Kathmandu%2044600!5e0!3m2!1sen!2snp!4v1648277850934!5m2!1sen!2snp"
+                    loading="lazy"
+                    allowFullScreen
+                ></iframe>
             </div>
 
             <div style={{ width: '100px' }}></div>

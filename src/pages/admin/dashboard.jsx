@@ -597,7 +597,6 @@ function AdminDashboard() {
       <td>{asset.ltp}</td>
       <td>{asset.pointchange}</td>
       <td>
-      <td>
   <span style={{ color: asset.percentchange > 0 ? '#15AD4C' : (asset.percentchange < 0 ? '#B91212' : 'black') }}>
     {asset.percentchange}%
     {(asset.percentchange !== 0 || asset.percentchange === 0) && (
@@ -608,8 +607,6 @@ function AdminDashboard() {
       </>
     )}
   </span>
-</td>
-
 </td>
     </tr>
   ))}
