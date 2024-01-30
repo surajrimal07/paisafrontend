@@ -1,7 +1,7 @@
 import axios from "axios";
 
-//const baseURL = "http://localhost:5000";
-const baseURL = "https://paisabackend.el.r.appspot.com"
+const baseURL = "http://localhost:5000";
+//const baseURL = "https://paisabackend.el.r.appspot.com"
 const token = localStorage.getItem('token');
 
 //testing logger

@@ -10,8 +10,8 @@ import './navbarO.css';
 import sound from './noti.mp3';
 
 const Navbar = () => {
-  //const { lastMessage } = useWebSocket('ws://localhost:8081');
-  const { lastMessage } = useWebSocket('ws://https://paisabackend.el.r.appspot.com/:8081');
+  const { lastMessage } = useWebSocket('ws://localhost:8081');
+  //const { lastMessage } = useWebSocket('ws://https://paisabackend.el.r.appspot.com/:8081');
   const [index, setIndex] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -60,8 +60,6 @@ const Navbar = () => {
             {arrow} {indexData.index} ({indexData.percentage})
           </span>
         );
-
-
         localStorage.setItem('index', JSON.stringify(indexData));
         setIndex(indexedValue);
       } else {
@@ -141,7 +139,7 @@ const Navbar = () => {
 
       // only store 50 items //test code //
       storedNotifications.unshift(newNotification);
-      const trimmedNotifications = storedNotifications.slice(0, 50);
+      const trimmedNotifications = storedNotifications.slice(0, 20);
 
       setNotifications(trimmedNotifications);
 
@@ -188,7 +186,11 @@ const Navbar = () => {
       )} */}
       <div className="notification-content">
         <strong>{notification.title}</strong>
-        <p>{notification.description.slice(0, 50)}...</p>
+          <p>
+    {notification.description && notification.description.length > 50
+      ? `${notification.description.slice(0, 60)}...`
+      : notification.description}
+  </p>
       </div>
     </div>
   ));
@@ -346,36 +348,44 @@ const Navbar = () => {
                       }}
                     >
             {/** Clear Notifications */}
-            <div className="dropdown-header">
-            <span
-  className="clear-icon"
-  onClick={handleClearNotifications}
-  role="button"
-  tabIndex={0}
-  style={{
-    cursor: 'pointer',
-    fontSize: '14px',
-  }}
->
-<p>❌</p>
- <span className="clear-text" style={{ display: 'none' }}>Clear Notifications</span>
-</span>
-  </div>
+            <div className="dropdown-header" style={{ position: 'sticky', top: '0', zIndex: '100' }}>
+  {notifications.length > 0 && (
+    <span
+      className="clear-icon"
+      onClick={handleClearNotifications}
+      role="button"
+      tabIndex={0}
+      style={{
+        cursor: 'pointer',
+        fontSize: '14px',
+        marginLeft: '230px',
+      }}
+      title="Clear notifications"
+    >
+      ❌
+    </span>
+  )}
+
+  {(!connected) && (
+    <span
+      style={{ color: 'orange', marginLeft: '0px', fontSize: '14px', whiteSpace: 'nowrap' }}
+      title="Socket error"
+    >
+      ❗
+    </span>
+  )}
+</div>
+
             {/** end of clear notifications */}
-            {!connected ? (
-  <div className="socket-error">Socket Error</div>
-) : notifications.length === 0 ? (
+            {notifications.length === 0 ? (
   <div className="no-notifications">No notifications 🎉</div>
 ) : (
-  <div className="notification-list">{notificationItems}</div>
+  <div className="notification-list"> {notificationItems.slice(0, 20)}</div>
 )}
-                    </div>
-
-                  )}
-                   </div>
-
-
-                   <div className={`nav-item dropdown ${showDropdown ? 'show' : ''}`} onMouseEnter={() => setShowDropdown(true)} onMouseLeave={() => setShowDropdown(false)}>
+</div>
+)}
+</div>
+<div className={`nav-item dropdown ${showDropdown ? 'show' : ''}`} onMouseEnter={() => setShowDropdown(true)} onMouseLeave={() => setShowDropdown(false)}>
   <button
     className="btn dropdown-toggle btn btn-outline-grey"
     type="button"
