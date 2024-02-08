@@ -36,9 +36,10 @@ import FAQ from './component/faq/faq';
 import PrivacyPolicy from './component/privacy/privacy';
 import TermsAndConditions from './component/terms/terms';
 
+import NotFound from './pages/404/notfound';
+import Chart from './pages/chart/chart';
 import PortfolioView from './pages/portfolio/portfolio';
 import PortfolioCompare from './pages/portfolio/portfoliocompare';
-import NotFound from './pages/404/notfound';
 const Homepage = () => {
 
   return (
@@ -82,6 +83,7 @@ function App() {
             <Route path="/dashboard" element={<UserDashboard />} />
             <Route path="/stockdetailview" element={<StockDetailView />} />
             <Route path="/stocks" element={<Stock />} />
+            <Route path="/chart" element={<Chart />} />
           </Route>
 
           <Route element = {<AdminRoutes/>} >

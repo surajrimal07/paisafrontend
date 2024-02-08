@@ -8,7 +8,6 @@ export const UserRoutes = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(user != null ? 'user is not null' : 'user is null');
     if (user === null) {
       toast.error('Please login to continue', {
         position: 'top-right',

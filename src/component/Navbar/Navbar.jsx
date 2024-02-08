@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FaBell } from 'react-icons/fa';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useWebSocket from 'react-use-websocket';
 import { getIndex } from '../../apis/api.js';
@@ -50,20 +50,21 @@ const Navbar = () => {
 
       const indexData = res.data;
 
-      if (indexData && indexData.index && indexData.percentage) {
-        const isNegative = indexData.percentage.charAt(0) === '-';
+      if (indexData && indexData.data.index && indexData.data.percentageChange) {
+        const percentageChangeString = indexData.data.percentageChange.toString();
+        const isNegative = percentageChangeString.charAt(0) === '-';
         const arrow = isNegative ? '↓' : '↑';
         const color = isNegative ? 'red' : 'green';
 
         const indexedValue = (
           <span style={{ color: color, fontSize: '0.7em'}}>
-            {arrow} {indexData.index} ({indexData.percentage})
+            {arrow} {indexData.data.index} ({indexData.data.percentageChange+"%"})
           </span>
         );
         localStorage.setItem('index', JSON.stringify(indexData));
         setIndex(indexedValue);
       } else {
-        toast.error("Index Error");
+        //toast.error("Index Error");
       }
     } catch (error) {
       console.error('Error fetching index:', error);
@@ -213,6 +214,13 @@ const Navbar = () => {
     // localStorage.setItem('notificationCount', '0');
   };
 
+  const handleIndexClick = (e) => {
+    e.preventDefault();
+    if (index) {
+      navigate('/chart');
+    }
+  };
+
   const isLoginPage = location.pathname === '/login';
   return (
     <>
@@ -220,7 +228,7 @@ const Navbar = () => {
         <div className="container-fluid">
           <NavLink className="navbar-brand text fw-bold" to="/" activeclassname="active" exact="true">
             <img src={logo} alt="Logo" className="me-2" style={{ width: '30px', height: '30px' }} />
-            10Paisa🚀 {index && <span className="index">{index}</span>}
+            10Paisa🚀 {index && <span className="index" onClick={handleIndexClick}>{index}</span>}
           </NavLink>
           <button
             className="navbar-toggler"

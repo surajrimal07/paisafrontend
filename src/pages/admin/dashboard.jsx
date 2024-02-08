@@ -3,7 +3,7 @@ import { FaArrowDown, FaArrowUp, FaCubes, FaDollarSign, FaExchangeAlt, FaSortDow
 import { Link } from 'react-router-dom';
 import ScrollToTop from "react-scroll-to-top";
 import { ToastContainer, toast } from 'react-toastify';
-import { deleteUser, getAllAssets, getAllUsers, getCommo, getMetals } from '../../apis/api';
+import { deleteUser, getAllAssets, getAllPortfolios, getAllUsers, getCommo, getMetals } from '../../apis/api';
 import './dashboard.css';
 import UserDialogBox from './dialogbox_admin.jsx';
 import EditUserDialogBox from './editingbox_admin.jsx';
@@ -14,9 +14,11 @@ function AdminDashboard() {
   const [users, setUsers] = useState([]);
   const [commodities, setCommodities] = useState([]);
   const [metals, setMetals] = useState([]);
+  const [portfolios, setPortfolios] = useState([]);
   //const [currentPage, setCurrentPage] = useState({});
   const [currentUsersPage, setCurrentUsersPage] = useState(1);
   const [currentAssetsPage, setCurrentAssetsPage] = useState(1);
+
   const [currentCommoditiesPage, setCurrentCommoditiesPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(15);
   const [searchQueryUsers, setSearchQueryUsers] = useState('');
@@ -59,6 +61,18 @@ function AdminDashboard() {
       } else {
         toast.error('Error fetching users');
         console.error('Error fetching users:', userResponse.error);
+      }
+
+      const portfolioRespose = await getAllPortfolios();
+      if (portfolioRespose.status === 200 && Array.isArray(portfolioRespose.data.data)) {
+        const jsonDecode = JSON.stringify(portfolioRespose.data.data);
+        localStorage.setItem('Portfolios', jsonDecode);
+
+        setPortfolios(portfolioRespose.data.data);
+        console.log(portfolios);
+      } else {
+        toast.error('Error fetching portfolios');
+        console.error('Error fetching portfolios:', portfolioRespose.error);
       }
 
       const metalsResponse = await getMetals();
@@ -273,6 +287,28 @@ function AdminDashboard() {
   const totalAssetsPageCount = Math.ceil(assets.length / itemsPerPage);
   const totalCommoditiesPageCount = Math.ceil(commodities.length / itemsPerPage);
 
+  const totalPortfolioCount = Math.ceil(portfolios.length);
+  const totalPortfolioValue = portfolios.reduce((total, portfolio) => total + portfolio.portfoliovalue, 0);
+  const totalPortfolioCost = portfolios.reduce((total, portfolio) => total + portfolio.portfoliocost, 0);
+  const totalReturns = totalPortfolioValue - totalPortfolioCost;
+
+  const totalAveragePortfolioReturnsPercentage = ((totalReturns / totalPortfolioCost) / totalPortfolioCount * 100).toFixed(2);
+  const totalAveragePortfolioReturns = (totalReturns / totalPortfolioCount).toFixed(2);
+
+
+
+  const portfolioData = {
+    portfoliocount: totalPortfolioCount,
+    totalvalue: totalPortfolioValue,
+    totalcost: totalPortfolioCost,
+    totalreturns: totalReturns,
+    totalreturnspercentage: totalAveragePortfolioReturnsPercentage,
+    averageReturns: totalAveragePortfolioReturns,
+  };
+
+
+
+
   const renderAssetPaginationButtons = () => {
     const buttons = [];
     const maxButtonsToShow = 5;
@@ -433,6 +469,26 @@ function AdminDashboard() {
     );
   };
 
+  const PortfolioCard = ({ portfolioData }) => {
+    const { portfoliocount, totalvalue, totalcost, totalreturns, totalreturnspercentage, averageReturns } = portfolioData;
+
+    return (
+      <div className="portfolio-card">
+        <h2>Portfolios Panel</h2>
+        <div className="portfolio-info">
+          <p>Total Portfolios: {portfoliocount}</p>
+          <p>Total Portfolio Value: Rs {totalvalue}</p>
+          <p>Total Portfolio Cost: Rs {totalcost}</p>
+          <p>Total Portfolio Returns: Rs {totalreturns}</p>
+
+          <p>Average Portfolio Returns: Rs {averageReturns}</p>
+          <p>Total Portfolio Returns Percentage: {totalreturnspercentage}%</p>
+        </div>
+      </div>
+    );
+  };
+
+
   return (
     <div className="user-dashboard">
       <h2>Admin Panel</h2>
@@ -444,6 +500,17 @@ function AdminDashboard() {
       <InfoCard icon={<FaCubes />} value={totalMetals} label="Total Metals" />
       <InfoCard icon={<FaDollarSign />} value={totalAmount} label="Total Amount" />
       <InfoCard icon={<FaUsersCog />} value={totalAdmins} label="Total Admins" />
+      </div>
+
+      {/* <PortfolioCard portfolioData={portfolioData} /> */}
+
+      <div className="user-info-cards">
+      <InfoCard icon={<FaUser />} value={totalPortfolioCount} label="Total Portfolios" />
+      <InfoCard icon={<FaCubes />} value= {totalPortfolioValue} label="Total Values" />
+      <InfoCard icon={<FaCubes />} value={totalPortfolioCost} label="Total Cost" />
+      <InfoCard icon={<FaCubes />} value={totalReturns} label="Total Returns" />
+      <InfoCard icon={<FaDollarSign />} value={totalAveragePortfolioReturns} label="Average Returns" />
+      <InfoCard icon={<FaUsersCog />} value={totalAveragePortfolioReturnsPercentage} label="Average Returns %" />
 
       </div>
 

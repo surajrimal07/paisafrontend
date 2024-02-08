@@ -213,3 +213,7 @@ export const addStockToPortfolio = (data) => {
 export const removeStockFromPortfolio = (data) => {
   return api.post(`/api/remstock`, data);
 }
+
+export const getAllPortfolios = () => {
+  return api.get(`/api/allportfolios`);
+}
