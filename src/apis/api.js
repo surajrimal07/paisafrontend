@@ -217,3 +217,12 @@ export const removeStockFromPortfolio = (data) => {
 export const getAllPortfolios = () => {
   return api.get(`/api/allportfolios`);
 }
+
+//nrb data
+export const getNrbdata = () => {
+  return api.get(`/api/combinednrbdata?refresh=false`);
+}
+
+export const getWorlddata = () => {
+  return api.get(`/api/worldmarketdata?refresh=true`);
+}

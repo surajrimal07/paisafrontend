@@ -302,6 +302,17 @@ const Navbar = () => {
                   </NavLink>
                 </li>
               )}
+
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/worldmarket" activeclassname="active">
+                  Market
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/nrbdata" activeclassname="active">
+                  Banking Data
+                </NavLink>
+              </li>
               <li className="nav-item">
                 <NavLink className="nav-link" to="/feathures" activeclassname="active">
                   Features

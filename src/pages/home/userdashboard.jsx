@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { FaCubes, FaDollarSign, FaMoneyBill, FaMoneyCheck, FaPlus, FaUser } from 'react-icons/fa';
+import { FaCubes, FaDollarSign, FaMoneyBill, FaMoneyCheck, FaPlus } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { addStockToPortfolio, createPortfolio, deletePortfolio, getAllAssets, getCommo, getMetals, getPortfolio, removeStockFromPortfolio, renamePortfolio } from '../../apis/api.js';
 import NoImage from '../wishlist/a.png';
@@ -8,14 +9,13 @@ import HandleCreate from './handlecreate';
 import HandleDelete from './handledelete';
 import HandleRemoveStock from './handledeletestock';
 import HandleRename from './handlerename';
-import { Link } from 'react-router-dom';
 
 import './user.css';
 
 const UserDashboard = () => {
   const [userPort, setUserPort] = useState([]);
+
   const [userData, setUserData] = useState(null);
-  const [totalStocksCount, setTotalStocksCount] = useState(0);
   const [portfolioStockCounts, setPortfolioStockCounts] = useState({});
   const [loading, setLoading] = useState(true);
   const [showRenameDialog, setShowRenameDialog] = useState(false);
@@ -79,22 +79,18 @@ const UserDashboard = () => {
 
         if (port.status === 200) {
           const stockCounts = {};
-          port.data.portfolio.forEach((portfolio) => {
+          port.data.data.portfolio.forEach((portfolio) => {
+
             stockCounts[portfolio._id] = portfolio.stocks ? portfolio.stocks.length : 0;
           });
 
           setPortfolioStockCounts(stockCounts);
 
-          const jsonDecode = JSON.stringify(port.data);
+          const jsonDecode = JSON.stringify(port.data.data.portfolio);
           localStorage.setItem('Portfolio', jsonDecode);
 
-          const allStocks = port.data.portfolio.reduce(
-            (acc, portfolioItem) => acc.concat(portfolioItem.stocks || []),
-            []
-          );
-          setTotalStocksCount(allStocks.length);
+          setUserPort(port.data.data);
 
-          setUserPort(port.data);
         } else {
           console.error('Error fetching portfolio');
         }
@@ -151,19 +147,19 @@ const handleRemoveStockClick = (portfolioId,portfolioName, stocks) => {
   console.log(selectedStock);
   };
 
-const getStockLTP = (stockSymbol) => {
-  const assets = JSON.parse(localStorage.getItem('Assets'));
+// const getStockLTP = (stockSymbol) => {
+//   const assets = JSON.parse(localStorage.getItem('Assets'));
 
-  if (assets) {
-    const stockData = assets.find(stock => stock.symbol === stockSymbol);
+//   if (assets) {
+//     const stockData = assets.find(stock => stock.symbol === stockSymbol);
 
-    if (stockData && stockData.ltp !== undefined) {
-      return ` Rs ${stockData.ltp}`;
-    }
-  }
+//     if (stockData && stockData.ltp !== undefined) {
+//       return ` Rs ${stockData.ltp}`;
+//     }
+//   }
 
-  return '';
-};
+//   return '';
+// };
 
 //save functions
 const handleCreateSave = async (event, email, portfolioname) => {
@@ -318,12 +314,6 @@ const handleRemoveStockCancel = () => {
     );
   }
 
-//countings for the dashboard
-const totalPortfolios = userPort && userPort.portfolio ? userPort.portfolio.length : 0;
-const totalStockUnits = userPort && userPort.portfolio ? userPort.portfolio.reduce((total, portfolio) => total + (portfolio.totalunits || 0), 0) : 0;
-const totalPortfolioValue = userPort && userPort.portfolio ? userPort.portfolio.reduce((total, portfolio) => total + (portfolio.portfoliovalue || 0), 0) : 0;
-const totalPortfolioCost = userPort && userPort.portfolio ? userPort.portfolio.reduce((total, portfolio) => total + (portfolio.portfoliocost || 0), 0) : 0;
-const percentage = (Math.abs(totalPortfolioValue - totalPortfolioCost) / totalPortfolioCost * 100).toFixed(1) + '%';
 
 const InfoCard = ({ icon, value, label }) => {
   return (
@@ -353,32 +343,33 @@ const InfoCard = ({ icon, value, label }) => {
       <h4>Your Portfolios: </h4>
 
       <div className="user-info-cards">
-          <InfoCard icon={<FaCubes />} value={totalStockUnits} label="Total Stock Units" />
-          <InfoCard icon={<FaDollarSign />} value={`Rs ${totalPortfolioValue}`} label="Total Portfolio Value" />
-          <InfoCard icon={<FaUser />} value={`Rs ${totalPortfolioCost}`} label="Total Portfolio Cost" />
+      <InfoCard icon={<FaMoneyCheck />} value={` ${userPort.portfolioData.portfolioCount}`} label="Total Portfolios" />
+      <InfoCard icon={<FaCubes />} value={userPort.portfolioData.totalStocks} label="Total Stocks" />
+      <InfoCard icon={<FaCubes />} value={userPort.portfolioData.totalUnits} label="Total Units" />
+      <InfoCard icon={<FaMoneyCheck />} value={` ${userPort.portfolioData.profitablePortfolios}`} label="Profitable Portfolios" />
+          <InfoCard icon={<FaMoneyCheck />} value={` ${userPort.portfolioData.unprofitablePortfolios}`} label="Unprofitable Portfolios" />
+          <InfoCard icon={<FaDollarSign />} value={`Rs ${userPort.portfolioData.totalPortfolioValue}`} label="Portfolio Value" />
+          <InfoCard icon={<FaDollarSign />} value={`Rs ${userPort.portfolioData.totalPortfolioCost}`} label="Portfolio Cost" />
+
           <InfoCard
   icon={<FaMoneyBill />}
   value={
-    <span style={{ color: totalPortfolioValue - totalPortfolioCost >= 0 ? 'green' : 'red' }}>
-      Rs {totalPortfolioValue - totalPortfolioCost >= 0 ? '' : '-'}
-      {Math.abs(totalPortfolioValue - totalPortfolioCost)}
+    <span style={{ color: userPort.portfolioData.totalPortfolioReturns >= 0 ? 'green' : 'red' }}>
+      Rs {userPort.portfolioData.totalPortfolioReturns.toFixed(2)}
     </span>
   }
   label="Total Net Gain/Loss"
 />
+
 <InfoCard
   icon={<FaMoneyBill />}
   value={
-    <span style={{ color: totalPortfolioValue - totalPortfolioCost >= 0 ? 'green' : 'red' }}>
-      Rs {totalPortfolioValue - totalPortfolioCost >= 0 ? '' : '-'}
-      {percentage}
+    <span style={{ color: userPort.portfolioData.totalPortfolioReturnsPercentage >= 0 ? 'green' : 'red' }}>
+    {userPort.portfolioData.totalPortfolioReturnsPercentage} %
     </span>
   }
   label="Percentage P/L"
 />
-
-          <InfoCard icon={<FaMoneyCheck />} value={` ${totalPortfolios}`} label="Total Portfolios" />
-          <InfoCard icon={<FaCubes />} value={totalStocksCount} label="Total Stocks" />
         </div>
 
       <div className="portfolio">

@@ -3,12 +3,13 @@ import { FaCubes, FaPlus } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { addStockToWatchlist, createWatchlist, deleteWatchlist, getWatchlist, removeStockFromWatchlist, renameWatchlist } from '../../apis/api.js';
+import NoImage from './a.png';
 import HandleAddStock from './handleaddstock.jsx';
 import HandleCreate from './handlecreate.jsx';
 import HandleDelete from './handledelete.jsx';
 import HandleRemoveStock from './handledeletestock.jsx';
 import HandleRename from './handlerename.jsx';
-import  NoImage from './a.png';
+
 
 import './user.css';
 

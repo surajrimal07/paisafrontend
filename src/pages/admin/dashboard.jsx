@@ -288,26 +288,13 @@ function AdminDashboard() {
   const totalCommoditiesPageCount = Math.ceil(commodities.length / itemsPerPage);
 
   const totalPortfolioCount = Math.ceil(portfolios.length);
+  
   const totalPortfolioValue = portfolios.reduce((total, portfolio) => total + portfolio.portfoliovalue, 0);
   const totalPortfolioCost = portfolios.reduce((total, portfolio) => total + portfolio.portfoliocost, 0);
   const totalReturns = totalPortfolioValue - totalPortfolioCost;
 
   const totalAveragePortfolioReturnsPercentage = ((totalReturns / totalPortfolioCost) / totalPortfolioCount * 100).toFixed(2);
   const totalAveragePortfolioReturns = (totalReturns / totalPortfolioCount).toFixed(2);
-
-
-
-  const portfolioData = {
-    portfoliocount: totalPortfolioCount,
-    totalvalue: totalPortfolioValue,
-    totalcost: totalPortfolioCost,
-    totalreturns: totalReturns,
-    totalreturnspercentage: totalAveragePortfolioReturnsPercentage,
-    averageReturns: totalAveragePortfolioReturns,
-  };
-
-
-
 
   const renderAssetPaginationButtons = () => {
     const buttons = [];
@@ -508,7 +495,7 @@ function AdminDashboard() {
       <InfoCard icon={<FaUser />} value={totalPortfolioCount} label="Total Portfolios" />
       <InfoCard icon={<FaCubes />} value= {totalPortfolioValue} label="Total Values" />
       <InfoCard icon={<FaCubes />} value={totalPortfolioCost} label="Total Cost" />
-      <InfoCard icon={<FaCubes />} value={totalReturns} label="Total Returns" />
+      <InfoCard icon={<FaCubes />} value={totalReturns.toFixed(2)} label="Total Returns" />
       <InfoCard icon={<FaDollarSign />} value={totalAveragePortfolioReturns} label="Average Returns" />
       <InfoCard icon={<FaUsersCog />} value={totalAveragePortfolioReturnsPercentage} label="Average Returns %" />
 

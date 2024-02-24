@@ -40,6 +40,9 @@ import NotFound from './pages/404/notfound';
 import Chart from './pages/chart/chart';
 import PortfolioView from './pages/portfolio/portfolio';
 import PortfolioCompare from './pages/portfolio/portfoliocompare';
+
+import NrbData from './pages/nrbpage/nrb';
+import MarketData from './pages/worldmarket/worldmarket';
 const Homepage = () => {
 
   return (
@@ -73,6 +76,8 @@ function App() {
           <Route path="/disclaimer" element={<Disclaimer />} />
           <Route path="/career" element={<Career />} />
           <Route path="/complaint" element={<Complaint />} />
+          <Route path="/nrbdata" element={<NrbData />} />
+          <Route path="/worldmarket" element={<MarketData />} />
 
           <Route element = {<UserRoutes/>}>
             <Route path="/myprofile" element={<MyProfilePage />} />
@@ -84,6 +89,7 @@ function App() {
             <Route path="/stockdetailview" element={<StockDetailView />} />
             <Route path="/stocks" element={<Stock />} />
             <Route path="/chart" element={<Chart />} />
+
           </Route>
 
           <Route element = {<AdminRoutes/>} >

@@ -10,16 +10,13 @@ const PortfolioView = () => {
   useEffect(() => {
     const fetchData = async () => {
       const storedData = JSON.parse(localStorage.getItem('Portfolio')) || {};
-      const storedPortfolios = storedData.portfolio || [];
-
+      const storedPortfolios = storedData || [];
       if (!Array.isArray(storedPortfolios)) {
         console.error('Stored portfolios is not an array:', storedPortfolios);
         setLoading(false);
         return;
       }
-
       const selectedPortfolio = storedPortfolios.find(port => port._id === id);
-
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       setPortfolio(selectedPortfolio);
@@ -50,6 +47,11 @@ const PortfolioView = () => {
             <div className="card">
               <h3>Portfolio Cost:</h3>
               <p>Rs {portfolio.portfoliocost}</p>
+            </div>
+            <div className="card">
+              <h3>Portfolio Goal:</h3>
+              <p>{portfolio.portfolioGoal ? portfolio.portfolioGoal : "Empty"}</p>
+
             </div>
 
             <div className="card">
