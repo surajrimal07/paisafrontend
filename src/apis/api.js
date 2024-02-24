@@ -224,5 +224,5 @@ export const getNrbdata = () => {
 }
 
 export const getWorlddata = () => {
-  return api.get(`/api/worldmarketdata?refresh=true`);
+  return api.get(`/api/worldmarketdata?refresh=false`);
 }
