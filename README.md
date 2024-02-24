@@ -7,7 +7,7 @@
 
 A Smart Investment web app made for Softwarica College of IT & E-Commerce, Coventry University
 
-Try live at [vercel](https://paisafrontend.vercel.app/)
+Try live at [Live](https://tenpaisa.tech/)
 
 ## Overview
 
