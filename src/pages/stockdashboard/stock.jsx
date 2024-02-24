@@ -14,6 +14,7 @@ const StockDashboard = () => {
   const [topVolume, setTopVolume] = useState([]);
   const [topTurnover, setTopTurnover] = useState([]);
   const [topTransaction, setTopTransaction] = useState([]);
+  const [loading, setLoading] = useState(true);
 
 
   // Fetch data
@@ -43,6 +44,8 @@ const StockDashboard = () => {
 
         setTopTransaction(trans);
         localStorage.setItem('Transaction', JSON.stringify(trans));
+
+        setLoading(false);
       } else {
         console.log("error");
       }
@@ -55,6 +58,12 @@ const StockDashboard = () => {
     fetchData();
   }, []);
 
+  if (loading) {
+    return <div className="loading-container">
+    <div className="loading-spinner"></div>
+    <p>Loading...</p>
+  </div>
+  }
 
   return (
     <div className="container mt-4">
