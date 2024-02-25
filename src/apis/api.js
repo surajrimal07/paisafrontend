@@ -71,14 +71,6 @@ export const deleteUser = (deletingUser) => {
     });
 };
 
-
-//json for edit user
-// {
-//   "email": "suraj@rimal.com",
-//   "field": "password",
-//   "value": "000000"
-// }
-
 export const editUser = (userid, field,value) => {
   const endpoint = baseURL + '/api/updateuser';
 
