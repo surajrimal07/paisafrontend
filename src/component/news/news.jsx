@@ -12,89 +12,6 @@ const NewsDisplay = () => {
     const [showAnimation] = useState(false);
     const loaderRef = useRef(null);
     const itemsPerPage = 10;
-    const maxItems = 50;
-
-
-    //fetching mechanism
-
-    // useEffect(() => {
-    //     const handleScroll = () => {
-    //       const scrollPosition = window.scrollY + window.innerHeight;
-    //       const documentHeight = document.documentElement.scrollHeight;
-    //      const triggerThreshold = 0.9;
-
-    //     if (scrollPosition >= documentHeight * triggerThreshold && !loading) {
-    //           setIsFetching(true);
-    // fetchNews();
-    //     }
-    //   };
-
-    //     window.addEventListener('scroll', handleScroll);
-
-    //     return () => {
-    //       window.removeEventListener('scroll', handleScroll);
-    //     };
-    //   }, [loading]);
-
-
-    // const fetchNews = async () => {
-    //   try {
-    //     setLoading(true);
-    //     const response = await getNews(page, 10);
-    //     const newData = response.data;
-    //     if (newData.length > 0) {
-    //     setNewsData((prevData) => [...prevData, ...newData]);
-    //     setPage((prevPage) => prevPage + 1);
-    //     }
-    //   } catch (error) {
-    //     console.error('Error fetching news:', error);
-    //   } finally {
-    //     setLoading(false);
-    //     setIsFetching(false);
-    //   }
-    // };
-
-
-
-    // const handleObserver = (entities) => {
-    //   const target = entities[0];
-    //   if (target.isIntersecting && !loading) {
-    //     setIsFetching(true);
-    //     //fetchNews();
-    //   }
-    // };
-
-    // useEffect(() => {
-    //   if (isFetching) {
-    //     fetchNews();
-    //   }
-    // }, [isFetching]); // eslint-disable-line
-
-
-
-    // useEffect(() => {
-    //   const loaderCurrent = loaderRef.current;
-    //   const options = {
-    //     root: null,
-    //     rootMargin: '20px',
-    //     threshold: 1.0,
-    //   };
-
-    //   const observer = new IntersectionObserver(handleObserver, options);
-
-    //   if (loaderCurrent) {
-    //     observer.observe(loaderCurrent);
-    //   }
-
-    //   return () => {
-    //     if (loaderCurrent) {
-    //       observer.unobserve(loaderCurrent);
-    //     }
-    //   };
-    //   // eslint-disable-next-line
-    // }, [loaderRef]);
-
-
     const fetchNews = useCallback(async () => {
       try {
         setLoading(true);
@@ -103,9 +20,6 @@ const NewsDisplay = () => {
         if (newData.length > 0) {
           setNewsData((prevData) => [...prevData, ...newData]);
           setPage((prevPage) => prevPage + 1);
-
-        // Remove older items to maintain a maximum number of items
-        //setNewsData((prevData) => prevData.slice(-maxItems));
         }
       } catch (error) {
         console.error('Error fetching news:', error);
@@ -167,9 +81,6 @@ const NewsDisplay = () => {
     }, [loading, isFetching, fetchNews]);
 
 
-
-    //handle refresh
-
     const handleRefresh = async () => {
       try {
         const response = await getNews(1, 10);
@@ -185,10 +96,6 @@ const NewsDisplay = () => {
         console.error('Error refreshing news:', error);
       }
     };
-
-
-
-    //end  of fetching mechanism
 
     const getDefaultImage = () => {
       return 'news.jpg';

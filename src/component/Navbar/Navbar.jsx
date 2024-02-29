@@ -11,6 +11,7 @@ import sound from './noti.mp3';
 
 const Navbar = () => {
   const { lastMessage } = useWebSocket('ws://localhost:8081');
+  //const { lastMessage } = [];
   //const { lastMessage } = useWebSocket('ws://https://paisabackend.el.r.appspot.com/:8081');
   const [index, setIndex] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);

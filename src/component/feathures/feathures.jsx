@@ -12,7 +12,7 @@ const FeaturesPage = () => {
 
       <div className="row mt-4">
         <div className="col-md-4">
-          <div className="card mb-4">
+          <div className="card mb-4" data-testid="feature-card">
             <div className="card-body">
               <h3 className="card-title">Intelligent Budgeting</h3>
               <p className="card-text">
@@ -24,7 +24,7 @@ const FeaturesPage = () => {
         </div>
 
         <div className="col-md-4">
-          <div className="card mb-4">
+          <div className="card mb-4" data-testid="feature-card">
             <div className="card-body">
               <h3 className="card-title">Smart Investments</h3>
               <p className="card-text">
@@ -36,7 +36,7 @@ const FeaturesPage = () => {
         </div>
 
         <div className="col-md-4">
-          <div className="card mb-4">
+          <div className="card mb-4" data-testid="feature-card">
             <div className="card-body">
               <h3 className="card-title">Real-time Analytics</h3>
               <p className="card-text">
@@ -50,7 +50,7 @@ const FeaturesPage = () => {
 
       <div className="row mt-4">
         <div className="col-md-4">
-          <div className="card mb-4">
+          <div className="card mb-4" data-testid="feature-card">
             <div className="card-body">
               <h3 className="card-title">User-Friendly Interface</h3>
               <p className="card-text">
@@ -60,8 +60,6 @@ const FeaturesPage = () => {
             </div>
           </div>
         </div>
-
-        {/* Add more feature cards as needed */}
       </div>
     </div>
   );

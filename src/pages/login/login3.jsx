@@ -26,8 +26,6 @@ const Login = () => {
 
   const [showResetForm, setShowResetForm] = useState(false);
 
-  //const [resetPassword, setResetPassword] = useState(false);
-
   const [resetPassword] = useState(false);
 
   const handleEmailChange = (event) => {
@@ -175,8 +173,6 @@ const Login = () => {
     try {
       const response = await otpLogin({ email });
 
-      console.log(response.data);
-
       const { success, message, hash } = response.data;
 
       if (success) {
@@ -208,13 +204,9 @@ const Login = () => {
     try {
       const response = await otpVerify({ email, otp, hash: localStorage.getItem('hash')});
 
-      console.log(response.data);
-
       const { message } = response.data;
 
       if (response.status === 200 || (response.data && response.data.message === 'Success')) {
-        console.log("test")
-        console.log(response.data);
         toast.success(message);
         setEmailOTPVerified(true);
       }
@@ -231,8 +223,6 @@ const handleResendOTP = async (event) => {
   toast.info('Please Wait...');
   try {
     const response = await otpLogin({ email });
-
-    console.log(response.data);
 
     const { success, message, hash } = response.data;
 
@@ -258,8 +248,6 @@ const handleResendOTP = async (event) => {
 //forget password
 const hangleForgetPasswordSubmit = async (event) => {
   event.preventDefault();
-
-  console.log('hangleForgetPasswordSubmit');
 
   if (!validateEmail(email)) {
     toast.error('Please enter a valid email');
@@ -302,10 +290,6 @@ const handleOTPVerification = async (event) => {
 
   try {
     const response = await otpVerify({ email, otp, hash: localStorage.getItem('hash')});
-
-    console.log(response.data);
-
-//    const { message } = response.data;
 
     if (response.status === 200 || (response.data && response.data.message === 'Success')) {
 
@@ -380,10 +364,10 @@ return re.test(otp);
   return (
     <div id="login-container">
     <div className={`container2 ${showLogin ? '' : 'active'}`} id="container2">
-
+{/*
       {console.log('showLogin:', showLogin)}
       {console.log('resetPassword:', resetPassword)}
-      {console.log('showResetForm:', showResetForm)}
+      {console.log('showResetForm:', showResetForm)} */}
 
         <div className="form-container sign-in">
           <form onSubmit={(e) => {
@@ -417,6 +401,7 @@ return re.test(otp);
               onChange={handleEmailChange}
               required
               placeholder="Email"
+              data-testid="email-input"
             />
 
 {forgetotpsent && !forgetotpverified && (
@@ -469,7 +454,8 @@ return re.test(otp);
   </p>
 )}
 
-<button type="submit" className="btn btn-primary btn-block">
+<button type="submit" className="btn btn-primary btn-block" data-testid="sign-in-button">
+
   {showResetForm
     ? forgetotpsent
       ? forgetotpverified
@@ -511,6 +497,7 @@ return re.test(otp);
         name="email"
         value={email}
         onChange={handleEmailChange}
+        data-testid="email-input-signup"
       />
     </div>
   )}
@@ -558,7 +545,7 @@ return re.test(otp);
       />
     </>
   )}
-  <button type="submit">
+  <button type="submit" data-testid="sign-up-button">
     {emailotpsent
       ? emailotpverified
         ? 'Complete Registration'
@@ -573,12 +560,6 @@ return re.test(otp);
 )}
 
 </form>
-
-
-
-
-
-
         </div>
         <div className="toggle-container">
   <div className="toggle">
@@ -648,11 +629,6 @@ return re.test(otp);
     </div>
   </div>
 </div>
-
-
-
-
-
       </div>
       <ToastContainer position="top-right" />
     </div>
