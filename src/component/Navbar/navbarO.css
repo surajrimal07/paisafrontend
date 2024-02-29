@@ -56,7 +56,6 @@
     border-radius: 50%;
   }
 
-  /* Dropdown Button */
   .nav-item.dropdown:hover .dropdown-menu {
     display: block;
   }
@@ -86,7 +85,6 @@
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
   }
 
-  /* Profile Dropdown Items */
   .nav-item.dropdown .dropdown-item {
     display: block;
     width: 100%;
@@ -108,7 +106,6 @@
     background-color: black;
   }
 
-  /* Additional Styling (Adjust as needed) */
   .nav-item.dropdown .dropdown-toggle::after {
     vertical-align: middle;
     margin-left: 0.255em;

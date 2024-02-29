@@ -9,7 +9,7 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     z-index: 1000;
-    width: 300px; /* Adjust the width as needed */
+    width: 300px;
   }
 
   .remove-stock-popup h4 {
@@ -44,12 +44,12 @@
   }
 
   .remove-stock-popup .remove-button {
-    background-color: #dc3545; /* Red color */
+    background-color: #dc3545;
     color: #fff;
   }
 
   .remove-stock-popup .cancel-button {
-    background-color: #ccc; /* Grey color */
+    background-color: #ccc;
     color: #fff;
   }
 

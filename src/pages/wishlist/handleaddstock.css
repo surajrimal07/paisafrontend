@@ -15,7 +15,7 @@
   .add-stock-popup h4 {
     margin-bottom: 10px;
   }
-  
+
   .button-container {
     display: flex;
     justify-content: space-between;
@@ -45,8 +45,6 @@
     opacity: 0.8;
   }
 
-  /* ... (existing styles) */
-
 .add-stock-popup label {
   display: block;
   margin-bottom: 10px;
@@ -69,10 +67,10 @@
 .asset-item {
   padding: 8px;
   cursor: pointer;
-  background-color: #f8f9fa; /* Light gray background */
+  background-color: #f8f9fa;
   border-bottom: 1px solid #ddd;
 }
 
 .asset-item:hover {
-  background-color: #e2e6ea; /* Darker gray background on hover */
+  background-color: #e2e6ea;
 }

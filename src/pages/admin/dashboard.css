@@ -52,15 +52,13 @@
 
 .delete-button {
   margin-right: 5px;
-  background-color: #dc3545; /* Red background color */
-  color: #fff; /* White text color */
+  background-color: #dc3545;
+  color: #fff;
   border: none;
   padding: 5px 10px;
   border-radius: 3px;
   cursor: pointer;
 }
-
-/* Add the following styles to your existing CSS file or create a new one */
 
 .search-container {
   display: flex;
@@ -197,8 +195,8 @@
 }
 
 .close-button {
-  background-color: #dc3545; /* Red background color for close button */
-  color: #fff; /* White text color for close button */
+  background-color: #dc3545;
+  color: #fff;
   border: none;
   padding: 5px 10px;
   border-radius: 3px;
@@ -238,7 +236,7 @@
   margin: 0 10px;
   padding: 8px 16px;
   cursor: pointer;
-  background-color: #ff5858; /* Red color */
+  background-color: #ff5858;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -248,7 +246,7 @@
   margin: 0 10px;
   padding: 8px 16px;
   cursor: pointer;
-  background-color: #4caf50; /* Green color */
+  background-color: #4caf50;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -258,8 +256,8 @@
   bottom: 10px;
   right: 100px;
   margin-top: 10px;
-  background-color: #28a745; /* Green background color */
-  color: #fff; /* White text color */
+  background-color: #28a745;
+  color: #fff;
   border: none;
   padding: 5px 10px;
   border-radius: 3px;
@@ -268,17 +266,17 @@
 }
 
 .user-image {
-  max-width: 50px; /* Adjust the value based on your preference */
-  max-height: 50px; /* Adjust the value based on your preference */
-  border-radius: 50%; /* Optional: Make the image round */
+  max-width: 50px;
+  max-height: 50px;
+  border-radius: 50%;
 }
 
 .edit-dialog-box {
   background: #fff;
   padding: 20px;
-  width: 30%; /* Adjust the width as needed */
-  max-height: 80vh; /* Adjust the max-height as needed */
-  overflow-y: auto; /* Enable vertical scrolling */
+  width: 30%;
+  max-height: 80vh;
+  overflow-y: auto;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -502,9 +500,6 @@ input {
   padding: 20px;
   overflow-y: auto;
 }
-
-/* for search bar*/
-
 .search-container {
   display: flex;
   align-items: center;
@@ -533,27 +528,3 @@ input {
   font-size: 14px;
   color: #fff;
 }
-
-/* .info-item:hover {
-  background-color: #0056b3;
-  color: white;
-} */
-
-/* .delete-confirmation-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.modal-box {
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-} */

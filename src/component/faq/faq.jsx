@@ -6,7 +6,6 @@ const FAQ = () => {
       <h2 className="mb-4">Frequently Asked Questions</h2>
       <div className="accordion" id="faqAccordion">
 
-        {/* FAQ Item 1 */}
         <div className="accordion-item">
           <h2 className="accordion-header" id="faqHeading1">
             <button
@@ -32,7 +31,6 @@ const FAQ = () => {
           </div>
         </div>
 
-        {/* FAQ Item 2 */}
         <div className="accordion-item">
           <h2 className="accordion-header" id="faqHeading2">
             <button
@@ -58,7 +56,6 @@ const FAQ = () => {
           </div>
         </div>
 
-        {/* FAQ Item 3 */}
         <div className="accordion-item">
           <h2 className="accordion-header" id="faqHeading3">
             <button

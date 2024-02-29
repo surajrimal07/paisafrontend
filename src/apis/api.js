@@ -29,7 +29,7 @@ const api = axios.create({
   },
 });
 
-//seperate header for auth
+
 const config = {
     headers : {
         'authorization' : `Bearer ${token}`,
@@ -113,14 +113,9 @@ export const otpVerify = (data) =>  api.post(`/api/otp-verify`, data);
 
 export const otpResend = (email) =>  api.post(`/api/otp-resend`, email);
 
-//forget part
-
 export const forgetPassword = (email) =>  api.post(`/api/forget`, email);
 
-//save new password
 export const savePassword = (data) =>  api.post(`/api/updateuser`, data);
-
-//get all portfolio
 
 export const getPortfolio = (email) => {
   const data = { email: email };
@@ -132,7 +127,6 @@ export const renamePortfolio = (data) => {
   return api.post(`/api/renameportfolio`, data);
 };
 
-//watchlist
 export const getWatchlist = (email) => {
   const data = { email: email };
 
@@ -157,21 +151,18 @@ export const renameWatchlist = (email,watchlistId, newName) => {
   return api.post(`/api/renamewatchlist`, data);
 }
 
-//add stock to watchlist
 export const addStockToWatchlist = (email, watchlistId, stockSymbol) => {
   const data = { email: email, watchlistId: watchlistId, stockSymbol: stockSymbol };
 
   return api.post(`/api/addstocktowatchlist`, data);
 }
 
-//remove stock from watchlist
 export const removeStockFromWatchlist = (email, watchlistId, stockSymbol) => {
   const data = { email: email, watchlistId: watchlistId, stockSymbol: stockSymbol };
 
   return api.post(`/api/remstockfromwatchlist`, data);
 }
 
-//update user
 export const updateUser = (data) =>  api.post(`/api/updateAllUserData`, data);
 
 export const updateDPImage = (data) => {
@@ -183,25 +174,20 @@ export const updateDPImage = (data) => {
 return api.post(`/api/updateprofilepic`,data, config);
 }
 
-//portfolio
-
 export const createPortfolio = (email, name) => {
   const data = { email: email, name: name };
 
   return api.post(`/api/newport`, data, config);
 }
-//delete portfolio
 
 export const deletePortfolio = async (data) => {
     return api.delete('/api/delport', { data });
 };
 
-//add stock to portfolio
 export const addStockToPortfolio = (data) => {
   return api.post(`/api/addstock`, data);
 }
 
-//remove stock from portfolio
 export const removeStockFromPortfolio = (data) => {
   return api.post(`/api/remstock`, data);
 }
@@ -210,7 +196,6 @@ export const getAllPortfolios = () => {
   return api.get(`/api/allportfolios`);
 }
 
-//nrb data
 export const getNrbdata = () => {
   return api.get(`/api/combinednrbdata?refresh=false`);
 }

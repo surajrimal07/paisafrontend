@@ -182,7 +182,6 @@ const Footer = () => {
 
                     <div className="footerBorder"></div>
 
-                                      {/* Google Map Embed */}
                                       <div className="google-map">
               </div>
               <div className="middleFooter" style={{ display: 'flex', justifyContent: 'space-around' }}>

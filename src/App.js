@@ -14,20 +14,17 @@ import AssetDashboard from './pages/commoditydashboard/comdashboard';
 import StockDetailView from './pages/stockdashboard/StockDetailView';
 import Stock from './pages/stockdashboard/stock';
 import UserWatchlists from './pages/wishlist/wishlist';
-//import Signup from './pages/signup/newregister';
 
 import AboutUsPage from './component/about/about';
 import Feathures from './component/feathures/feathures';
 import Dashboard from './pages/admin/dashboard';
 import MyProfilePage from './pages/dashboard/myprofile';
-//import Login from './pages/login/Login';
 import UserDashboard from './pages/home/userdashboard';
 import Login from './pages/login/login3';
 
 import { AdminRoutes } from './protected/AdminRoutes';
 import { UserRoutes } from './protected/UserRoutes';
 
-//homepage small pages
 import Career from './component/carrier/carrier';
 import Complaint from './component/complain/complain';
 import Disclaimer from './component/disclamer/disclaimer';
@@ -62,7 +59,6 @@ function App() {
         <Navbar />
         <div className="mt-5">
         <Routes>
-
           <Route path="/" element={<Homepage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
@@ -89,7 +85,6 @@ function App() {
             <Route path="/stockdetailview" element={<StockDetailView />} />
             <Route path="/stocks" element={<Stock />} />
             <Route path="/chart" element={<Chart />} />
-
           </Route>
 
           <Route element = {<AdminRoutes/>} >

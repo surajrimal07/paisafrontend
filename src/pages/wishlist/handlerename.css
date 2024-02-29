@@ -1,5 +1,3 @@
-/* handlerename.css */
-
 .rename-popup {
     position: fixed;
     top: 50%;
@@ -11,7 +9,7 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     z-index: 1000;
-    width: 300px; /* Adjust the width as needed */
+    width: 300px;
   }
 
   .rename-popup label {
@@ -35,7 +33,7 @@
   .rename-popup .save-button {
     padding: 10px;
     cursor: pointer;
-    background-color: #28a745; /* Green color */
+    background-color: #28a745;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -48,7 +46,7 @@
   .rename-popup .cancel-button {
     padding: 10px;
     cursor: pointer;
-    background-color: #dc3545; /* Red color */
+    background-color: #dc3545;
     color: #fff;
     border: none;
     border-radius: 4px;

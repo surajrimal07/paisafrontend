@@ -36,12 +36,12 @@
   }
 
   .delete-popup button.cancel-button {
-    background-color: #28a745; /* Green color */
+    background-color: #28a745;
     color: #fff;
   }
 
   .delete-popup button.delete-button {
-    background-color: #dc3545; /* Red color */
+    background-color: #dc3545;
     color: #fff;
   }
 

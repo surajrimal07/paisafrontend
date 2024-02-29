@@ -25,10 +25,7 @@ const UserWatchlists = () => {
   const [portfolioStockCounts, setPortfolioStockCounts] = useState({});
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-//   const [isMenuOpen, setIsMenuOpen] = useState(false);
-//   const menuRef = useRef(null);
   const wrapperRef = useRef(null);
-  //const [showOptions, setShowOptions] = useState(false);
 
   useEffect(() => {
     const fetchWatchlists = async () => {
@@ -44,7 +41,6 @@ const UserWatchlists = () => {
               (acc, watchlist) => acc.concat(watchlist.stocks || []),
               []
             );
-            //indi stock count inside watchlist
             const stockCounts = {};
             watchlists.data.data.forEach((watchlist) => {
               stockCounts[watchlist._id] = watchlist.stocks ? watchlist.stocks.length : 0;
@@ -71,26 +67,6 @@ const UserWatchlists = () => {
 
     fetchWatchlists();
   }, []);
-
-//   useEffect(() => {
-//     const handleOutsideClick = (e) => {
-//       if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
-//         setIsMenuOpen(false);
-//       }
-//     };
-
-//     document.addEventListener('mousedown', handleOutsideClick);
-
-//     return () => {
-//       document.removeEventListener('mousedown', handleOutsideClick);
-//     };
-//   }, []);
-
-//   const handleMenuToggle = (e) => {
-//     e.preventDefault();
-//     setIsMenuOpen(!isMenuOpen);
-//   };
-
 
     const handleMenuToggle = () => {
         setShowCreateDialog(true);

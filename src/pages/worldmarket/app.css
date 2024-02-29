@@ -14,12 +14,12 @@
   }
 
   .container {
-    text-align: center; /* Center-align content horizontally */
+    text-align: center;
   }
 
   .tabs-container {
-    display: flex; /* Use flexbox for layout */
-    justify-content: center; /* Center-align flex items horizontally */
+    display: flex;
+    justify-content: center;
   }
 
   .loading-container {

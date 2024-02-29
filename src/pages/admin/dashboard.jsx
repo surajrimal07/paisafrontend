@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { FaArrowDown, FaArrowUp, FaCubes, FaDollarSign, FaExchangeAlt, FaSortDown, FaSortUp, FaTimes, FaUser, FaUsersCog } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -15,12 +17,11 @@ function AdminDashboard() {
   const [commodities, setCommodities] = useState([]);
   const [metals, setMetals] = useState([]);
   const [portfolios, setPortfolios] = useState([]);
-  //const [currentPage, setCurrentPage] = useState({});
   const [currentUsersPage, setCurrentUsersPage] = useState(1);
   const [currentAssetsPage, setCurrentAssetsPage] = useState(1);
 
   const [currentCommoditiesPage, setCurrentCommoditiesPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(15);
+  const [itemsPerPage] = useState(15);
   const [searchQueryUsers, setSearchQueryUsers] = useState('');
   const [searchQueryAssets, setSearchQueryAssets] = useState('');
   const [searchQueryCommodities, setSearchQueryCommodities] = useState('');
@@ -288,7 +289,7 @@ function AdminDashboard() {
   const totalCommoditiesPageCount = Math.ceil(commodities.length / itemsPerPage);
 
   const totalPortfolioCount = Math.ceil(portfolios.length);
-  
+
   const totalPortfolioValue = portfolios.reduce((total, portfolio) => total + portfolio.portfoliovalue, 0);
   const totalPortfolioCost = portfolios.reduce((total, portfolio) => total + portfolio.portfoliocost, 0);
   const totalReturns = totalPortfolioValue - totalPortfolioCost;
@@ -367,13 +368,6 @@ function AdminDashboard() {
 
     return buttons;
   }
-
-  // const handleEditDialogClose = () => {
-  //   setEditingDialogOpen(false);
-  // };
-
-  // const handleSaveEdit = (editedUser) => {
-  // };
 
   const handleClearSearchUsers = () => {
     setSearchQueryUsers('');
@@ -456,25 +450,24 @@ function AdminDashboard() {
     );
   };
 
-  const PortfolioCard = ({ portfolioData }) => {
-    const { portfoliocount, totalvalue, totalcost, totalreturns, totalreturnspercentage, averageReturns } = portfolioData;
+  // const PortfolioCard = ({ portfolioData }) => {
+  //   const { portfoliocount, totalvalue, totalcost, totalreturns, totalreturnspercentage, averageReturns } = portfolioData;
 
-    return (
-      <div className="portfolio-card">
-        <h2>Portfolios Panel</h2>
-        <div className="portfolio-info">
-          <p>Total Portfolios: {portfoliocount}</p>
-          <p>Total Portfolio Value: Rs {totalvalue}</p>
-          <p>Total Portfolio Cost: Rs {totalcost}</p>
-          <p>Total Portfolio Returns: Rs {totalreturns}</p>
+  //   return (
+  //     <div className="portfolio-card">
+  //       <h2>Portfolios Panel</h2>
+  //       <div className="portfolio-info">
+  //         <p>Total Portfolios: {portfoliocount}</p>
+  //         <p>Total Portfolio Value: Rs {totalvalue}</p>
+  //         <p>Total Portfolio Cost: Rs {totalcost}</p>
+  //         <p>Total Portfolio Returns: Rs {totalreturns}</p>
 
-          <p>Average Portfolio Returns: Rs {averageReturns}</p>
-          <p>Total Portfolio Returns Percentage: {totalreturnspercentage}%</p>
-        </div>
-      </div>
-    );
-  };
-
+  //         <p>Average Portfolio Returns: Rs {averageReturns}</p>
+  //         <p>Total Portfolio Returns Percentage: {totalreturnspercentage}%</p>
+  //       </div>
+  //     </div>
+  //   );
+  // };
 
   return (
     <div className="user-dashboard">
@@ -488,8 +481,6 @@ function AdminDashboard() {
       <InfoCard icon={<FaDollarSign />} value={totalAmount} label="Total Amount" />
       <InfoCard icon={<FaUsersCog />} value={totalAdmins} label="Total Admins" />
       </div>
-
-      {/* <PortfolioCard portfolioData={portfolioData} /> */}
 
       <div className="user-info-cards">
       <InfoCard icon={<FaUser />} value={totalPortfolioCount} label="Total Portfolios" />
@@ -519,7 +510,6 @@ function AdminDashboard() {
         </button>
       </div>
 
-      {/* Users Section */}
       <div className="category-sector-box users-section">
         <h3>Users</h3>
         <table className="table mt-2">
@@ -582,7 +572,6 @@ function AdminDashboard() {
         </div>
       </div>
 
-      {/* Delete Confirmation Modal */}
       {deletingUser && (
         <DeleteConfirmationModal
           confirmDelete={confirmDelete}
@@ -590,7 +579,6 @@ function AdminDashboard() {
         />
       )}
 
-      {/* Search Assets */}
       <div className="search-container mb-4">
         <input
           type="text"
@@ -609,7 +597,6 @@ function AdminDashboard() {
         </button>
       </div>
 
-      {/* Assets Section */}
       <div className="category-sector-box users-section">
         <h3>Assets</h3>
         <div className="table-responsive" style={{ maxHeight: '500px', overflowY: 'auto' }}>
@@ -672,14 +659,13 @@ function AdminDashboard() {
         </div>
       </div>
 
-      {/* Search Commodities */}
       <div className="search-container mb-4">
         <input
           type="text"
           placeholder="Search commodities by symbol or name..."
           value={searchQueryCommodities}
           onChange={(e) => setSearchQueryCommodities(e.target.value)}
-          style={{ outline: 'none' }}  //remove the blue outline on focus
+          style={{ outline: 'none' }}
         />
       {searchQueryCommodities && (
           <button className="clear-search-button" onClick={handleClearSearchCommodity}>
@@ -690,8 +676,6 @@ function AdminDashboard() {
           Search Commodities
         </button>
       </div>
-
-      {/* Commodities Section */}
       <div className="category-sector-box users-section">
         <h3>Commodities</h3>
         <div className="table-responsive" style={{ maxHeight: '500px', overflowY: 'auto' }}>
@@ -728,8 +712,6 @@ function AdminDashboard() {
         </div>
       </div>
 
-
-      {/* Metals Section*/}
       <div className="search-container mb-4"></div>
       <div className="category-sector-box users-section">
         <h3>Metals</h3>
@@ -765,7 +747,7 @@ function AdminDashboard() {
         </div>
       </div>
 
-      {/* Dialog Boxes */}
+
       {selectedItem && (
         <UserDialogBox
           user={selectedItem}

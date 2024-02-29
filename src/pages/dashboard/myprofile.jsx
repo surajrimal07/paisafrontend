@@ -40,11 +40,8 @@ const MyProfilePage = () => {
 
       if (success) {
         toast.success(message);
-        // Update local storage
         localStorage.setItem('token', responseData.token);
         localStorage.setItem('user', JSON.stringify(responseData));
-
-        // Update state with new user data
         setUserData(responseData);
       } else {
         toast.error(message);

@@ -5,8 +5,6 @@ import ScrollToTop from "react-scroll-to-top";
 import { ToastContainer } from 'react-toastify';
 import { getAllAssets, getCommo, getMetals } from '../../apis/api';
 import './dashboard.css';
-import { AlignCenter } from 'lucide-react';
-
 
 function AssetDashboard() {
   const [assets, setAssets] = useState([]);
@@ -137,7 +135,6 @@ function AssetDashboard() {
           key={i}
           onClick={() => setCurrentAssetsPage(i)}
           style={{ ...buttonStyle, ...(currentAssetsPage === i ? activeButtonStyle : {}) }}
-         // className={currentAssetsPage === i ? 'active' : ''}
         >
           {i}
         </button>
@@ -270,7 +267,6 @@ function AssetDashboard() {
         </button>
       </div>
 
-      {/* Assets Section */}
       <div className="category-sector-box users-section">
         <h3>Assets</h3>
         <div className="table-responsive" style={{ maxHeight: '500px', overflowY: 'auto' }}>          <table className="table mt-2">
@@ -321,7 +317,6 @@ function AssetDashboard() {
         </div>
       </div>
 
-      {/* Search Commodities */}
       <div className="search-container mb-4">
         <input
           type="text"
@@ -340,7 +335,6 @@ function AssetDashboard() {
         </button>
       </div>
 
-      {/* Commodities Section */}
       <div className="category-sector-box users-section">
         <h3>Commodities</h3>
         <div className="table-responsive" style={{ maxHeight: '500px', overflowY: 'auto' }}>          <table className="table mt-2">

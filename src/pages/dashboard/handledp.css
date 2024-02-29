@@ -5,7 +5,7 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center; /* Center text in the modal */
+    text-align: center;
   }
 
   .current-image-container {
@@ -38,17 +38,14 @@
   }
 
   .modal-footer .btn-primary {
-    margin: 0 auto; /* Center the Save button */
-    background-color: #28a745 !important; /* Green background color for Save button */
-    border-color: #28a745 !important; /* Green border color for Save button */
+    margin: 0 auto;
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
   }
 
-  /* Hide the file input */
   .input-group input[type="file"] {
     display: none;
   }
-
-  /* Style for Choose Image label */
   .input-group-label {
-    display: none; /* Hide the Choose Image label */
+    display: none;
   }

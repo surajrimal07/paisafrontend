@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react';
 import { FaBell } from 'react-icons/fa';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';

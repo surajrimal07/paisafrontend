@@ -44,13 +44,6 @@
   width: 95%;
 }
 
-/* .iframe-container {
-  width: 97%;
-  height: 100%;
-  overflow: hidden;
-  position: relative;
-} */
-
 .info-card-container {
   margin-right: 10px;
   margin-bottom: 20px;
@@ -85,9 +78,6 @@
 .info-label {
   font-size: 14px;
 }
-
-
-
 .search-container {
   display: flex;
   align-items: center;
@@ -118,6 +108,6 @@
 }
 .table-container {
   overflow-y: scroll;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer and Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }

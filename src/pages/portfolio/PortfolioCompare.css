@@ -1,5 +1,3 @@
-/* PortfolioCompare.css */
-
 .portfolio-compare {
     max-width: 1200px;
     margin: 0 auto;
@@ -45,15 +43,12 @@
     margin-bottom: 10px;
   }
 
-  /* Center the "Select Portfolio to Compare" message */
   .select-portfolio-message {
     font-size: 18px;
     color: #777;
     margin-top: 20px;
   }
-
-  /* PortfolioCompare.css */
-
+  
 .portfolio-compare {
     max-width: 1200px;
     margin: 0 auto;

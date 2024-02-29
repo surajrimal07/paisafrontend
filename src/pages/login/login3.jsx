@@ -26,7 +26,7 @@ const Login = () => {
 
   const [showResetForm, setShowResetForm] = useState(false);
 
-  const [resetPassword] = useState(false);
+  //const [resetPassword] = useState(false);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -140,7 +140,6 @@ const Login = () => {
         localStorage.setItem('token', token);
         const jsonDecode = JSON.stringify(response.data.data);
         localStorage.setItem('user', jsonDecode);
-       // navigate('/dashboard');
         setTimeout(() => {
             navigate('/admin/dashboard');
           }, 1000);
@@ -244,8 +243,6 @@ const handleResendOTP = async (event) => {
 
 }
 
-
-//forget password
 const hangleForgetPasswordSubmit = async (event) => {
   event.preventDefault();
 
@@ -338,7 +335,6 @@ const handlePasswordchange = async () => {
   }
 };
 
-//forgot password? click garepaxi run hune code
 const handleForgetPasswordClick = () => {
   setPassword('');
   setShowResetForm(true);
@@ -364,10 +360,6 @@ return re.test(otp);
   return (
     <div id="login-container">
     <div className={`container2 ${showLogin ? '' : 'active'}`} id="container2">
-{/*
-      {console.log('showLogin:', showLogin)}
-      {console.log('resetPassword:', resetPassword)}
-      {console.log('showResetForm:', showResetForm)} */}
 
         <div className="form-container sign-in">
           <form onSubmit={(e) => {

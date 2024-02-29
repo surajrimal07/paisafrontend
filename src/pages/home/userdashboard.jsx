@@ -110,8 +110,6 @@ const UserDashboard = () => {
     fetchPortfolio();
   }, []);
 
-  //handle code
-//create portfolio
 const handleMenuToggle = () => {
   setShowCreateDialog(true);
 };
@@ -147,21 +145,6 @@ const handleRemoveStockClick = (portfolioId,portfolioName, stocks) => {
   console.log(selectedStock);
   };
 
-// const getStockLTP = (stockSymbol) => {
-//   const assets = JSON.parse(localStorage.getItem('Assets'));
-
-//   if (assets) {
-//     const stockData = assets.find(stock => stock.symbol === stockSymbol);
-
-//     if (stockData && stockData.ltp !== undefined) {
-//       return ` Rs ${stockData.ltp}`;
-//     }
-//   }
-
-//   return '';
-// };
-
-//save functions
 const handleCreateSave = async (event, email, portfolioname) => {
   event.preventDefault();
 
@@ -187,7 +170,6 @@ const handleCreateSave = async (event, email, portfolioname) => {
   setShowCreateDialog(false);
 };
 
-//handle delete save
 const handleDeleteSave = async (event, email, id) => {
   event.preventDefault();
 
@@ -260,7 +242,6 @@ const handleAddStockSave = async (event, email, id, symboll, quantityy, price) =
 setshowAddStockDialog(false);
 };
 
-//handle remove stock save
 const handleRemoveStockSave = async (event, email, id, symbol, quantity) => {
 event.preventDefault();
 
@@ -284,7 +265,6 @@ try {
 setRemoveStockDialog(false);
 };
 
-//handle cancel
 const handleRenameCancel = () => {
   setShowRenameDialog(false);
 };
@@ -313,7 +293,6 @@ const handleRemoveStockCancel = () => {
       </div>
     );
   }
-
 
 const InfoCard = ({ icon, value, label }) => {
   return (
