@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { updateUser,updateDPImage } from '../../apis/api.js';
+import { updateDPImage, updateUser } from '../../apis/api.js';
 import './App.css';
-import EditProfileForm from './handleEdit';
 import HandleDPChange from './handleDPChange';
+import EditProfileForm from './handleEdit';
 
 const MyProfilePage = () => {
   const [userData, setUserData] = useState(null);
@@ -177,10 +177,34 @@ const MyProfilePage = () => {
                       <p>
                         <strong>Phone:</strong> {userData.phone}{' '}
                       </p>
+                      <p>
+                      <strong>Admin:</strong> {userData.isAdmin ? 'Yes' : 'No'}
+                      </p>
                     </div>
                     <div className="col-md-6">
+                    <p>
+                    <strong>Premium:</strong> {userData.premium ? 'Yes' : 'No'}
+                      </p>
                       <p>
-                        <strong>Amount: </strong> ${userData.userAmount}
+                      <strong>Wallets:</strong> {
+                      (() => {
+                        switch (userData.wallets) {
+                          case 0:
+                            return 'None';
+                          case 1:
+                            return 'Khalti';
+                          case 2:
+                            return 'Esewa';
+                          case 3:
+                            return 'Khalti and Esewa';
+                          default:
+                            return '';
+                        }
+                      })()
+                    }
+                      </p>
+                      <p>
+                        <strong>Amount: </strong> Rs: {userData.userAmount}
                       </p>
                     </div>
                   </div>

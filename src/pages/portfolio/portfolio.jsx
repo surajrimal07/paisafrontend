@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { getPortfolio } from '../../apis/api.js';
+
 import './PortfolioView.css';
 
 const PortfolioView = () => {
@@ -10,9 +12,16 @@ const PortfolioView = () => {
   useEffect(() => {
     const fetchData = async () => {
       const storedData = JSON.parse(localStorage.getItem('Portfolio')) || {};
+     if (!storedData) {
+      const storedUserData = JSON.parse(localStorage.getItem('user'));
+      const port = await getPortfolio(storedUserData.email);
+      if (port.status === 200) {
+        setPortfolio(port.data);
+        localStorage.setItem('Portfolio', JSON.stringify(port.data));
+      }
+     }
       const storedPortfolios = storedData || [];
       if (!Array.isArray(storedPortfolios)) {
-        console.error('Stored portfolios is not an array:', storedPortfolios);
         setLoading(false);
         return;
       }
@@ -40,6 +49,10 @@ const PortfolioView = () => {
             <div className="portfolio-info-container">
             <div className="card-container">
             <div className="card">
+              <h3>Total Stocks:</h3>
+              <p>{portfolio.totalStocks}</p>
+            </div>
+            <div className="card">
               <h3>Total Units:</h3>
               <p>{portfolio.totalunits} Kittas</p>
             </div>
@@ -56,8 +69,8 @@ const PortfolioView = () => {
 
             <div className="card">
               <h3>Profit / Loss:</h3>
-              <p className={portfolio.portfoliovalue - portfolio.portfoliocost >= 0 ? 'profit' : 'loss'}>
-                Rs {portfolio.portfoliovalue - portfolio.portfoliocost}
+              <p className={portfolio.gainLossRecords[0].portgainloss >= 0 ? 'profit' : 'loss'}>
+                Rs {portfolio.gainLossRecords[0].portgainloss}
               </p>
             </div>
 

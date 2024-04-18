@@ -18,14 +18,13 @@ const PortfolioCompare = () => {
       const storedPortfolios = storedData.portfolio || [];
 
       if (!Array.isArray(storedPortfolios)) {
-        console.error('Stored portfolios is not an array:', storedPortfolios);
         setLoading(false);
         return;
       }
 
-      const selectedPortfolio = storedPortfolios.find(port => port._id === id);
+      const selectedPortfolio = storedData.find(port => port._id === id);
 
-      setPortfolioList(storedPortfolios);
+      setPortfolioList(storedData);
 
       if (compareId) {
         const comparePortfolioData = storedPortfolios.find(port => port._id === compareId);
@@ -60,9 +59,13 @@ const PortfolioCompare = () => {
           portfolio: portfolio.portfoliocost,
           comparePortfolio: comparePortfolio.portfoliocost,
         },
+        portfolioStocks: {
+          portfolio: portfolio.totalStocks,
+          comparePortfolio: comparePortfolio.totalStocks,
+        },
         profitLoss: {
-          portfolio: portfolio.portfoliovalue - portfolio.portfoliocost,
-          comparePortfolio: comparePortfolio.portfoliovalue - comparePortfolio.portfoliocost,
+          portfolio: portfolio.gainLossRecords[0].portgainloss,
+          comparePortfolio: comparePortfolio.gainLossRecords[0].portgainloss,
         },
         portfolioValue: {
           portfolio: portfolio.portfoliovalue,
@@ -123,6 +126,11 @@ const PortfolioCompare = () => {
                   </tr>
                 </thead>
                 <tbody>
+                <tr>
+                    <td>Total stocks</td>
+                    <td>{comparisonResult.portfolioStocks.portfolio} Stocks</td>
+                    <td>{comparisonResult.portfolioStocks.comparePortfolio} Stocks</td>
+                  </tr>
                   <tr>
                     <td>Total Units</td>
                     <td>{comparisonResult.totalUnits.portfolio} Units</td>

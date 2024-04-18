@@ -31,7 +31,7 @@ const MarketData = () => {
 
   return (
     <div className="container">
-   <h1 className="header">World Market Today</h1>
+   <h1 className="headerss">World Market Today</h1>
       <Tabs worldData={worldData} />
     </div>
   );

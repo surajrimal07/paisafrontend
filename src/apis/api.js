@@ -1,7 +1,7 @@
 import axios from "axios";
 
-//const baseURL = "http://localhost:5000";
-const baseURL = "https://paisabackend.el.r.appspot.com"
+const baseURL = "http://localhost:5000";
+//const baseURL = "https://paisabackend.el.r.appspot.com"
 const token = localStorage.getItem('token');
 
 //testing logger
@@ -38,6 +38,11 @@ const config = {
 }
 
 export const RegisterUser = (data) => api.post('/api/create', data)
+
+export const verifyEmail = (data) => api.post('/api/verifyemail',data);
+export const verifyName = (data) => api.post('/api/verifyname',data);
+export const verifyPassword = (data) => api.post('/api/verifypassword',data);
+export const verifyPhone = (data) => api.post('/api/verifyphone',data);
 
 export const loginUser =  (data) =>  api.post('/api/login', data)
 
@@ -106,6 +111,7 @@ export const getNews = (page = 1, limit = 10) => {
 };
 
 export const getDashboardItems = () =>  api.get(`/api/dashboard`);
+
 
 export const otpLogin = (email) =>  api.post(`/api/otp-login`, email);
 

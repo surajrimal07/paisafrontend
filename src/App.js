@@ -9,7 +9,6 @@ import Navbar from './component/Navbar/Navbar';
 import Review from './component/Review/Review';
 import Unique from './component/Unique/Unique';
 import NewsDisplay from './component/news/news';
-import Register from './pages/Register';
 import AssetDashboard from './pages/commoditydashboard/comdashboard';
 import StockDetailView from './pages/stockdashboard/StockDetailView';
 import Stock from './pages/stockdashboard/stock';
@@ -61,7 +60,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Register />} />
           <Route path="/aboutus" element={<AboutUsPage />} />
           <Route path="/feathures" element={<Feathures />} />
           <Route path="/faq" element={<FAQ />} />

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { RegisterUser, forgetPassword, loginUser, otpLogin, otpVerify, savePassword } from '../../apis/api';
+import { RegisterUser, forgetPassword, loginUser, otpLogin, otpVerify, savePassword, verifyEmail, verifyName, verifyPassword, verifyPhone } from '../../apis/api';
 import logo from '../../component/images/hilogo.png';
 import './login2.css';
 
@@ -20,13 +21,24 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  //ServerSide validations
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
+
+  //store validations state
+  const [emailValid, setEmailValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [nameValid, setNameValid] = useState(false);
+  const [phoneValid, setPhoneValid] = useState(false);
+
+
   const showRegister = location.state && location.state.showRegister;
 
   const [showLogin, setShowLogin] = useState(!showRegister);
 
   const [showResetForm, setShowResetForm] = useState(false);
-
-  //const [resetPassword] = useState(false);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -114,6 +126,48 @@ const Login = () => {
       toast.error(errorMessage);
     }
   };
+
+  const handleEmailValidate = async (email) => {
+    const data = {
+      email
+    };
+    try {
+        const res = await verifyEmail(data);
+        setEmailError(res.data.message);
+     //   console.log(res);
+        setEmailValid(res.status === 200);
+     //   console.log('email error status is ' + emailValid)
+    } catch (error) {
+    //  console.log(error);
+      setEmailError(error.response.data.message);
+      setEmailValid(false);
+     // console.log('email error status is ' + emailValid)
+    }
+};
+
+const handleNameValidate = async (name) => {
+  const data = {
+    name
+  };
+  try {
+      const res = await verifyName(data);
+      setNameError(res.data.message);
+      console.log(res);
+  } catch (error) {
+    console.log(error);
+      setNameError(error.response.data.message);
+  }
+};
+
+const handlePhoneValidate = async (phone) => {
+  const res = await verifyPhone(phone);
+  setPhoneError(res.data.message);
+};
+
+const handlePasswordValidate = async (password) => {
+  const res = await verifyPassword(password);
+  setPasswordError(res.data.message);
+};
 
   const handleRegisterSubmit = async (event) => {
     event.preventDefault();
@@ -246,10 +300,10 @@ const handleResendOTP = async (event) => {
 const hangleForgetPasswordSubmit = async (event) => {
   event.preventDefault();
 
-  if (!validateEmail(email)) {
-    toast.error('Please enter a valid email');
-    return;
-  }
+  // if (!validateEmail(email)) {
+  //   toast.error('Please enter a valid email');
+  //   return;
+  // }
 
   toast.info('Please Wait...');
 
@@ -300,7 +354,6 @@ const handleOTPVerification = async (event) => {
         : 'An error occurred.';
     toast.error(errorMessage);
   }
-
 };
 
 
@@ -488,11 +541,27 @@ return re.test(otp);
         placeholder="Email"
         name="email"
         value={email}
-        onChange={handleEmailChange}
+        required
+        onChange={(e) => {
+          handleEmailChange(e);
+          handleEmailValidate(e.target.value);
+        }}
         data-testid="email-input-signup"
       />
+
+    <span className="tooltisp" style={{ position: 'absolute', right: '160px',top: '295px' }}>
+                {emailValid ? (
+                    <FaCheckCircle style={{ color: 'green', marginLeft: '1px' }} />
+                ) : (
+                    <FaTimesCircle style={{ color: 'red', marginLeft: '1px' }} />
+                )}
+            </span>
+
     </div>
   )}
+
+
+
   {emailotpsent && !emailotpverified && (
     <div>
       <input
@@ -512,8 +581,12 @@ return re.test(otp);
         placeholder="Name"
         name="name"
         value={name}
-        onChange={handleNameChange}
+        onChange={(e) => {
+          handleNameChange(e);
+          handleNameValidate(e.target.value);
+        }}
       />
+        <div>{nameError}</div>
       <input
         type="text"
         placeholder="Phone"
@@ -540,7 +613,7 @@ return re.test(otp);
   <button type="submit" data-testid="sign-up-button">
     {emailotpsent
       ? emailotpverified
-        ? 'Complete Registration'
+        ? 'Submit'
         : 'Verify OTP'
       : 'Verify Email'}
   </button>

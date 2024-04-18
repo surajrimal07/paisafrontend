@@ -7,8 +7,6 @@ import Login from './pages/login/login3';
 import NrbData from './pages/nrbpage/nrb';
 import MarketData from './pages/worldmarket/worldmarket';
 
-//jest.mock('axios');
-
 describe('Login Component', () => {
   beforeEach(() => {
     localStorage.clear();

@@ -218,6 +218,36 @@
     color: rgb(255, 255, 255);
   }
 
-    .form-container.sign-up button:hover {
-        background-color: #512da8;
-    }
+.form-container.sign-up button:hover {
+    background-color: #512da8;
+}
+
+
+
+.tooltisp {
+    position: 'absolute';
+    right: '160px';
+    top: '295px'
+}
+
+.tooltisp .tooltisptext {
+    visibility: hidden;
+    width: max-content;
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltisp:hover .tooltisptext {
+    visibility: visible;
+    opacity: 1;
+}

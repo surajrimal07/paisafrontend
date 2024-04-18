@@ -14,7 +14,6 @@ import './user.css';
 
 const UserDashboard = () => {
   const [userPort, setUserPort] = useState([]);
-
   const [userData, setUserData] = useState(null);
   const [portfolioStockCounts, setPortfolioStockCounts] = useState({});
   const [loading, setLoading] = useState(true);

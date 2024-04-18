@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { FaCubes } from 'react-icons/fa';
 import { getNrbdata } from '../../apis/api';
 import './nrb.css';
 
@@ -11,6 +12,7 @@ const NrbData = () => {
       try {
         const nrbData = await getNrbdata();
         setNrbData(nrbData.data.data);
+        console.log(nrbData.data.data);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching NRB data:', error);
@@ -22,6 +24,23 @@ const NrbData = () => {
 
   const dates = nrbData ? Object.keys(nrbData.nrbBankingData['Total Deposits']) : [];
 
+
+  const InfoCard = ({ icon, value, label }) => {
+    return (
+      <div className="info-card-container">
+        <div className="info-card">
+          <div className="info-item">
+            {icon && <div className="info-icon">{icon}</div>}
+            <div className="info-text">
+              <div className="info-value">{value}</div>
+              <div className="info-label">{label}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   if (loading) {
     return <div className="loading-container">
     <div className="loading-spinner" data-testid="loading-spinner"></div>
@@ -30,7 +49,19 @@ const NrbData = () => {
   }
   return (
     <div className="containers">
-      <h1 className="header">NRB Data</h1>
+ <h1 className="headers">
+    NRB Data<span className="small-text">({nrbData.nrbBankingData['Short Term Interest Rates'].date})</span>
+  </h1>
+      <div className="user-info-cards">
+      {Object.entries(nrbData.nrbBankingData['Short Term Interest Rates'].values).map(([duration, rate]) => (
+          <InfoCard
+            key={duration}
+            icon={<FaCubes />}
+            value={rate+'%'}
+            label={`${duration} Days Interest Rate`}
+          />
+        ))}
+        </div>
       {nrbData && (
         <div className="data-container">
           <div className="section">

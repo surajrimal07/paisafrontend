@@ -309,6 +309,7 @@ const UserWatchlists = () => {
     );
   };
 
+  //add total count in json itself later
   const totalwatchlist = userWatchlists && userWatchlists.length;
 
   const InfoCard = ({ icon, value, label }) => {
