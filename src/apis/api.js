@@ -1,7 +1,7 @@
 import axios from "axios";
 
 //const baseURL = "http://localhost:5000";
-const baseURL = "api.zorsha.com.np"
+const baseURL = "https://api.zorsha.com.np"
 const token = localStorage.getItem('token');
 
 //testing logger
