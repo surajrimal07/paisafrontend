@@ -1,7 +1,7 @@
 import axios from "axios";
 
-//const baseURL = "http://localhost:5000";
-const baseURL = "https://api.zorsha.com.np"
+const baseURL = "http://localhost:4000";
+//const baseURL = "https://api.zorsha.com.np"
 const token = localStorage.getItem('token');
 
 //testing logger
@@ -41,7 +41,7 @@ export const RegisterUser = (data) => api.post('/api/create', data)
 
 export const verifyEmail = (data) => api.post('/api/verifyemail',data);
 export const verifyName = (data) => api.post('/api/verifyname',data);
-export const verifyPassword = (data) => api.post('/api/verifypassword',data);
+export const verifyPassword = (data) => api.post('/api/verifyPassword',data);
 export const verifyPhone = (data) => api.post('/api/verifyphone',data);
 
 export const loginUser =  (data) =>  api.post('/api/login', data)

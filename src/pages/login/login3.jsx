@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { RegisterUser, forgetPassword, loginUser, otpLogin, otpVerify, savePassword, verifyEmail, verifyName, verifyPassword, verifyPhone } from '../../apis/api';
 import logo from '../../component/images/hilogo.png';
+import { GlobalContext } from '../../globalcontext.js';
 import './login2.css';
 
 const Login = () => {
@@ -12,9 +13,10 @@ const Login = () => {
   const [emailotpverified, setEmailOTPVerified] = useState('');
   const [forgetotpsent , setForgetOTPSent] = useState('');
   const [forgetotpverified, setForgetOTPVerified] = useState('');
-  const [email, setEmail] = useState('suraj@rimal.com');
+  const { email, setEmail } = useContext(GlobalContext);
   const [otp, setOTP] = useState('');
-  const [password, setPassword] = useState('111111');
+  const {password, setPassword} = useContext(GlobalContext);
+  const {setIsUserLoggedIn} = useContext(GlobalContext);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -22,16 +24,18 @@ const Login = () => {
   const location = useLocation();
 
   //ServerSide validations
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [nameError, setNameError] = useState('');
-  const [phoneError, setPhoneError] = useState('');
+  const [emailError, setEmailError] = useState('Please Enter Email');
+  const [passwordError, setPasswordError] = useState('Please Enter Password');
+  const [nameError, setNameError] = useState('Please Enter Name');
+  const [phoneError, setPhoneError] = useState('Please Enter Phone');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('Please Enter Confirm Password');
 
   //store validations state
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
   const [nameValid, setNameValid] = useState(false);
   const [phoneValid, setPhoneValid] = useState(false);
+  const [confirmPasswordValid, setConfirmPasswordValid] = useState(false);
 
 
   const showRegister = location.state && location.state.showRegister;
@@ -106,9 +110,9 @@ const Login = () => {
         localStorage.setItem('token', token);
         const jsonDecode = JSON.stringify(responseData);
         localStorage.setItem('user', jsonDecode);
+        setIsUserLoggedIn(true);
         setTimeout(() => {
           if (responseData.isAdmin) {
-
             navigate('/admin/dashboard');
           } else {
             navigate('/dashboard');
@@ -134,14 +138,10 @@ const Login = () => {
     try {
         const res = await verifyEmail(data);
         setEmailError(res.data.message);
-     //   console.log(res);
         setEmailValid(res.status === 200);
-     //   console.log('email error status is ' + emailValid)
     } catch (error) {
-    //  console.log(error);
       setEmailError(error.response.data.message);
       setEmailValid(false);
-     // console.log('email error status is ' + emailValid)
     }
 };
 
@@ -152,21 +152,53 @@ const handleNameValidate = async (name) => {
   try {
       const res = await verifyName(data);
       setNameError(res.data.message);
-      console.log(res);
+      setNameValid(res.status === 200);
   } catch (error) {
-    console.log(error);
       setNameError(error.response.data.message);
+      setNameValid(false);
   }
 };
 
 const handlePhoneValidate = async (phone) => {
-  const res = await verifyPhone(phone);
-  setPhoneError(res.data.message);
+  const data = {
+    phone: Number(phone)
+  };
+
+  try {
+    const res = await verifyPhone(data);
+    setPhoneError(res.data.message);
+    setPhoneValid(res.status === 200);
+  } catch (error) {
+    setPhoneError(error.response.data.message);
+    setPhoneValid(false);
+  }
 };
 
-const handlePasswordValidate = async (password) => {
-  const res = await verifyPassword(password);
-  setPasswordError(res.data.message);
+const handlePasswordValidate = async (password,email,name) => {
+  const data = {
+    password,
+    email,
+    name
+  };
+
+  try {
+    const res = await verifyPassword(data);
+    setPasswordError(res.data.message);
+    setPasswordValid(res.status === 200);
+  } catch (error) {
+    setPasswordError(error.response.data.message);
+    setPasswordValid(false);
+  }
+};
+
+const handleConfirmPasswordValidate = async (confirmPassword, passowrd) => {
+  if (confirmPassword === passowrd && passwordValid) {
+    setConfirmPasswordError('Password Matched');
+    setConfirmPasswordValid(true);
+  } else {
+    setConfirmPasswordError('Password Not Matched');
+    setConfirmPasswordValid(false);
+  }
 };
 
   const handleRegisterSubmit = async (event) => {
@@ -217,10 +249,10 @@ const handlePasswordValidate = async (password) => {
   const handleSendEmailOTP = async (event) => {
     event.preventDefault();
 
-    if (!validateEmail(email)) {
-      toast.error('Please enter a valid email');
-      return;
-    }
+    // if (!validateEmail(email)) {
+    //   toast.error('Please enter a valid email');
+    //   return;
+    // }
 
     toast.info('Please Wait...');
     try {
@@ -299,12 +331,6 @@ const handleResendOTP = async (event) => {
 
 const hangleForgetPasswordSubmit = async (event) => {
   event.preventDefault();
-
-  // if (!validateEmail(email)) {
-  //   toast.error('Please enter a valid email');
-  //   return;
-  // }
-
   toast.info('Please Wait...');
 
   try {
@@ -399,10 +425,10 @@ const handleGoBackToLoginClick = () => {
   setForgetOTPVerified(false);
 };
 
-const validateEmail = (email) => {
-    const re = /\S+@\S+\.\S+/;
-    return re.test(email);
-  }
+// const validateEmail = (email) => {
+//     const re = /\S+@\S+\.\S+/;
+//     return re.test(email);
+//   }
 
 
 const validateOTP = (otp) => {
@@ -431,23 +457,38 @@ return re.test(otp);
     handleLoginSubmit(e);
   }
 }}>
-            <h1>{showResetForm? 'Forget Password' : 'Sign In'}</h1>
+  <h1>{showResetForm? 'Forget Password' : 'Sign In'}</h1>
 
-            {!showResetForm ? (
+  {!showResetForm ? (
   <span>Use your 10Paisa email and password to login</span>
 ) : (
   <span>Enter your email to reset your password</span>
 )}
-            <input
-              type="email"
-              id="email"
-              className="form-control"
-              value={email}
-              onChange={handleEmailChange}
-              required
-              placeholder="Email"
-              data-testid="email-input"
-            />
+
+<div style={{ display: 'flex', alignItems: 'center', position: 'relative', width: '80%' }}>
+    <input
+        type="email"
+        id="email"
+        className="form-control"
+        value={email}
+        onChange={(e) => {
+            handleEmailChange(e);
+            handleEmailValidate(e.target.value);
+        }}
+        required
+        placeholder="Email"
+        data-testid="email-input"
+    />
+
+    <span className="tooltisp" style={{ position: 'absolute', right: '5px' }}>
+        {!emailValid ? (
+            <FaCheckCircle style={{ color: 'green', marginLeft: '5px' }} />
+        ) : (
+            <FaTimesCircle style={{ color: 'red', marginLeft: '5px' }} />
+        )}
+    </span>
+</div>
+
 
 {forgetotpsent && !forgetotpverified && (
 
@@ -463,15 +504,19 @@ return re.test(otp);
   )}
 
 {(!showResetForm || (showResetForm && forgetotpverified)) && (
-  <input
-    type="password"
-    id="password"
-    className="form-control"
-    value={password}
-    onChange={handlePasswordChange}
-    required
-    placeholder="Password"
-  />
+
+
+<div style={{ display: 'flex', alignItems: 'center', position: 'relative', width: '80%' }}>
+    <input
+        type="password"
+        id="password"
+        className="form-control"
+        value={password}
+        onChange={handlePasswordChange}
+        required
+        placeholder="Password"
+    />
+</div>
 )}
 
 <button
@@ -499,7 +544,7 @@ return re.test(otp);
   </p>
 )}
 
-<button type="submit" className="btn btn-primary btn-block" data-testid="sign-in-button">
+<button type="submit" className="btn btn-primary btn-block" data-testid="sign-in-button" disabled={emailValid}>
 
   {showResetForm
     ? forgetotpsent
@@ -535,7 +580,7 @@ return re.test(otp);
       : 'Verify Email'}
   </h1>
   {!emailotpsent && (
-    <div>
+    <div style={{ display: 'flex', alignItems: 'center', position: 'relative', width: '80%' }}>
       <input
         type="email"
         placeholder="Email"
@@ -548,22 +593,19 @@ return re.test(otp);
         }}
         data-testid="email-input-signup"
       />
-
-    <span className="tooltisp" style={{ position: 'absolute', right: '160px',top: '295px' }}>
+    <span className="tooltisp"  style={{ position: 'absolute', right: '5px' }}>
                 {emailValid ? (
                     <FaCheckCircle style={{ color: 'green', marginLeft: '1px' }} />
                 ) : (
                     <FaTimesCircle style={{ color: 'red', marginLeft: '1px' }} />
                 )}
+                <span className="tooltiptext">{emailError}</span>
             </span>
-
     </div>
   )}
 
-
-
   {emailotpsent && !emailotpverified && (
-    <div>
+    <div style={{ display: 'flex', alignItems: 'center', position: 'relative', width: '80%' }}>
       <input
         type="text"
         placeholder="Enter OTP"
@@ -576,6 +618,7 @@ return re.test(otp);
   )}
   {emailotpsent && emailotpverified && (
     <>
+    <div style={{ display: 'flex', alignItems: 'center', position: 'relative', width: '90%' }}>
       <input
         type="text"
         placeholder="Name"
@@ -586,31 +629,86 @@ return re.test(otp);
           handleNameValidate(e.target.value);
         }}
       />
-        <div>{nameError}</div>
-      <input
+          <span className="tooltisp" style={{ position: 'absolute', right: '10px' }}>
+                {nameValid ? (
+                    <FaCheckCircle style={{ color: 'green', marginLeft: '1px' }} />
+                ) : (
+                    <FaTimesCircle style={{ color: 'red', marginLeft: '1px' }} />
+                )}
+                <span className="tooltiptext">{nameError}</span>
+            </span>
+            </div>
+
+
+    <div style={{ display: 'flex', alignItems: 'center', position: 'relative', width: '90%' }}>
+    <input
         type="text"
         placeholder="Phone"
         name="phone"
+        pattern="^[0-9]{10}$"
+        minLength="10"
+        maxLength="10"
         value={phone}
-        onChange={handlePhoneChange}
-      />
-      <input
+        onChange={(e) => {
+            handlePhoneChange(e);
+            handlePhoneValidate(e.target.value);
+        }}
+    />
+    <span className="tooltisp" style={{ position: 'absolute', right: '10px' }}>
+        {phoneValid ? (
+            <FaCheckCircle style={{ color: 'green', marginLeft: '1px' }} />
+        ) : (
+            <FaTimesCircle style={{ color: 'red', marginLeft: '1px' }} />
+        )}
+        <span className="tooltiptext">{phoneError}</span>
+    </span>
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', position: 'relative', width: '90%' }}>
+    <input
         type="password"
         placeholder="Password"
         name="password"
         value={password}
-        onChange={handlePasswordChange}
-      />
-      <input
+        onChange={(e) => {
+            handlePasswordChange(e);
+            handlePasswordValidate(e.target.value, email, name);
+        }}
+    />
+    <span className="tooltisp" style={{ position: 'absolute', right: '10px' }}>
+        {passwordValid ? (
+            <FaCheckCircle style={{ color: 'green', marginLeft: '1px' }} />
+        ) : (
+            <FaTimesCircle style={{ color: 'red', marginLeft: '1px' }} />
+        )}
+        <span className="tooltiptext">{passwordError}</span>
+    </span>
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', position: 'relative', width: '90%' }}>
+    <input
         type="password"
         placeholder="Confirm Password"
         name="confirmPassword"
         value={confirmPassword}
-        onChange={handleConfirmPasswordChange}
-      />
+        onChange={(e) => {
+            handleConfirmPasswordChange(e);
+            handleConfirmPasswordValidate(e.target.value, password);
+        }}
+    />
+    <span className="tooltisp" style={{ position: 'absolute', right: '10px' }}>
+        {confirmPasswordValid ? (
+            <FaCheckCircle style={{ color: 'green', marginLeft: '1px' }} />
+        ) : (
+            <FaTimesCircle style={{ color: 'red', marginLeft: '1px' }} />
+        )}
+        <span className="tooltiptext">{confirmPasswordError}</span>
+    </span>
+</div>
+
     </>
   )}
-  <button type="submit" data-testid="sign-up-button">
+  <button type="submit" data-testid="sign-up-button" disabled={!emailValid} >
     {emailotpsent
       ? emailotpverified
         ? 'Submit'

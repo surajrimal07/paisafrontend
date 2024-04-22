@@ -1,19 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FaBell } from 'react-icons/fa';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import useWebSocket from 'react-use-websocket';
+//import useWebSocket from 'react-use-websocket';
 import { getIndex } from '../../apis/api.js';
+import { GlobalContext } from '../../globalcontext';
 import logo from '../images/logo.png';
 import './navbarO.css';
 import sound from './noti.mp3';
 
 const Navbar = () => {
-  const { lastMessage } = useWebSocket('ws://api.zorsha.com.np:8081');
-  //const { lastMessage } = [];
-  //const { lastMessage } = useWebSocket('ws://https://paisabackend.el.r.appspot.com/:8081');
+  // const { email, password } = useContext(GlobalContext);
+  // const customWebSocketOptions = {
+  //   queryParams: { 'email': email,password  },
+  // };
+  //const { lastMessage } = useWebSocket('ws://localhost:8081', customWebSocketOptions);
+  const { lastMessage } = useContext(GlobalContext);
   const [index, setIndex] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
