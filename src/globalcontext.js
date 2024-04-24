@@ -20,7 +20,7 @@ export const GlobalContext = createContext({
       };
 
     const { lastMessage } = useWebSocket(
-        isUserLoggedIn ? 'ws://localhost:8081' : null,
+        isUserLoggedIn ? 'wss://localhost:8081' : null,
         customWebSocketOptions
       );
 

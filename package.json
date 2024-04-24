@@ -36,7 +36,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set HTTPS=true&& set SSL_CRT_FILE=local.crt&& set SSL_KEY_FILE=local.decrypted.key&& react-scripts start",
+    "start-prod": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "eject": "react-scripts eject"

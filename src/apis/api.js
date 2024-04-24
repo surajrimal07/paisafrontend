@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:4000";
+//to run in production use this command, npm run start-prod
+
+const baseURL = "https://localhost:4000";
 //const baseURL = "https://api.zorsha.com.np"
 const token = localStorage.getItem('token');
 
@@ -28,7 +30,6 @@ const api = axios.create({
    'Content-Type': 'application/json',
   },
 });
-
 
 const config = {
     headers : {
