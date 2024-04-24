@@ -2,8 +2,8 @@ import axios from "axios";
 
 //to run in production use this command, npm run start-prod
 
-const baseURL = "https://localhost:4000";
-//const baseURL = "https://api.zorsha.com.np"
+//const baseURL = "https://localhost:4000";
+const baseURL = "https://api.zorsha.com.np"
 const token = localStorage.getItem('token');
 
 //testing logger
