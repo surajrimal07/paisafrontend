@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
-import './handledp.css';
+import React, { useState } from "react";
+import "./handledp.css";
 
 const HandleDPChange = ({ userData, onDPChange, onClose }) => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null)
+  const [previewImage, setPreviewImage] = useState(null);
 
+  //only accept jpeg and png files
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      const fileType = file.type;
+      if (fileType === "image/jpeg" || fileType === "image/png") {
         setSelectedImage(file);
-        setPreviewImage(URL.createObjectURL(file))
+        setPreviewImage(URL.createObjectURL(file));
         handleSave();
+      } else {
+        alert("Please select a valid image file.");
+      }
     }
-};
+  };
 
   const handleSave = () => {
     if (selectedImage) {
@@ -26,20 +32,28 @@ const HandleDPChange = ({ userData, onDPChange, onClose }) => {
       <div className="modal-content handle-dp-change">
         <div className="modal-header">
           <h5 className="modal-title">Select a new image</h5>
-          <button type="button" className="btn-close" onClick={onClose}></button>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={onClose}
+          ></button>
         </div>
         <div className="modal-body">
           <div className="current-image-container">
-            <img className="current-image" src={previewImage || userData.dpImage} alt="User DP" />
+            <img
+              className="current-image"
+              src={previewImage || userData.dpImage}
+              alt="User DP"
+            />
           </div>
           <div className="input-group mb-3">
-          <input
-    type="file"
-    accept="image/*"
-    onChange={(e) => handleFileChange(e)}
-    className="form-control"
-    id="inputGroupFile"
-/>
+            <input
+              type="file"
+              accept="image/jpeg, image/png"
+              onChange={(e) => handleFileChange(e)}
+              className="form-control"
+              id="inputGroupFile"
+            />
 
             <label className="input-group-text" htmlFor="inputGroupFile">
               Choose Image
@@ -47,7 +61,11 @@ const HandleDPChange = ({ userData, onDPChange, onClose }) => {
           </div>
         </div>
         <div className="modal-footer">
-          <button type="button" className="btn btn-primary" onClick={handleSave}>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleSave}
+          >
             Save
           </button>
         </div>

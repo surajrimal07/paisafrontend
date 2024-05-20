@@ -1,0 +1,135 @@
+.user-logs-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  position: relative;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.filter-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 10px; /* Adds space between flex items */
+  }
+
+  .filter-bar select,
+  .filter-bar input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    flex: 1; /* Distributes remaining space evenly among items */
+  }
+
+  .response-time-filter {
+    display: flex;
+    align-items: center; /* Aligns items vertically */
+  }
+
+  .response-time-filter select,
+  .response-time-filter input {
+    padding: 8px; /* Adjust padding for better appearance */
+    margin-right: 10px; /* Adds space between dropdown and input */
+  }
+
+  .response-time-filter select {
+    width: 150px; /* Increase width for dropdown */
+  }
+
+  .response-time-filter input {
+    flex: 1; /* Distributes remaining space evenly */
+  }
+
+
+.logs-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.logs-table th,
+.logs-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.logs-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.logs-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.logs-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  background-color: #f2f2f2;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.floating-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+.icon-container {
+  background-color: #007bff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.icon-container:hover {
+  background-color: #0056b3;
+}

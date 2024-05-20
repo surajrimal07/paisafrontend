@@ -15,12 +15,15 @@ export const GlobalContext = createContext({
     const [password, setPassword] = useState('111111');
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
     const [isSocketConnected, setIsSocketConnected] = useState(false);
+
     const customWebSocketOptions = {
-        queryParams: { 'email': email,password  },
+        queryParams: { 'email': email, 'password': password  },
       };
 
+    console.log('customWebSocketOptions:', customWebSocketOptions);
+
     const { lastMessage } = useWebSocket(
-        isUserLoggedIn ? 'wss://localhost:8081' : null,
+        isUserLoggedIn ? 'wss://socket.zorsha.com.np/' : null,
         customWebSocketOptions
       );
 

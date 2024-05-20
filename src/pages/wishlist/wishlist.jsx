@@ -51,7 +51,6 @@ const UserWatchlists = () => {
 
           } else {
             toast.error('Error fetching watchlists');
-            console.error(watchlists.data.message);
           }
         } else {
           console.error('User data not found in local storage');

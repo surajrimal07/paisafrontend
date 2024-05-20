@@ -37,8 +37,12 @@ import Chart from './pages/chart/chart';
 import PortfolioView from './pages/portfolio/portfolio';
 import PortfolioCompare from './pages/portfolio/portfoliocompare';
 
+import { ToastContainer } from "react-toastify";
+import AIDashboard from './pages/ai_dashboard/ai_dashboard';
 import NrbData from './pages/nrbpage/nrb';
 import MarketData from './pages/worldmarket/worldmarket';
+import UserLogs from './pages/admin/userlogs';
+
 const Homepage = () => {
 
   return (
@@ -57,42 +61,46 @@ function App() {
       <div className="App">
         <Navbar />
         <div className="mt-5">
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/aboutus" element={<AboutUsPage />} />
-          <Route path="/feathures" element={<Feathures />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/news" element={<NewsDisplay />} />
-          <Route path="/disclosure" element={<Disclosure />} />
-          <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-          <Route path="/termsandconditions" element={<TermsAndConditions />} />
-          <Route path="/disclaimer" element={<Disclaimer />} />
-          <Route path="/career" element={<Career />} />
-          <Route path="/complaint" element={<Complaint />} />
-          <Route path="/nrbdata" element={<NrbData />} />
-          <Route path="/worldmarket" element={<MarketData />} />
+          <Routes>
+            <Route path="/" element={<Homepage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/aboutus" element={<AboutUsPage />} />
+            <Route path="/feathures" element={<Feathures />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/news" element={<NewsDisplay />} />
+            <Route path="/disclosure" element={<Disclosure />} />
+            <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+            <Route path="/termsandconditions" element={<TermsAndConditions />} />
+            <Route path="/disclaimer" element={<Disclaimer />} />
+            <Route path="/career" element={<Career />} />
+            <Route path="/complaint" element={<Complaint />} />
+            <Route path="/nrbdata" element={<NrbData />} />
+            <Route path="/worldmarket" element={<MarketData />} />
 
-          <Route element = {<UserRoutes/>}>
-            <Route path="/myprofile" element={<MyProfilePage />} />
-            <Route path="/watchlist" element={<UserWatchlists />} />
-            <Route path="/commodities" element={<AssetDashboard />} />
-            <Route path="/portfolio/:id" element={<PortfolioView />} />
-            <Route path="/portfoliocompare/:id" element={<PortfolioCompare />} />
-            <Route path="/dashboard" element={<UserDashboard />} />
-            <Route path="/stockdetailview" element={<StockDetailView />} />
-            <Route path="/stocks" element={<Stock />} />
-            <Route path="/chart" element={<Chart />} />
-          </Route>
+            <Route element={<UserRoutes />}>
+              <Route path="/myprofile" element={<MyProfilePage />} />
+              <Route path="/watchlist" element={<UserWatchlists />} />
+              <Route path="/commodities" element={<AssetDashboard />} />
+              <Route path="/portfolio/:id" element={<PortfolioView />} />
+              <Route path="/portfoliocompare/:id" element={<PortfolioCompare />} />
+              <Route path="/dashboard" element={<UserDashboard />} />
+              <Route path="/stockdetailview" element={<StockDetailView />} />
+              <Route path="/stocks" element={<Stock />} />
+              <Route path="/chart" element={<Chart />} />
+              <Route path="/ai" element={<AIDashboard />} />
 
-          <Route element = {<AdminRoutes/>} >
-            <Route path ='/admin/dashboard' element={<Dashboard/>} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
+            </Route>
 
-        </Routes>
+            <Route element={<AdminRoutes />} >
+              <Route path='/admin/dashboard' element={<Dashboard />} />
+              <Route path='/admin/userlogs' element={<UserLogs />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+
+          </Routes>
         </div>
         <Footer />
+        <ToastContainer position="top-right" limit={1} />
       </div>
     </Router>
   );

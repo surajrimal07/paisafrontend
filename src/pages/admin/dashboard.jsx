@@ -1,15 +1,32 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
-import { FaArrowDown, FaArrowUp, FaCubes, FaDollarSign, FaExchangeAlt, FaSortDown, FaSortUp, FaTimes, FaUser, FaUsersCog } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import {
+  FaArrowDown,
+  FaArrowUp,
+  FaCubes,
+  FaDollarSign,
+  FaExchangeAlt,
+  FaSortDown,
+  FaSortUp,
+  FaTimes,
+  FaUser,
+  FaUsersCog,
+} from "react-icons/fa";
+import { Link } from "react-router-dom";
 import ScrollToTop from "react-scroll-to-top";
-import { ToastContainer, toast } from 'react-toastify';
-import { deleteUser, getAllAssets, getAllPortfolios, getAllUsers, getCommo, getMetals } from '../../apis/api';
-import './dashboard.css';
-import UserDialogBox from './dialogbox_admin.jsx';
-import EditUserDialogBox from './editingbox_admin.jsx';
-
+import { toast } from "react-toastify";
+import {
+  deleteUser,
+  getAllAssets,
+  getAllPortfolios,
+  getAllUsers,
+  getCommo,
+  getMetals,
+} from "../../apis/api";
+import "./dashboard.css";
+import UserDialogBox from "./dialogbox_admin.jsx";
+import EditUserDialogBox from "./editingbox_admin.jsx";
 
 function AdminDashboard() {
   const [assets, setAssets] = useState([]);
@@ -22,85 +39,109 @@ function AdminDashboard() {
 
   const [currentCommoditiesPage, setCurrentCommoditiesPage] = useState(1);
   const [itemsPerPage] = useState(15);
-  const [searchQueryUsers, setSearchQueryUsers] = useState('');
-  const [searchQueryAssets, setSearchQueryAssets] = useState('');
-  const [searchQueryCommodities, setSearchQueryCommodities] = useState('');
+  const [searchQueryUsers, setSearchQueryUsers] = useState("");
+  const [searchQueryAssets, setSearchQueryAssets] = useState("");
+  const [searchQueryCommodities, setSearchQueryCommodities] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
   const [deletingUser, setDeletingUser] = useState(null);
   const [isEditingUser, setEditingUser] = useState(null);
   const [isEditingDialogOpen, setEditingDialogOpen] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [sortOrderUsers, setSortOrderUsers] = useState({ column: null, ascending: true });
-  const [sortOrderAssets, setSortOrderAssets] = useState({ column: null, ascending: true });
-  const [sortOrderCommodities, setSortOrderCommodities] = useState({ column: null, ascending: true });
+  const [sortOrderUsers, setSortOrderUsers] = useState({
+    column: null,
+    ascending: true,
+  });
+  const [sortOrderAssets, setSortOrderAssets] = useState({
+    column: null,
+    ascending: true,
+  });
+  const [sortOrderCommodities, setSortOrderCommodities] = useState({
+    column: null,
+    ascending: true,
+  });
 
   const totalUsers = users.length;
   const totalAssets = assets.length;
   const totalAmount = users.reduce((total, user) => total + user.userAmount, 0);
-  const totalAdmins = users.filter(user => user.isAdmin).length;
+  const totalAdmins = users.filter((user) => user.isAdmin).length;
   const totalCommodity = commodities.length;
   const totalMetals = metals.length;
 
   const fetchData = async () => {
     try {
       const assetResponse = await getAllAssets();
-      if (assetResponse.status === 200 && Array.isArray(assetResponse.data.data)) {
+      if (
+        assetResponse.status === 200 &&
+        Array.isArray(assetResponse.data.data)
+      ) {
         const jsonDecode = JSON.stringify(assetResponse.data.data);
-        localStorage.setItem('Assets', jsonDecode);
+        localStorage.setItem("Assets", jsonDecode);
         setAssets(assetResponse.data.data);
       } else {
-        toast.error('Error fetching assets');
-        console.error('Error fetching assets:', assetResponse.error);
+        toast.error("Error fetching assets");
+        console.error("Error fetching assets:", assetResponse.error);
       }
 
       const userResponse = await getAllUsers();
-      if (userResponse.status === 200 && Array.isArray(userResponse.data.data)) {
+      if (
+        userResponse.status === 200 &&
+        Array.isArray(userResponse.data.data)
+      ) {
         const jsonDecode = JSON.stringify(userResponse.data.data);
-        localStorage.setItem('Users', jsonDecode);
+        localStorage.setItem("Users", jsonDecode);
         setUsers(userResponse.data.data);
       } else {
-        toast.error('Error fetching users');
-        console.error('Error fetching users:', userResponse.error);
+        toast.error("Error fetching users");
+        console.error("Error fetching users:", userResponse.error);
       }
 
       const portfolioRespose = await getAllPortfolios();
-      if (portfolioRespose.status === 200 && Array.isArray(portfolioRespose.data.data)) {
+      if (
+        portfolioRespose.status === 200 &&
+        Array.isArray(portfolioRespose.data.data)
+      ) {
         const jsonDecode = JSON.stringify(portfolioRespose.data.data);
-        localStorage.setItem('Portfolios', jsonDecode);
+        localStorage.setItem("Portfolios", jsonDecode);
 
         setPortfolios(portfolioRespose.data.data);
-        console.log(portfolios);
+       // console.log(portfolios);
       } else {
-        toast.error('Error fetching portfolios');
-        console.error('Error fetching portfolios:', portfolioRespose.error);
+        toast.error("Error fetching portfolios");
+        console.error("Error fetching portfolios:", portfolioRespose.error);
       }
 
       const metalsResponse = await getMetals();
-      if (metalsResponse.status === 200 && Array.isArray(metalsResponse.data.metalPrices)) {
-        const jsonDecode = JSON.stringify(metalsResponse.data.metalPrices);
-        localStorage.setItem('Metals', jsonDecode);
-        setMetals(metalsResponse.data.metalPrices);
+      if (
+        metalsResponse.status === 200 &&
+        Array.isArray(metalsResponse.data.metalData)
+      ) {
+        const jsonDecode = JSON.stringify(metalsResponse.data.metalData);
+        localStorage.setItem("Metals", jsonDecode);
+        setMetals(metalsResponse.data.metalData);
       } else {
-        toast.error('Error fetching metals');
-        console.error('Error fetching metals:', metalsResponse.error);
+        toast.error("Error fetching metals");
+        console.error("Error fetching metals:", metalsResponse.error);
       }
 
       const commodityResponse = await getCommo();
-      if (commodityResponse.status === 200 && Array.isArray(commodityResponse.data.data)) {
+      if (
+        commodityResponse.status === 200 &&
+        Array.isArray(commodityResponse.data.data)
+      ) {
         const jsonDecode = JSON.stringify(commodityResponse.data.data);
-        localStorage.setItem('Commodities', jsonDecode);
+        localStorage.setItem("Commodities", jsonDecode);
         setCommodities(commodityResponse.data.data);
       } else {
-        toast.error('Error fetching commodities');
-        console.error('Error fetching commodities:', commodityResponse.error);
+        toast.error("Error fetching commodities");
+        console.error("Error fetching commodities:", commodityResponse.error);
       }
 
       setTimeout(() => {
         setLoading(false);
       }, 1000);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   };
 
@@ -116,17 +157,26 @@ function AdminDashboard() {
   };
 
   const handleSortUsers = (column) => {
-    const isAscending = sortOrderUsers.column === column ? !sortOrderUsers.ascending : true;
+    const isAscending =
+      sortOrderUsers.column === column ? !sortOrderUsers.ascending : true;
     setSortOrderUsers({ column, ascending: isAscending });
 
     const sortedUsers = [...users].sort((a, b) => {
       const valueA = a[column];
       const valueB = b[column];
 
-      if (typeof valueA === 'string' && typeof valueB === 'string') {
-        return isAscending ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
+      if (typeof valueA === "string" && typeof valueB === "string") {
+        return isAscending
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA);
       } else {
-        return isAscending ? (valueA > valueB ? 1 : -1) : valueA > valueB ? -1 : 1;
+        return isAscending
+          ? valueA > valueB
+            ? 1
+            : -1
+          : valueA > valueB
+          ? -1
+          : 1;
       }
     });
 
@@ -134,38 +184,58 @@ function AdminDashboard() {
   };
 
   const handleSortAssets = (column) => {
-    const isAscending = sortOrderAssets.column === column ? !sortOrderAssets.ascending : true;
+    const isAscending =
+      sortOrderAssets.column === column ? !sortOrderAssets.ascending : true;
     setSortOrderAssets({ column, ascending: isAscending });
 
     const sortOrderAsset = [...assets].sort((a, b) => {
       const valueA = a[column];
       const valueB = b[column];
 
-      if (typeof valueA === 'string' && typeof valueB === 'string') {
-        return isAscending ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
+      if (typeof valueA === "string" && typeof valueB === "string") {
+        return isAscending
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA);
       } else {
-        return isAscending ? (valueA > valueB ? 1 : -1) : valueA > valueB ? -1 : 1;
+        return isAscending
+          ? valueA > valueB
+            ? 1
+            : -1
+          : valueA > valueB
+          ? -1
+          : 1;
       }
     });
     setAssets(sortOrderAsset);
   };
 
   const handleSortCommodities = (column) => {
-    const isAscending = sortOrderCommodities.column === column ? !sortOrderCommodities.ascending : true;
+    const isAscending =
+      sortOrderCommodities.column === column
+        ? !sortOrderCommodities.ascending
+        : true;
     setSortOrderCommodities({ column, ascending: isAscending });
 
     const sortOrderCommodity = [...commodities].sort((a, b) => {
       const valueA = a[column];
       const valueB = b[column];
 
-      if (typeof valueA === 'string' && typeof valueB === 'string') {
-        return isAscending ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
+      if (typeof valueA === "string" && typeof valueB === "string") {
+        return isAscending
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA);
       } else {
-        return isAscending ? (valueA > valueB ? 1 : -1) : valueA > valueB ? -1 : 1;
+        return isAscending
+          ? valueA > valueB
+            ? 1
+            : -1
+          : valueA > valueB
+          ? -1
+          : 1;
       }
     });
     setCommodities(sortOrderCommodity);
-  }
+  };
 
   const handleEditUser = (user) => {
     setEditingUser(user);
@@ -205,13 +275,13 @@ function AdminDashboard() {
       const response = await deleteUser(deletingUser);
 
       if (response.status === 200 || response.status === 204) {
-        toast.success('User deleted successfully');
+        toast.success("User deleted successfully");
         setUsers(users.filter((user) => user.email !== deletingUser));
       } else {
-        toast.error('Failed to delete user');
+        toast.error("Failed to delete user");
       }
     } catch (error) {
-      toast.error('An error occurred while deleting user');
+      toast.error("An error occurred while deleting user");
     } finally {
       setDeletingUser(null);
       setShowDeleteConfirmation(false);
@@ -244,22 +314,28 @@ function AdminDashboard() {
   const renderUserPaginationButtons = () => {
     const buttons = [];
     const maxButtonsToShow = 5;
-    let startPage = Math.max(1, currentUsersPage - Math.floor(maxButtonsToShow / 2));
-    let endPage = Math.min(totalUsersPageCount, startPage + maxButtonsToShow - 1);
+    let startPage = Math.max(
+      1,
+      currentUsersPage - Math.floor(maxButtonsToShow / 2)
+    );
+    let endPage = Math.min(
+      totalUsersPageCount,
+      startPage + maxButtonsToShow - 1
+    );
     startPage = Math.max(1, endPage - maxButtonsToShow + 1);
 
     const buttonStyle = {
-      color: 'white',
-      backgroundColor: '#858585',
-      border: 'none',
-      borderRadius: '5px',
-      padding: '5px 10px',
-      cursor: 'pointer',
+      color: "white",
+      backgroundColor: "#858585",
+      border: "none",
+      borderRadius: "5px",
+      padding: "5px 10px",
+      cursor: "pointer",
     };
 
     const activeButtonStyle = {
-      backgroundColor: '#0056b3',
-      color: 'white',
+      backgroundColor: "#0056b3",
+      color: "white",
     };
 
     for (let i = startPage; i <= endPage; i++) {
@@ -267,7 +343,10 @@ function AdminDashboard() {
         <button
           key={i}
           onClick={() => setCurrentUsersPage(i)}
-          style={{ ...buttonStyle, ...(currentUsersPage === i ? activeButtonStyle : {}) }}
+          style={{
+            ...buttonStyle,
+            ...(currentUsersPage === i ? activeButtonStyle : {}),
+          }}
         >
           {i}
         </button>
@@ -283,39 +362,61 @@ function AdminDashboard() {
 
   const indexOfLastCommodity = currentCommoditiesPage * itemsPerPage;
   const indexOfFirstCommodity = indexOfLastCommodity - itemsPerPage;
-  const currentCommodity = commodities.slice(indexOfFirstCommodity, indexOfLastCommodity);
+  const currentCommodity = commodities.slice(
+    indexOfFirstCommodity,
+    indexOfLastCommodity
+  );
 
   const totalAssetsPageCount = Math.ceil(assets.length / itemsPerPage);
-  const totalCommoditiesPageCount = Math.ceil(commodities.length / itemsPerPage);
+  const totalCommoditiesPageCount = Math.ceil(
+    commodities.length / itemsPerPage
+  );
 
   const totalPortfolioCount = Math.ceil(portfolios.length);
 
-  const totalPortfolioValue = portfolios.reduce((total, portfolio) => total + portfolio.portfoliovalue, 0);
-  const totalPortfolioCost = portfolios.reduce((total, portfolio) => total + portfolio.portfoliocost, 0);
+  const totalPortfolioValue = portfolios.reduce(
+    (total, portfolio) => total + portfolio.portfoliovalue,
+    0
+  );
+  const totalPortfolioCost = portfolios.reduce(
+    (total, portfolio) => total + portfolio.portfoliocost,
+    0
+  );
   const totalReturns = totalPortfolioValue - totalPortfolioCost;
 
-  const totalAveragePortfolioReturnsPercentage = ((totalReturns / totalPortfolioCost) / totalPortfolioCount * 100).toFixed(2);
-  const totalAveragePortfolioReturns = (totalReturns / totalPortfolioCount).toFixed(2);
+  const totalAveragePortfolioReturnsPercentage = (
+    (totalReturns / totalPortfolioCost / totalPortfolioCount) *
+    100
+  ).toFixed(2);
+  const totalAveragePortfolioReturns = (
+    totalReturns / totalPortfolioCount
+  ).toFixed(2);
 
   const renderAssetPaginationButtons = () => {
     const buttons = [];
     const maxButtonsToShow = 5;
-    let startPage = Math.max(1, currentAssetsPage - Math.floor(maxButtonsToShow / 2));
-    let endPage = Math.min(totalAssetsPageCount, startPage + maxButtonsToShow - 1);
+    let startPage = Math.max(
+      1,
+      currentAssetsPage - Math.floor(maxButtonsToShow / 2)
+    );
+    let endPage = Math.min(
+      totalAssetsPageCount,
+      startPage + maxButtonsToShow - 1
+    );
     startPage = Math.max(1, endPage - maxButtonsToShow + 1);
 
     const buttonStyle = {
-      color: 'white',
-      backgroundColor: '#858585',
-      border: 'none',
-      borderRadius: '5px',
-      padding: '5px 10px',
-      cursor: 'pointer',
+      color: "white",
+      backgroundColor: "#858585",
+      border: "none",
+      borderRadius: "5px",
+      padding: "5px 10px",
+      cursor: "pointer",
     };
 
     const activeButtonStyle = {
-      backgroundColor: '#0056b3',
-      color: 'white',
+      backgroundColor: "#0056b3",
+      color: "white",
     };
 
     for (let i = startPage; i <= endPage; i++) {
@@ -323,7 +424,10 @@ function AdminDashboard() {
         <button
           key={i}
           onClick={() => setCurrentAssetsPage(i)}
-          style={{ ...buttonStyle, ...(currentAssetsPage === i ? activeButtonStyle : {}) }}
+          style={{
+            ...buttonStyle,
+            ...(currentAssetsPage === i ? activeButtonStyle : {}),
+          }}
         >
           {i}
         </button>
@@ -336,22 +440,28 @@ function AdminDashboard() {
   const renderCommodityPaginationButtons = () => {
     const buttons = [];
     const maxButtonsToShow = 5;
-    let startPage = Math.max(1, currentCommoditiesPage - Math.floor(maxButtonsToShow / 2));
-    let endPage = Math.min(totalCommoditiesPageCount, startPage + maxButtonsToShow - 1);
+    let startPage = Math.max(
+      1,
+      currentCommoditiesPage - Math.floor(maxButtonsToShow / 2)
+    );
+    let endPage = Math.min(
+      totalCommoditiesPageCount,
+      startPage + maxButtonsToShow - 1
+    );
     startPage = Math.max(1, endPage - maxButtonsToShow + 1);
 
     const buttonStyle = {
-      color: 'white',
-      backgroundColor: '#858585',
-      border: 'none',
-      borderRadius: '5px',
-      padding: '5px 10px',
-      cursor: 'pointer',
+      color: "white",
+      backgroundColor: "#858585",
+      border: "none",
+      borderRadius: "5px",
+      padding: "5px 10px",
+      cursor: "pointer",
     };
 
     const activeButtonStyle = {
-      backgroundColor: '#0056b3',
-      color: 'white',
+      backgroundColor: "#0056b3",
+      color: "white",
     };
 
     for (let i = startPage; i <= endPage; i++) {
@@ -359,7 +469,10 @@ function AdminDashboard() {
         <button
           key={i}
           onClick={() => setCurrentCommoditiesPage(i)}
-          style={{ ...buttonStyle, ...(currentCommoditiesPage === i ? activeButtonStyle : {}) }}
+          style={{
+            ...buttonStyle,
+            ...(currentCommoditiesPage === i ? activeButtonStyle : {}),
+          }}
         >
           {i}
         </button>
@@ -367,21 +480,21 @@ function AdminDashboard() {
     }
 
     return buttons;
-  }
+  };
 
   const handleClearSearchUsers = () => {
-    setSearchQueryUsers('');
-    setUsers(JSON.parse(localStorage.getItem('Users')));
+    setSearchQueryUsers("");
+    setUsers(JSON.parse(localStorage.getItem("Users")));
   };
 
   const handleClearSearchAssets = () => {
-    setSearchQueryAssets('');
-    setAssets(JSON.parse(localStorage.getItem('Assets')));
+    setSearchQueryAssets("");
+    setAssets(JSON.parse(localStorage.getItem("Assets")));
   };
 
   const handleClearSearchCommodity = () => {
-    setSearchQueryCommodities('');
-    setCommodities  (JSON.parse(localStorage.getItem('Commodities')));
+    setSearchQueryCommodities("");
+    setCommodities(JSON.parse(localStorage.getItem("Commodities")));
   };
 
   const handleSearchUsers = () => {
@@ -410,16 +523,17 @@ function AdminDashboard() {
 
   const handleSearchCommodities = () => {
     const filteredCommodities = commodities.filter((commodity) => {
-
       const nameMatch =
-        commodity.name && commodity.name.toLowerCase().includes(searchQueryCommodities.toLowerCase());
+        commodity.name &&
+        commodity.name
+          .toLowerCase()
+          .includes(searchQueryCommodities.toLowerCase());
       return nameMatch;
     });
 
     setCommodities(filteredCommodities);
     setCurrentCommoditiesPage(1);
   };
-
 
   const handleCloseDialog = () => {
     setSelectedItem(null);
@@ -432,7 +546,7 @@ function AdminDashboard() {
         <p>Loading...</p>
       </div>
     );
-  };
+  }
 
   const InfoCard = ({ icon, value, label }) => {
     return (
@@ -474,22 +588,57 @@ function AdminDashboard() {
       <h2>Admin Panel</h2>
 
       <div className="user-info-cards">
-      <InfoCard icon={<FaUser />} value={totalUsers} label="Total Users" />
-      <InfoCard icon={<FaCubes />} value={totalAssets} label="Total Assets" />
-      <InfoCard icon={<FaCubes />} value={totalCommodity} label="Total Commodities" />
-      <InfoCard icon={<FaCubes />} value={totalMetals} label="Total Metals" />
-      <InfoCard icon={<FaDollarSign />} value={totalAmount} label="Total Amount" />
-      <InfoCard icon={<FaUsersCog />} value={totalAdmins} label="Total Admins" />
+        <InfoCard icon={<FaUser />} value={totalUsers} label="Total Users" />
+        <InfoCard icon={<FaCubes />} value={totalAssets} label="Total Assets" />
+        <InfoCard
+          icon={<FaCubes />}
+          value={totalCommodity}
+          label="Total Commodities"
+        />
+        <InfoCard icon={<FaCubes />} value={totalMetals} label="Total Metals" />
+        <InfoCard
+          icon={<FaDollarSign />}
+          value={totalAmount}
+          label="Total Amount"
+        />
+        <InfoCard
+          icon={<FaUsersCog />}
+          value={totalAdmins}
+          label="Total Admins"
+        />
       </div>
 
       <div className="user-info-cards">
-      <InfoCard icon={<FaUser />} value={totalPortfolioCount} label="Total Portfolios" />
-      <InfoCard icon={<FaCubes />} value= {totalPortfolioValue} label="Total Values" />
-      <InfoCard icon={<FaCubes />} value={totalPortfolioCost} label="Total Cost" />
-      <InfoCard icon={<FaCubes />} value={totalReturns.toFixed(2)} label="Total Returns" />
-      <InfoCard icon={<FaDollarSign />} value={totalAveragePortfolioReturns} label="Average Returns" />
-      <InfoCard icon={<FaUsersCog />} value={totalAveragePortfolioReturnsPercentage} label="Average Returns %" />
-
+        <InfoCard
+          icon={<FaUser />}
+          value={totalPortfolioCount}
+          label="Total Portfolios"
+        />
+        <InfoCard
+          icon={<FaCubes />}
+          value={totalPortfolioValue}
+          label="Total Values"
+        />
+        <InfoCard
+          icon={<FaCubes />}
+          value={totalPortfolioCost}
+          label="Total Cost"
+        />
+        <InfoCard
+          icon={<FaCubes />}
+          value={totalReturns.toFixed(2)}
+          label="Total Returns"
+        />
+        <InfoCard
+          icon={<FaDollarSign />}
+          value={totalAveragePortfolioReturns}
+          label="Average Returns"
+        />
+        <InfoCard
+          icon={<FaUsersCog />}
+          value={totalAveragePortfolioReturnsPercentage}
+          label="Average Returns %"
+        />
       </div>
 
       <div className="search-container">
@@ -498,10 +647,13 @@ function AdminDashboard() {
           placeholder="Search users by name, email, phone, or token..."
           value={searchQueryUsers}
           onChange={(e) => setSearchQueryUsers(e.target.value)}
-          style={{ outline: 'none' }}
+          style={{ outline: "none" }}
         />
         {searchQueryUsers && (
-          <button className="clear-search-button" onClick={handleClearSearchUsers}>
+          <button
+            className="clear-search-button"
+            onClick={handleClearSearchUsers}
+          >
             <FaTimes />
           </button>
         )}
@@ -517,41 +669,45 @@ function AdminDashboard() {
             <tr>
               <th>Picture</th>
 
-              <th onClick={() => handleSortUsers('name')}>
-              Name {renderSortIcon('name', sortOrderUsers)}
-        </th>
-        <th onClick={() => handleSortUsers('email')}>
-        Email {renderSortIcon('email', sortOrderUsers)}
-        </th>
-        <th onClick={() => handleSortUsers('phone')}>
-        Phone {renderSortIcon('phone', sortOrderUsers)}
-        </th>
-        <th onClick={() => handleSortUsers('isAdmin')}>
-        Admin {renderSortIcon('isAdmin', sortOrderUsers)}
-        </th>
-        <th onClick={() => handleSortUsers('userAmount')}>
-        Balance {renderSortIcon('userAmount', sortOrderUsers)}
-        </th>
+              <th onClick={() => handleSortUsers("name")}>
+                Name {renderSortIcon("name", sortOrderUsers)}
+              </th>
+              <th onClick={() => handleSortUsers("email")}>
+                Email {renderSortIcon("email", sortOrderUsers)}
+              </th>
+              <th onClick={() => handleSortUsers("phone")}>
+                Phone {renderSortIcon("phone", sortOrderUsers)}
+              </th>
+              <th onClick={() => handleSortUsers("isAdmin")}>
+                Admin {renderSortIcon("isAdmin", sortOrderUsers)}
+              </th>
+              <th onClick={() => handleSortUsers("userAmount")}>
+                Balance {renderSortIcon("userAmount", sortOrderUsers)}
+              </th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {currentUsers.map((user, index) => (
               <tr key={index}>
-                <td><img src={user.dpImage} alt="user" className='user-image'/></td>
+                <td>
+                  <img src={user.dpImage} alt="user" className="user-image" />
+                </td>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>{user.phone}</td>
                 <td>{JSON.stringify(user.isAdmin)}</td>
                 <td>{user.userAmount}</td>
                 <td>
-                  <button className="view-buttons" onClick={() => handleViewDetail(user)}>
+                  <button
+                    className="view-buttons"
+                    onClick={() => handleViewDetail(user)}
+                  >
                     View
                   </button>
                   <button
                     className="edit-buttons"
                     onClick={() => handleEditUser(user)}
-
                   >
                     Edit
                   </button>
@@ -585,10 +741,13 @@ function AdminDashboard() {
           placeholder="Search assets by symbol or name..."
           value={searchQueryAssets}
           onChange={(e) => setSearchQueryAssets(e.target.value)}
-          style={{ outline: 'none' }}
+          style={{ outline: "none" }}
         />
-                {searchQueryAssets && (
-          <button className="clear-search-button" onClick={handleClearSearchAssets}>
+        {searchQueryAssets && (
+          <button
+            className="clear-search-button"
+            onClick={handleClearSearchAssets}
+          >
             <FaTimes />
           </button>
         )}
@@ -599,59 +758,88 @@ function AdminDashboard() {
 
       <div className="category-sector-box users-section">
         <h3>Assets</h3>
-        <div className="table-responsive" style={{ maxHeight: '500px', overflowY: 'auto' }}>
+        <div
+          className="table-responsive"
+          style={{ maxHeight: "500px", overflowY: "auto" }}
+        >
           <table className="table mt-2">
-            <thead className="table-light" >
+            <thead className="table-light">
               <tr>
                 <th>Symbol</th>
-                <th onClick={() => handleSortAssets('name')}>
-                  Name {renderSortIcon('name', sortOrderAssets)}
+                <th onClick={() => handleSortAssets("name")}>
+                  Name {renderSortIcon("name", sortOrderAssets)}
                 </th>
-                <th onClick={() => handleSortAssets('sector')}>
-                  Sector {renderSortIcon('sector', sortOrderAssets)}
+                <th onClick={() => handleSortAssets("sector")}>
+                  Sector {renderSortIcon("sector", sortOrderAssets)}
                 </th>
-                <th onClick={() => handleSortAssets('symbol')}>
-                  Symbol {renderSortIcon('symbol', sortOrderAssets)}
+                <th onClick={() => handleSortAssets("symbol")}>
+                  Symbol {renderSortIcon("symbol", sortOrderAssets)}
                 </th>
-                <th onClick={() => handleSortAssets('ltp')}>
-                  LTP {renderSortIcon('ltp', sortOrderAssets)}
+                <th onClick={() => handleSortAssets("ltp")}>
+                  LTP {renderSortIcon("ltp", sortOrderAssets)}
                 </th>
-                <th onClick={() => handleSortAssets('pointchange')}>
-                  Point Change {renderSortIcon('pointchange', sortOrderAssets)}
+                <th onClick={() => handleSortAssets("pointchange")}>
+                  Point Change {renderSortIcon("pointchange", sortOrderAssets)}
                 </th>
-                <th onClick={() => handleSortAssets('percentchange')}>
-                  Percent Change {renderSortIcon('percentchange', sortOrderAssets)}
+                <th onClick={() => handleSortAssets("percentchange")}>
+                  Percent Change{" "}
+                  {renderSortIcon("percentchange", sortOrderAssets)}
                 </th>
               </tr>
             </thead>
             <tbody>
-  {currentAssets.map((asset, index) => (
-    <tr key={index}>
-      <td>
-      <Link to={`/stockdetailview?symbol=${asset.symbol}`} style={{ color: 'black' }}>
-          {asset.symbol}
-        </Link>
-      </td>
-      <td>{asset.name}</td>
-      <td>{asset.sector}</td>
-      <td>{asset.symbol}</td>
-      <td>{asset.ltp}</td>
-      <td>{asset.pointchange}</td>
-      <td>
-  <span style={{ color: asset.percentchange > 0 ? '#15AD4C' : (asset.percentchange < 0 ? '#B91212' : 'black') }}>
-    {asset.percentchange}%
-    {(asset.percentchange !== 0 || asset.percentchange === 0) && (
-      <>
-        {asset.percentchange > 0 && <FaArrowUp style={{ color: '#15AD4C', marginLeft: '5px' }} />}
-        {asset.percentchange < 0 && <FaArrowDown style={{ color: '#B91212', marginLeft: '5px' }} />}
-        {asset.percentchange === 0 && <FaExchangeAlt style={{ color: 'black', marginLeft: '5px' }} />}
-      </>
-    )}
-  </span>
-</td>
-    </tr>
-  ))}
-</tbody>
+              {currentAssets.map((asset, index) => (
+                <tr key={index}>
+                  <td>
+                    <Link
+                      to={`/stockdetailview?symbol=${asset.symbol}`}
+                      style={{ color: "black" }}
+                    >
+                      {asset.symbol}
+                    </Link>
+                  </td>
+                  <td>{asset.name}</td>
+                  <td>{asset.sector}</td>
+                  <td>{asset.symbol}</td>
+                  <td>{asset.ltp}</td>
+                  <td>{asset.pointchange}</td>
+                  <td>
+                    <span
+                      style={{
+                        color:
+                          asset.percentchange > 0
+                            ? "#15AD4C"
+                            : asset.percentchange < 0
+                            ? "#B91212"
+                            : "black",
+                      }}
+                    >
+                      {asset.percentchange}%
+                      {(asset.percentchange !== 0 ||
+                        asset.percentchange === 0) && (
+                        <>
+                          {asset.percentchange > 0 && (
+                            <FaArrowUp
+                              style={{ color: "#15AD4C", marginLeft: "5px" }}
+                            />
+                          )}
+                          {asset.percentchange < 0 && (
+                            <FaArrowDown
+                              style={{ color: "#B91212", marginLeft: "5px" }}
+                            />
+                          )}
+                          {asset.percentchange === 0 && (
+                            <FaExchangeAlt
+                              style={{ color: "black", marginLeft: "5px" }}
+                            />
+                          )}
+                        </>
+                      )}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
         <div className="pagination-container">
@@ -665,10 +853,13 @@ function AdminDashboard() {
           placeholder="Search commodities by symbol or name..."
           value={searchQueryCommodities}
           onChange={(e) => setSearchQueryCommodities(e.target.value)}
-          style={{ outline: 'none' }}
+          style={{ outline: "none" }}
         />
-      {searchQueryCommodities && (
-          <button className="clear-search-button" onClick={handleClearSearchCommodity}>
+        {searchQueryCommodities && (
+          <button
+            className="clear-search-button"
+            onClick={handleClearSearchCommodity}
+          >
             <FaTimes />
           </button>
         )}
@@ -678,34 +869,36 @@ function AdminDashboard() {
       </div>
       <div className="category-sector-box users-section">
         <h3>Commodities</h3>
-        <div className="table-responsive" style={{ maxHeight: '500px', overflowY: 'auto' }}>
-        <table className="table mt-2">
-          <thead className="table-light">
-            <tr>
-              <th>Symbol</th>
+        <div
+          className="table-responsive"
+          style={{ maxHeight: "500px", overflowY: "auto" }}
+        >
+          <table className="table mt-2">
+            <thead className="table-light">
+              <tr>
+                <th>Symbol</th>
 
-              <th>
-              LTP
-        </th>
-        <th onClick={() => handleSortCommodities('ltp')}>
-        Unit {renderSortIcon('ltp', sortOrderCommodities)}
-        </th>
-            <th >
-            Category
-            </th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentCommodity.map((currentCommodity, index) => (
-              <tr key={index} onClick={() => handleViewDetail(currentCommodity)}>
-                <td>{currentCommodity.symbol}</td>
-                <td>{currentCommodity.ltp}</td>
-                <td>{currentCommodity.unit}</td>
-                <td>{currentCommodity.category}</td>
+                <th>LTP</th>
+                <th onClick={() => handleSortCommodities("ltp")}>
+                  Unit {renderSortIcon("ltp", sortOrderCommodities)}
+                </th>
+                <th>Category</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {currentCommodity.map((currentCommodity, index) => (
+                <tr
+                  key={index}
+                  onClick={() => handleViewDetail(currentCommodity)}
+                >
+                  <td>{currentCommodity.symbol}</td>
+                  <td>{currentCommodity.ltp}</td>
+                  <td>{currentCommodity.unit}</td>
+                  <td>{currentCommodity.category}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
         <div className="pagination-container">
           {renderCommodityPaginationButtons()}
@@ -720,16 +913,10 @@ function AdminDashboard() {
             <tr>
               <th>Name</th>
 
-              <th>
-              LTP
-        </th>
-        <th>
-        Unit
-        </th>
+              <th>LTP</th>
+              <th>Unit</th>
 
-            <th >
-            Category
-            </th>
+              <th>Category</th>
             </tr>
           </thead>
           <tbody>
@@ -743,10 +930,8 @@ function AdminDashboard() {
             ))}
           </tbody>
         </table>
-        <div className="pagination-container">
-        </div>
+        <div className="pagination-container"></div>
       </div>
-
 
       {selectedItem && (
         <UserDialogBox
@@ -757,11 +942,12 @@ function AdminDashboard() {
         />
       )}
 
-{isEditingUser && isEditingDialogOpen && (
-  <EditUserDialogBoxWithOverlay user={isEditingUser} onCancel={handleCancelEdit} />
-)}
-
-      <ToastContainer position="top-right" />
+      {isEditingUser && isEditingDialogOpen && (
+        <EditUserDialogBoxWithOverlay
+          user={isEditingUser}
+          onCancel={handleCancelEdit}
+        />
+      )}
       <ScrollToTop smooth />
     </div>
   );
