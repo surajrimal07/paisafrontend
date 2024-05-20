@@ -13,38 +13,42 @@ h1 {
 
 .filter-bar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
-    gap: 10px; /* Adds space between flex items */
+    gap: 5px;
+    height: 38px;
   }
 
   .filter-bar select,
   .filter-bar input {
-    padding: 10px;
+    padding: 5px;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    flex: 1; /* Distributes remaining space evenly among items */
+    border-radius: 10px;
+    flex: 1;
+    height: 38px;
   }
 
   .response-time-filter {
     display: flex;
-    align-items: center; /* Aligns items vertically */
+    align-items: center;
   }
 
   .response-time-filter select,
   .response-time-filter input {
-    padding: 8px; /* Adjust padding for better appearance */
-    margin-right: 10px; /* Adds space between dropdown and input */
+    padding: 8px;
+    margin-right: 5px;
+
+
   }
 
   .response-time-filter select {
-    width: 150px; /* Increase width for dropdown */
+    width: 50px;
   }
 
   .response-time-filter input {
-    flex: 1; /* Distributes remaining space evenly */
+    flex: 1;
   }
-
 
 .logs-table {
   width: 100%;
@@ -133,3 +137,31 @@ h1 {
 .icon-container:hover {
   background-color: #0056b3;
 }
+
+
+.clear-filter-button {
+    display: inline-block;
+    padding: 8px 10px;
+    background-color: #ffffff;
+    height: 38px;
+
+    color: #333333;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .clear-filter-button:hover {
+    background-color: #f0f0f0;
+    border-color: #999999;
+  }
+
+  .clear-filter-button:focus {
+    outline: none;
+  }
+
+  .clear-filter-button:active {
+    background-color: #e6e6e6;
+    border-color: #666666;
+  }

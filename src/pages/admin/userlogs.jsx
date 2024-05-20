@@ -18,6 +18,7 @@ const UserLogs = () => {
     user: "",
     method: "",
     url: "",
+    period: "",
     responseTime: "",
     statusCode: "",
     responseTimeFilter: "greater",
@@ -25,6 +26,7 @@ const UserLogs = () => {
 
   const fetchUserLogs = async () => {
     try {
+      setLoading(true);
       const response = await getUserLogs();
 
       if (response.status === 200) {
@@ -91,6 +93,15 @@ const UserLogs = () => {
         });
       }
     }
+    if (filters.period) {
+      const now = new Date();
+      const timestampFilter = now.getTime() - filters.period * 60000;
+
+      filtered = filtered.filter(
+        (log) => new Date(log.timestamp).getTime() > timestampFilter
+      );
+    }
+
     setFilteredLogs(filtered);
   };
 
@@ -102,10 +113,24 @@ const UserLogs = () => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
 
+  const clearFilters = () => {
+    setFilters({
+      environment: "",
+      user: "",
+      method: "",
+      url: "",
+      responseTime: "",
+      statusCode: "",
+      period: "",
+      responseTimeFilter: "greater",
+    });
+  };
+
   const indexOfLastLog = currentPage * logsPerPage;
   const indexOfFirstLog = indexOfLastLog - logsPerPage;
   const currentLogs = filteredLogs.slice(indexOfFirstLog, indexOfLastLog);
   const totalPages = Math.ceil(filteredLogs.length / logsPerPage);
+  const totalCount = filteredLogs.length;
 
   if (error) {
     return <p>{error}</p>;
@@ -122,7 +147,16 @@ const UserLogs = () => {
 
   return (
     <div className="user-logs-container">
-      <h1>User Logs</h1>
+      <h1>
+        User Logs
+        <span style={{ fontSize: "small", textTransform: "lowercase" }}>
+            (total:
+        </span>{" "}
+        <span style={{ fontSize: "small", textTransform: "lowercase" }}>
+          {totalCount} items)
+        </span>
+      </h1>
+
       <div className="filter-bar">
         <select
           name="environment"
@@ -150,7 +184,7 @@ const UserLogs = () => {
         <input
           type="text"
           name="url"
-          placeholder="URL"
+          placeholder="Endpoint"
           value={filters.url}
           onChange={handleFilterChange}
         />
@@ -159,6 +193,13 @@ const UserLogs = () => {
           name="statusCode"
           placeholder="statusCode"
           value={filters.statusCode}
+          onChange={handleFilterChange}
+        />
+        <input
+          type="text"
+          name="period"
+          placeholder="period"
+          value={filters.period}
           onChange={handleFilterChange}
         />
         <div className="response-time-filter">
@@ -177,6 +218,10 @@ const UserLogs = () => {
             value={filters.responseTime}
             onChange={handleFilterChange}
           />
+
+          <div className="clear-filter-button" onClick={clearFilters}>
+            Clear
+          </div>
         </div>
       </div>
       <table className="logs-table">
