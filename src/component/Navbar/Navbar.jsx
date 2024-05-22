@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { FaBell } from 'react-icons/fa';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { FaBell } from "react-icons/fa";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 //import useWebSocket from 'react-use-websocket';
-import { getIndex } from '../../apis/api.js';
-import { GlobalContext } from '../../globalcontext';
-import logo from '../images/logo.png';
-import './navbarO.css';
-import sound from './noti.mp3';
+import { getIndex } from "../../apis/api.js";
+import { GlobalContext } from "../../globalcontext";
+import logo from "../images/logo.png";
+import "./navbarO.css";
+import sound from "./noti.mp3";
 
 const Navbar = () => {
   // const { email, password } = useContext(GlobalContext);
@@ -18,14 +18,14 @@ const Navbar = () => {
   // };
   //const { lastMessage } = useWebSocket('ws://localhost:8081', customWebSocketOptions);
   const { lastMessage } = useContext(GlobalContext);
-  const [index, setIndex] = useState('');
+  const [index, setIndex] = useState("");
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [notificationCount, setNotificationCount] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
-  const[connected,setConnected]=useState(false);
+  const [connected, setConnected] = useState(false);
   const notificationSound = useRef(new Audio(sound));
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const location = useLocation();
   const notificationDropdownRef = useRef(null);
@@ -33,19 +33,19 @@ const Navbar = () => {
   const handleLogout = (e) => {
     e.preventDefault();
     localStorage.clear();
-    navigate('/login');
+    navigate("/login");
   };
 
   const getPicture = () => {
     if (user && user.name) {
-      const fullName = user.name.split(' ');
+      const fullName = user.name.split(" ");
       return {
         firstName: fullName[0],
         profilePicture: user.dpImage || null,
       };
     }
     return {
-      firstName: '',
+      firstName: "",
       profilePicture: null,
     };
   };
@@ -56,90 +56,111 @@ const Navbar = () => {
 
       const indexData = res.data;
 
-      if (indexData && indexData.data.index && indexData.data.percentageChange) {
-        const percentageChangeString = indexData.data.percentageChange.toString();
-        const isNegative = percentageChangeString.charAt(0) === '-';
-        const arrow = isNegative ? '↓' : '↑';
-        const color = isNegative ? 'red' : 'green';
+      if (
+        indexData &&
+        indexData.data.index &&
+        indexData.data.percentageChange
+      ) {
+        const percentageChangeString =
+          indexData.data.percentageChange.toString();
+        const isNegative = percentageChangeString.charAt(0) === "-";
+        const arrow = isNegative ? "↓" : "↑";
+        const color = isNegative ? "red" : "green";
 
         const indexedValue = (
-          <span style={{ color: color, fontSize: '0.7em'}}>
-            {arrow} {indexData.data.index} ({indexData.data.percentageChange+"%"})
+          <span style={{ color: color, fontSize: "0.7em" }}>
+            {arrow} {indexData.data.index} (
+            {indexData.data.percentageChange + "%"})
           </span>
         );
-        localStorage.setItem('index', JSON.stringify(indexData));
+        localStorage.setItem("index", JSON.stringify(indexData));
         setIndex(indexedValue);
       } else {
         //toast.error("Index Error");
       }
     } catch (error) {
-      console.error('Error fetching index:', error);
+      console.error("Error fetching index:", error);
     }
   };
 
   //notification sound
   const handleDocumentClick = () => {
-    if (notificationSound.current && notificationSound.current.paused && notifications.length > 0) {
+    if (
+      notificationSound.current &&
+      notificationSound.current.paused &&
+      notifications.length > 0
+    ) {
       notificationSound.current.play();
     }
   };
 
   //request permission for notification
-      const requestNotificationPermission = async () => {
-        if (Notification.permission !== 'granted') {
-          const permission = await Notification.requestPermission();
-          if (permission === 'granted') {
-            new Notification('10Paisa', { body: 'Thanks for enabling notifications!' });
-          }
-        }
-      };
+  const requestNotificationPermission = async () => {
+    if (Notification.permission !== "granted") {
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        new Notification("10Paisa", {
+          body: "Thanks for enabling notifications!",
+        });
+      }
+    }
+  };
 
   useEffect(() => {
-    document.addEventListener('click', handleDocumentClick);
+    document.addEventListener("click", handleDocumentClick);
     return () => {
-      document.removeEventListener('click', handleDocumentClick);
+      document.removeEventListener("click", handleDocumentClick);
     };
-  }, [])
+  }, []);
 
-    // Function to clear notifications
-    const handleClearNotifications = () => {
-      setNotifications([]);
-      setNotificationCount(0);
-      localStorage.removeItem('notifications');
-      localStorage.setItem('notificationCount', '0');
-    };
+  // Function to clear notifications
+  const handleClearNotifications = () => {
+    setNotifications([]);
+    setNotificationCount(0);
+    localStorage.removeItem("notifications");
+    localStorage.setItem("notificationCount", "0");
+  };
 
   //
 
   useEffect(() => {
     getindex();
     //for persistant notification count
-    const storedCount = parseInt(localStorage.getItem('notificationCount')) || 0;
+    const storedCount =
+      parseInt(localStorage.getItem("notificationCount")) || 0;
     setNotificationCount(storedCount);
     //
     const handleClickOutside = (event) => {
-      if (notificationDropdownRef.current && !notificationDropdownRef.current.contains(event.target)) {
+      if (
+        notificationDropdownRef.current &&
+        !notificationDropdownRef.current.contains(event.target)
+      ) {
         setShowNotifications(false);
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
 
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [showNotifications]);
 
   useEffect(() => {
-    const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
-    setNotifications((prevNotifications) => [...storedNotifications, ...prevNotifications]);
+    const storedNotifications =
+      JSON.parse(localStorage.getItem("notifications")) || [];
+    setNotifications((prevNotifications) => [
+      ...storedNotifications,
+      ...prevNotifications,
+    ]);
   }, []);
 
   useEffect(() => {
     if (lastMessage) {
       setConnected(true);
       //update notification list from local storage
-      const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
+      const storedNotifications =
+        JSON.parse(localStorage.getItem("notifications")) || [];
       setNotifications(storedNotifications);
 
       const newNotification = JSON.parse(lastMessage.data);
@@ -153,32 +174,34 @@ const Navbar = () => {
       //setNotifications((prevNotifications) => [newNotification, ...prevNotifications]);
       setNotificationCount((prevCount) => prevCount + 1);
 
-
-
       // Save notifications to local storage
-      localStorage.setItem('notifications', JSON.stringify([newNotification, ...notifications]));
+      localStorage.setItem(
+        "notifications",
+        JSON.stringify([newNotification, ...notifications])
+      );
 
       //update notification count from local storage
-      const storedCount = parseInt(localStorage.getItem('notificationCount')) || 0;
+      const storedCount =
+        parseInt(localStorage.getItem("notificationCount")) || 0;
       const newCount = storedCount + 1;
-      localStorage.setItem('notificationCount', newCount.toString());
+      localStorage.setItem("notificationCount", newCount.toString());
 
       //browser permission for new notification.
-      if (Notification.permission === 'granted') {
-        new Notification(newNotification.title, { body: newNotification.description });
+      if (Notification.permission === "granted") {
+        new Notification(newNotification.title, {
+          body: newNotification.description,
+        });
       } else {
         requestNotificationPermission();
       }
     }
   }, [lastMessage]);
 
-
   const notificationItems = notifications.map((notification, index) => (
     <div
       key={index}
-
       onClick={() => {
-        window.open(notification.url, '_blank');
+        window.open(notification.url, "_blank");
         setShowNotifications(false);
       }}
       className="notification-item"
@@ -193,11 +216,11 @@ const Navbar = () => {
       )} */}
       <div className="notification-content">
         <strong>{notification.title}</strong>
-          <p>
-    {notification.description && notification.description.length > 50
-      ? `${notification.description.slice(0, 60)}...`
-      : notification.description}
-  </p>
+        <p>
+          {notification.description && notification.description.length > 50
+            ? `${notification.description.slice(0, 60)}...`
+            : notification.description}
+        </p>
       </div>
     </div>
   ));
@@ -205,7 +228,7 @@ const Navbar = () => {
   const { firstName, profilePicture } = getPicture();
 
   const handleRegisterClick = () => {
-    navigate('/login', { state: { showRegister: true } });
+    navigate("/login", { state: { showRegister: true } });
   };
 
   const handleWelcomeDropdownClick = () => {
@@ -223,18 +246,33 @@ const Navbar = () => {
   const handleIndexClick = (e) => {
     e.preventDefault();
     if (index) {
-      navigate('/chart');
+      navigate("/chart");
     }
   };
 
-  const isLoginPage = location.pathname === '/login';
+  const isLoginPage = location.pathname === "/login";
   return (
     <>
       <nav className="navbar navbar-expand-lg fixed-top custom-navbar">
         <div className="container-fluid">
-          <NavLink className="navbar-brand text fw-bold" to="/" activeclassname="active" exact="true">
-            <img src={logo} alt="Logo" className="me-2" style={{ width: '30px', height: '30px' }} />
-            10Paisa🚀 {index && <span className="index" onClick={handleIndexClick}>{index}</span>}
+          <NavLink
+            className="navbar-brand text fw-bold"
+            to="/"
+            activeclassname="active"
+            exact="true"
+          >
+            <img
+              src={logo}
+              alt="Logo"
+              className="me-2"
+              style={{ width: "30px", height: "30px" }}
+            />
+            10Paisa🚀{" "}
+            {index && (
+              <span className="index" onClick={handleIndexClick}>
+                {index}
+              </span>
+            )}
           </NavLink>
           <button
             className="navbar-toggler"
@@ -250,58 +288,91 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <NavLink className="nav-link" to="/" activeclassname="active" exact="true">
+                <NavLink
+                  className="nav-link"
+                  to="/"
+                  activeclassname="active"
+                  exact="true"
+                >
                   Home
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link" to="/news" activeclassname="active" exact="true">
+                <NavLink
+                  className="nav-link"
+                  to="/news"
+                  activeclassname="active"
+                  exact="true"
+                >
                   News
                 </NavLink>
               </li>
               {user && (
-  <li className="nav-item dropdown" onMouseEnter={() => setShowDropdown(true)} onMouseLeave={() => setShowDropdown(false)}>
-    <button
-      className="nav-link dropdown-toggle"
-      type="button"
-      id="profileDropdown"
-      data-bs-toggle="dropdown"
-      aria-haspopup="true"
-      aria-expanded="false"
-    >
-      Profile
-    </button>
+                <li
+                  className="nav-item dropdown"
+                  onMouseEnter={() => setShowDropdown(true)}
+                  onMouseLeave={() => setShowDropdown(false)}
+                >
+                  <button
+                    className="nav-link dropdown-toggle"
+                    type="button"
+                    id="profileDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Profile
+                  </button>
 
-    <div className={`dropdown-menu ${showDropdown ? 'show' : ''}`} aria-labelledby="profileDropdown">
-      <li>
-        <NavLink className="dropdown-item" to="/myprofile" activeclassname="active">
-          Profile
-        </NavLink>
-      </li>
-      <li>
-        <NavLink className="dropdown-item" to="/watchlist" activeclassname="active">
-          Watchlist
-        </NavLink>
-      </li>
-      <li>
-        <NavLink className="dropdown-item" to="/stocks" activeclassname="active">
-          Trending
-        </NavLink>
-      </li>
-      <li>
-        <NavLink className="dropdown-item" to="/commodities" activeclassname="active">
-          Stocks
-        </NavLink>
-      </li>
-    </div>
-  </li>
-)}
+                  <div
+                    className={`dropdown-menu ${showDropdown ? "show" : ""}`}
+                    aria-labelledby="profileDropdown"
+                  >
+                    <li>
+                      <NavLink
+                        className="dropdown-item"
+                        to="/myprofile"
+                        activeclassname="active"
+                      >
+                        Profile
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        className="dropdown-item"
+                        to="/watchlist"
+                        activeclassname="active"
+                      >
+                        Watchlist
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        className="dropdown-item"
+                        to="/stocks"
+                        activeclassname="active"
+                      >
+                        Trending
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        className="dropdown-item"
+                        to="/commodities"
+                        activeclassname="active"
+                      >
+                        Stocks
+                      </NavLink>
+                    </li>
+                  </div>
+                </li>
+              )}
 
               {user && (
                 <li className="nav-item">
                   <NavLink
                     className="nav-link"
-                    to={'/dashboard'}
+                    to={"/dashboard"}
                     activeclassname="active"
                   >
                     Portfolio
@@ -310,22 +381,38 @@ const Navbar = () => {
               )}
 
               <li className="nav-item">
-                <NavLink className="nav-link" to="/worldmarket" activeclassname="active">
+                <NavLink
+                  className="nav-link"
+                  to="/worldmarket"
+                  activeclassname="active"
+                >
                   Market
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link" to="/nrbdata" activeclassname="active">
+                <NavLink
+                  className="nav-link"
+                  to="/nrbdata"
+                  activeclassname="active"
+                >
                   Banking Data
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link" to="/feathures" activeclassname="active">
+                <NavLink
+                  className="nav-link"
+                  to="/feathures"
+                  activeclassname="active"
+                >
                   Features
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link" to="/aboutus" activeclassname="active">
+                <NavLink
+                  className="nav-link"
+                  to="/aboutus"
+                  activeclassname="active"
+                >
                   About Us
                 </NavLink>
               </li>
@@ -333,138 +420,184 @@ const Navbar = () => {
             <form className="d-flex" role="search">
               {user ? (
                 <>
-                {/* Notification Icon */}
-                <div style={{ position: 'relative' }}>
-                <FaBell
-                id="notificationIcon"
-                  style={{
-                    marginRight: '5px',
-                    marginBottom: '2px',
-                    marginTop: '10px',
-                    fontSize: '23px',
-                    color: '#616060',
-                    cursor: 'pointer',
-                  }}
-                  onClick={handleNotificationIconClick}
-                />
-                {/** Notification Count */}
-                {notificationCount > 0 && (
-          <div className="notification-count">{notificationCount}</div>
-        )}
-        {/** end of notification count */}
-                                  {/* Notification Dropdown */}
-          {showNotifications && (
-                    <div
-                    ref={notificationDropdownRef}
-                    className="notification-dropdown"
+                  {/* Notification Icon */}
+                  <div style={{ position: "relative" }}>
+                    <FaBell
+                      id="notificationIcon"
                       style={{
-                        position: 'absolute',
-                        top: '100%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: '300px',
-                        maxHeight: '400px',
-                        overflowY: 'auto',
-                        background: '#fff',
-                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                        borderRadius: '4px',
-                        padding: '8px',
-                        zIndex: '1000',
+                        marginRight: "5px",
+                        marginBottom: "2px",
+                        marginTop: "10px",
+                        fontSize: "23px",
+                        color: "#616060",
+                        cursor: "pointer",
                       }}
+                      onClick={handleNotificationIconClick}
+                    />
+                    {/** Notification Count */}
+                    {notificationCount > 0 && (
+                      <div className="notification-count">
+                        {notificationCount}
+                      </div>
+                    )}
+                    {/** end of notification count */}
+                    {/* Notification Dropdown */}
+                    {showNotifications && (
+                      <div
+                        ref={notificationDropdownRef}
+                        className="notification-dropdown"
+                        style={{
+                          position: "absolute",
+                          top: "100%",
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          width: "300px",
+                          maxHeight: "400px",
+                          overflowY: "auto",
+                          background: "#fff",
+                          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                          borderRadius: "4px",
+                          padding: "8px",
+                          zIndex: "1000",
+                        }}
+                      >
+                        {/** Clear Notifications */}
+                        <div
+                          className="dropdown-header"
+                          style={{
+                            position: "sticky",
+                            top: "0",
+                            zIndex: "100",
+                          }}
+                        >
+                          {notifications.length > 0 && (
+                            <span
+                              className="clear-icon"
+                              onClick={handleClearNotifications}
+                              role="button"
+                              tabIndex={0}
+                              style={{
+                                cursor: "pointer",
+                                fontSize: "14px",
+                                marginLeft: "230px",
+                              }}
+                              title="Clear notifications"
+                            >
+                              ❌
+                            </span>
+                          )}
+
+                          {!connected && (
+                            <span
+                              style={{
+                                color: "orange",
+                                marginLeft: "0px",
+                                fontSize: "14px",
+                                whiteSpace: "nowrap",
+                              }}
+                              title="Socket error"
+                            >
+                              ❗
+                            </span>
+                          )}
+                        </div>
+
+                        {/** end of clear notifications */}
+                        {notifications.length === 0 ? (
+                          <div className="no-notifications">
+                            No notifications 🎉
+                          </div>
+                        ) : (
+                          <div className="notification-list">
+                            {" "}
+                            {notificationItems.slice(0, 20)}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <div
+                    className={`nav-item dropdown ${
+                      showDropdown ? "show" : ""
+                    }`}
+                    onMouseEnter={() => setShowDropdown(true)}
+                    onMouseLeave={() => setShowDropdown(false)}
+                  >
+                    <button
+                      className="btn dropdown-toggle btn btn-outline-grey"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      id="profileDropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      style={{ border: "none" }}
+                      onClick={handleWelcomeDropdownClick}
                     >
-            {/** Clear Notifications */}
-            <div className="dropdown-header" style={{ position: 'sticky', top: '0', zIndex: '100' }}>
-  {notifications.length > 0 && (
-    <span
-      className="clear-icon"
-      onClick={handleClearNotifications}
-      role="button"
-      tabIndex={0}
-      style={{
-        cursor: 'pointer',
-        fontSize: '14px',
-        marginLeft: '230px',
-      }}
-      title="Clear notifications"
-    >
-      ❌
-    </span>
-  )}
+                      {profilePicture && (
+                        <img
+                          src={profilePicture}
+                          alt={`${firstName}'s Profile`}
+                          className="me-2 rounded-circle"
+                          style={{ width: "30px", height: "30px" }}
+                        />
+                      )}
+                      Welcome, {firstName}
+                    </button>
 
-  {(!connected) && (
-    <span
-      style={{ color: 'orange', marginLeft: '0px', fontSize: '14px', whiteSpace: 'nowrap' }}
-      title="Socket error"
-    >
-      ❗
-    </span>
-  )}
-</div>
+                    <ul className="dropdown-menu">
+                      {user.isAdmin && (
+                        <>
+                          <li>
+                            <NavLink
+                              className="dropdown-item"
+                              to="/admin/dashboard"
+                              activeClassName="active"
+                            >
+                              Admin Dashboard
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              className="dropdown-item"
+                              to="/admin/userlogs"
+                              activeClassName="active"
+                            >
+                              User Logs
+                            </NavLink>
+                          </li>
+                        </>
+                      )}
 
-            {/** end of clear notifications */}
-            {notifications.length === 0 ? (
-  <div className="no-notifications">No notifications 🎉</div>
-) : (
-  <div className="notification-list"> {notificationItems.slice(0, 20)}</div>
-)}
-</div>
-)}
-</div>
-<div className={`nav-item dropdown ${showDropdown ? 'show' : ''}`} onMouseEnter={() => setShowDropdown(true)} onMouseLeave={() => setShowDropdown(false)}>
-  <button
-    className="btn dropdown-toggle btn btn-outline-grey"
-    type="button"
-    data-bs-toggle="dropdown"
-    id="profileDropdown"
-    aria-haspopup="true"
-    aria-expanded="false"
-    style={{ border: 'none' }}
-    onClick={handleWelcomeDropdownClick}
-  >
-    {profilePicture && (
-      <img
-        src={profilePicture}
-        alt={`${firstName}'s Profile`}
-        className="me-2 rounded-circle"
-        style={{ width: '30px', height: '30px' }}
-      />
-    )}
-    Welcome, {firstName}
-  </button>
-
-  <ul className="dropdown-menu">
-    {user.isAdmin && (
-      <li>
-        <NavLink className="dropdown-item" to="/admin/dashboard" activeclassname="active">
-          Admin Dashboard
-        </NavLink>
-      </li>
-    )}
-    <li>
-      <button
-        onClick={handleLogout}
-        className="dropdown-item"
-        to="/logout"
-      >
-        Logout
-      </button>
-    </li>
-  </ul>
-</div>
-
+                      <li>
+                        <button
+                          onClick={handleLogout}
+                          className="dropdown-item"
+                          to="/logout"
+                        >
+                          Logout
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
                 </>
-              ) : !isLoginPage && (
-                <>
-                  <NavLink className="btn btn-outline-primary me-2" to={'/login'} activeclassname="active">
-                    Login
-                  </NavLink>
-                  <button
-              className="btn btn-outline-success"
-              onClick={handleRegisterClick}
-            >
-              Register
-            </button>
-                </>
+              ) : (
+                !isLoginPage && (
+                  <>
+                    <NavLink
+                      className="btn btn-outline-primary me-2"
+                      to={"/login"}
+                      activeclassname="active"
+                    >
+                      Login
+                    </NavLink>
+                    <button
+                      className="btn btn-outline-success"
+                      onClick={handleRegisterClick}
+                    >
+                      Register
+                    </button>
+                  </>
+                )
               )}
             </form>
           </div>

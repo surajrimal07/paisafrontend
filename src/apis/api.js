@@ -1,41 +1,55 @@
 import axios from "axios";
 
+
 //to run in production use this command, npm run start-prod
 
 const baseURL = "https://localhost:4000";
 //const baseURL = "https://api.zorsha.com.np"
 const token = localStorage.getItem("token");
 
-//testing logger
-axios.interceptors.request.use(
-  (config) => {
-    console.log("Request:", config);
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
 
-// Add a response interceptor
-axios.interceptors.response.use(
-  (response) => {
-    console.log("Response:", response);
-    return response;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+//testing logger
+// axios.interceptors.request.use(
+//   (config) => {
+//     console.log("Request:", config);
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
+
+//adding redirect to login page if token is expired
 
 const api = axios.create({
   baseURL,
   withCredentials: true,
   headers: {
-    Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
   },
 });
+
+// Add a response interceptor
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 416) {
+      const keysToRemove = [
+        "token",
+        "Users",
+        "user",
+        "Metals",
+        "Commodities",
+        "Portfolios",
+        "Assets"
+      ];
+
+      keysToRemove.forEach(key => localStorage.removeItem(key));
+      window.location.replace('/login');
+    }
+    return Promise.reject(error);
+  }
+);
 
 const config = {
   headers: {
