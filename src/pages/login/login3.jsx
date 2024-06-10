@@ -1,3 +1,4 @@
+import DOMPurify from "dompurify";
 import React, { useContext, useState } from "react";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -59,24 +60,29 @@ const Login = () => {
   const [strengthColor, setStrengthColor] = useState("black");
 
   const handleEmailChange = (event) => {
-    setEmail(event.target.value);
+    const cleanEmail = sanitizeInput(event.target.value);
+    setEmail(cleanEmail);
   };
 
   const handlePasswordChange = (event) => {
-    setStrength(evaluatePasswordStrength(event.target.value));
-    setPassword(event.target.value);
+    const cleanPassword = sanitizeInput(event.target.value);
+    setStrength(evaluatePasswordStrength(cleanPassword));
+    setPassword(cleanPassword);
   };
 
   const handleNameChange = (event) => {
-    setName(event.target.value);
+    const cleanName = sanitizeInput(event.target.value);
+    setName(cleanName);
   };
 
   const handlePhoneChange = (event) => {
-    setPhone(event.target.value);
+    const cleanPhone = sanitizeInput(event.target.value);
+    setPhone(cleanPhone);
   };
 
   const handleConfirmPasswordChange = (event) => {
-    setConfirmPassword(event.target.value);
+    const cleanConfirmPassword = sanitizeInput(event.target.value);
+    setConfirmPassword(cleanConfirmPassword);
   };
 
   const handleRegisterButtonClick = () => {
@@ -104,7 +110,8 @@ const Login = () => {
     }
 
     // Character types
-    const characterTypesCount = hasUppercase + hasLowercase + hasDigits + hasSpecialChars;
+    const characterTypesCount =
+      hasUppercase + hasLowercase + hasDigits + hasSpecialChars;
     score += characterTypesCount;
 
     // Consecutive characters
@@ -163,11 +170,6 @@ const Login = () => {
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
-
-    // if (!validate()) {
-    //   toast.error("Please enter valid credentials");
-    //   return;
-    // }
 
     const data = {
       email,
@@ -274,13 +276,12 @@ const Login = () => {
     }
   };
 
+  const sanitizeInput = (input) => {
+    return DOMPurify.sanitize(input);
+  };
+
   const handleRegisterSubmit = async (event) => {
     event.preventDefault();
-
-    // if (!validate()) {
-    //   toast.error("Please enter valid registration details");
-    //   return;
-    // }
 
     const formData = {
       name,
@@ -315,16 +316,12 @@ const Login = () => {
   };
 
   const handleOTPChange = (event) => {
-    setOTP(event.target.value);
+    const cleanOTP = sanitizeInput(event.target.value);
+    setOTP(cleanOTP);
   };
 
   const handleSendEmailOTP = async (event) => {
     event.preventDefault();
-
-    // if (!validateEmail(email)) {
-    //   toast.error('Please enter a valid email');
-    //   return;
-    // }
 
     toast.info("Please Wait...");
     try {
@@ -504,11 +501,6 @@ const Login = () => {
     setForgetOTPSent(false);
     setForgetOTPVerified(false);
   };
-
-  // const validateEmail = (email) => {
-  //     const re = /\S+@\S+\.\S+/;
-  //     return re.test(email);
-  //   }
 
   const validateOTP = (otp) => {
     const re = /^[0-9]{4}$/;
@@ -853,20 +845,24 @@ const Login = () => {
                   </span>
                 </div>
 
-                <div style={{
-        width: '90%',
-        height: '2px',
-        backgroundColor: '#e0e0e0',
-        borderRadius: '5px',
-        marginTop: '5px'
-      }}>
-        <div style={{
-          width: `${strength}%`,
-          height: '100%',
-          backgroundColor: strengthColor,
-          borderRadius: '5px'
-        }} />
-      </div>
+                <div
+                  style={{
+                    width: "90%",
+                    height: "2px",
+                    backgroundColor: "#e0e0e0",
+                    borderRadius: "5px",
+                    marginTop: "5px",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: `${strength}%`,
+                      height: "100%",
+                      backgroundColor: strengthColor,
+                      borderRadius: "5px",
+                    }}
+                  />
+                </div>
 
                 <div
                   style={{
