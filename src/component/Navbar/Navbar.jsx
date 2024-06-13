@@ -295,8 +295,8 @@ const Navbar = () => {
                 </NavLink>
               </li>
               {user && (
-                <li
-                  className="nav-item dropdown"
+                <div
+                  className={`nav-item dropdown ${showDropdown ? "show" : ""}`}
                   onMouseEnter={() => setShowDropdown(true)}
                   onMouseLeave={() => setShowDropdown(false)}
                 >
@@ -315,28 +315,28 @@ const Navbar = () => {
                     className={`dropdown-menu ${showDropdown ? "show" : ""}`}
                     aria-labelledby="profileDropdown"
                   >
-                    <li>
+                    <div>
                       <NavLink className="dropdown-item" to="/myprofile">
                         Profile
                       </NavLink>
-                    </li>
-                    <li>
+                    </div>
+                    <div>
                       <NavLink className="dropdown-item" to="/watchlist">
                         Watchlist
                       </NavLink>
-                    </li>
-                    <li>
+                    </div>
+                    <div>
                       <NavLink className="dropdown-item" to="/stocks">
                         Trending
                       </NavLink>
-                    </li>
-                    <li>
+                    </div>
+                    <div>
                       <NavLink className="dropdown-item" to="/commodities">
                         Stocks
                       </NavLink>
-                    </li>
+                    </div>
                   </div>
-                </li>
+                </div>
               )}
 
               {user && (
@@ -497,7 +497,7 @@ const Navbar = () => {
 
                     <ul className="dropdown-menu">
                       {user.isAdmin && (
-                        <>
+                        <React.Fragment>
                           <li>
                             <NavLink
                               className="dropdown-item"
@@ -514,7 +514,7 @@ const Navbar = () => {
                               User Logs
                             </NavLink>
                           </li>
-                        </>
+                        </React.Fragment>
                       )}
 
                       <li>
