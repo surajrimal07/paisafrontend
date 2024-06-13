@@ -31,7 +31,6 @@ if (process.env.NODE_ENV === 'production') {
 //testing logger
 // axios.interceptors.request.use(
 //   (config) => {
-//     console.log("Request:", config);
 //     return config;
 //   },
 //   (error) => {
@@ -66,7 +65,6 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-//    console.log(error.response.data.message);
     if (error.response && (error.response.status === 416 || error.response.status === 440 || error.response.status === 498 || error.response.status === 499)) {
       const keysToRemove = [
         "token",
@@ -80,6 +78,8 @@ api.interceptors.response.use(
 
       keysToRemove.forEach(key => localStorage.removeItem(key));
       window.location.replace('/login');
+
+      return Promise.reject(error);
     }
     return Promise.reject(error);
   }
@@ -107,7 +107,7 @@ export const loginUser = (data) => api.post("/api/user/login", data).then((respo
 
 export const getAllAssets = () => api.get("/api/sharesansardata");
 
-export const logoutUser = () => api.get("/api/user/logout");
+export const logoutUser = async () => api.get("/api/user/logout");
 
 export const getMetals = (id) => api.get(`/api/metal`);
 

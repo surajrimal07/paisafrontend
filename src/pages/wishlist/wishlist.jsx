@@ -192,13 +192,6 @@ const UserWatchlists = () => {
   const handleAddStockSave = async (event, email, watchlistId, stockSymbol) => {
     event.preventDefault();
 
-    console.log(
-      "email, watchlistId, stockSymbol",
-      email,
-      watchlistId,
-      stockSymbol
-    );
-
     try {
       const res = await addStockToWatchlist(email, watchlistId, stockSymbol);
       const { success, message } = res.data;

@@ -8,8 +8,6 @@
 //       .split("; ")
 //       .find((row) => row.startsWith("tenpaisa.session"));
 
-//     console.log("sessionCookie", sessionCookie);
-
 //     if (sessionCookie) {
 //       const sessionData = sessionCookie.split("=")[1];
 //       const parsedSessionData = JSON.parse(sessionData);

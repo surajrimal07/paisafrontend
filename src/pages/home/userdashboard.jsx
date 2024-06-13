@@ -163,9 +163,6 @@ const UserDashboard = () => {
     const stockSymbols = stocks.map((stock) => stock.symbol);
     setSelectedStock(stockSymbols);
     setRemoveStockDialog(true);
-
-    console.log("Selected stock:", stocks);
-    console.log(selectedStock);
   };
 
   const handleCreateSave = async (event, email, portfolioname) => {

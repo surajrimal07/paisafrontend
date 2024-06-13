@@ -29,15 +29,16 @@ const Navbar = () => {
   const location = useLocation();
   const notificationDropdownRef = useRef(null);
 
-  const handleLogout = (e) => {
-    const logout = logoutUser();
+  const handleLogout =async (e) => {
+    e.preventDefault();
+    const logout = await logoutUser();
 
     if (logout.status === 200) {
-      localStorage.clear();
+      secureLocalStorage.clear();
       navigate("/login");
       toast.success("Logged out successfully");
     } else {
-      console.log(logout.status);
+      toast.error("Error logging out");
     }
   };
 

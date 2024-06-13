@@ -7,6 +7,7 @@ import TopTurnover from "./topturnover";
 import TopVolume from "./topvolume";
 
 import "./stock.css";
+import { toast } from "react-toastify";
 
 const StockDashboard = () => {
   const [gainers, setGainers] = useState([]);
@@ -46,7 +47,7 @@ const StockDashboard = () => {
 
         setLoading(false);
       } else {
-        console.log("error");
+        toast.error("Error fetching data");
       }
     } catch (error) {
       console.error("Error fetching data:", error);

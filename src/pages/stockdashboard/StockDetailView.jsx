@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { getStockInfo } from "../../apis/api";
 
 import "./stock.css";
+import { toast } from "react-toastify";
 
 const StockDetailView = () => {
   const location = useLocation();
@@ -20,7 +21,7 @@ const StockDetailView = () => {
         setCompleteStockInfo(data.data);
         setLoading(false);
       } else {
-        console.log("error");
+        toast.error("Error fetching data");
       }
     } catch (error) {
       console.error("Error fetching data:", error);

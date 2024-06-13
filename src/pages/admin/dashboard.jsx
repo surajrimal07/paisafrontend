@@ -480,8 +480,6 @@ function AdminDashboard() {
 
   const totalPortfolioCount = Math.ceil(data.portfolios.length);
 
-  console.log("portfolios", data.portfolios);
-
   const totalPortfolioValue = data.portfolios.reduce((total, portfolio) => {
     const portfolioValue = portfolio.portfoliovalue;
 
