@@ -1,10 +1,14 @@
 import DOMPurify from "dompurify";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
+import secureLocalStorage from "react-secure-storage";
 import { toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
+
 import {
+  FetchXSRFToken,
   RegisterUser,
   forgetPassword,
   loginUser,
@@ -58,6 +62,18 @@ const Login = () => {
   const [showResetForm, setShowResetForm] = useState(false);
   const [strength, setStrength] = useState("");
   const [strengthColor, setStrengthColor] = useState("black");
+
+  useEffect(() => {
+    const fetchXSRFToken = async () => {
+      try {
+        await FetchXSRFToken();
+      } catch (err) {
+        console.log(err);
+        toast.error("An error occurred while fetching XSRF token.");
+      }
+    };
+    fetchXSRFToken();
+  }, []);
 
   const handleEmailChange = (event) => {
     const cleanEmail = sanitizeInput(event.target.value);
@@ -153,21 +169,6 @@ const Login = () => {
     return (score / 7) * 100; // Return a percentage score
   }
 
-  // const validate = () => {
-  //   if (showLogin) {
-  //     return email.trim() !== "" && password.trim() !== "";
-  //   } else {
-  //     return (
-  //       name.trim() !== "" &&
-  //       phone.trim() !== "" &&
-  //       email.trim() !== "" &&
-  //       password.trim() !== "" &&
-  //       confirmPassword.trim() !== "" &&
-  //       password === confirmPassword
-  //     );
-  //   }
-  // };
-
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
 
@@ -182,10 +183,10 @@ const Login = () => {
 
       if (success) {
         toast.success(message);
-        const { token } = responseData;
-        localStorage.setItem("token", token);
+        //  const { token } = responseData;
+        // secureLocalStorage.setItem("authtoken", token);
         const jsonDecode = JSON.stringify(responseData);
-        localStorage.setItem("user", jsonDecode);
+        secureLocalStorage.setItem("user", jsonDecode);
         setIsUserLoggedIn(true);
         setTimeout(() => {
           if (responseData.isAdmin) {
@@ -198,6 +199,7 @@ const Login = () => {
         toast.error(message);
       }
     } catch (err) {
+      console.log(err);
       const errorMessage =
         err.response && err.response.data && err.response.data.message
           ? err.response.data.message
@@ -286,7 +288,7 @@ const Login = () => {
     const formData = {
       name,
       phone,
-      email: localStorage.getItem("email"),
+      email: secureLocalStorage.getItem("email"),
       password,
       confirmPassword,
     };
@@ -296,10 +298,10 @@ const Login = () => {
       toast.success(response.data.message);
       if (response.data.success) {
         const { token } = response.data.data.token;
-
-        localStorage.setItem("token", token);
+        secureLocalStorage.setItem("authtoken", token);
         const jsonDecode = JSON.stringify(response.data.data);
-        localStorage.setItem("user", jsonDecode);
+        //localStorage.setItem("user", jsonDecode);
+        secureLocalStorage.setItem("user", jsonDecode);
         setTimeout(() => {
           navigate("/admin/dashboard");
         }, 1000);
@@ -330,8 +332,12 @@ const Login = () => {
       const { success, message, hash } = response.data;
 
       if (success) {
-        localStorage.setItem("hash", hash);
-        localStorage.setItem("email", email);
+        //localStorage.setItem("hash", hash);
+        //localStorage.setItem("email", email);
+
+        secureLocalStorage.setItem("hash", hash);
+        secureLocalStorage.setItem("email", email);
+
         toast.success(message);
         setEmailOTPSent(true);
       } else {
@@ -358,7 +364,7 @@ const Login = () => {
       const response = await otpVerify({
         email,
         otp,
-        hash: localStorage.getItem("hash"),
+        hash: secureLocalStorage.getItem("hash"),
       });
 
       const { message } = response.data;
@@ -387,8 +393,11 @@ const Login = () => {
       const { success, message, hash } = response.data;
 
       if (success) {
-        localStorage.setItem("hash", hash);
-        localStorage.setItem("email", email);
+       // localStorage.setItem("hash", hash);
+        //localStorage.setItem("email", email);
+
+        secureLocalStorage.setItem("hash", hash);
+        secureLocalStorage.setItem("email", email);
         toast.success(message);
         setEmailOTPSent(true);
       } else {
@@ -412,8 +421,12 @@ const Login = () => {
 
       const { success, message, data } = response.data;
       if (success) {
-        localStorage.setItem("hash", data);
-        localStorage.setItem("email", email);
+       // localStorage.setItem("hash", data);
+        //localStorage.setItem("email", email);
+
+        secureLocalStorage.setItem("hash", data);
+        secureLocalStorage.setItem("email", email);
+
         toast.success(message);
         setForgetOTPSent(true);
       } else {
@@ -440,7 +453,7 @@ const Login = () => {
       const response = await otpVerify({
         email,
         otp,
-        hash: localStorage.getItem("hash"),
+        hash: secureLocalStorage.getItem("hash"),
       });
 
       if (
@@ -465,7 +478,7 @@ const Login = () => {
       return;
     }
 
-    const email = localStorage.getItem("email");
+    const email = secureLocalStorage.getItem("email");
     const field = "password";
     const value = password;
 

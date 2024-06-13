@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './PortfolioCompare.css';
+import secureLocalStorage from 'react-secure-storage';
 
 const PortfolioCompare = () => {
   const [portfolio, setPortfolio] = useState(null);
@@ -14,7 +15,7 @@ const PortfolioCompare = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const storedData = JSON.parse(localStorage.getItem('Portfolio')) || {};
+      const storedData = JSON.parse(secureLocalStorage.getItem('Portfolio')) || {};
       const storedPortfolios = storedData.portfolio || [];
 
       if (!Array.isArray(storedPortfolios)) {

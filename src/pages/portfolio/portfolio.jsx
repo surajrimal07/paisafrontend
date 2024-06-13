@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPortfolio } from '../../apis/api.js';
+import secureLocalStorage from "react-secure-storage";
+
 
 import './PortfolioView.css';
 
@@ -11,13 +13,16 @@ const PortfolioView = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const storedData = JSON.parse(localStorage.getItem('Portfolio')) || {};
+      const storedData = JSON.parse(secureLocalStorage.getItem('Portfolio')) || {};
      if (!storedData) {
       const storedUserData = JSON.parse(localStorage.getItem('user'));
       const port = await getPortfolio(storedUserData.email);
       if (port.status === 200) {
         setPortfolio(port.data);
-        localStorage.setItem('Portfolio', JSON.stringify(port.data));
+        //localStorage.setItem('Portfolio', JSON.stringify(port.data));
+        secureLocalStorage.setItem('Portfolio', JSON.stringify(port.data));
+
+
       }
      }
       const storedPortfolios = storedData || [];
@@ -69,8 +74,8 @@ const PortfolioView = () => {
 
             <div className="card">
               <h3>Profit / Loss:</h3>
-              <p className={portfolio.gainLossRecords[0].portgainloss >= 0 ? 'profit' : 'loss'}>
-                Rs {portfolio.gainLossRecords[0].portgainloss}
+              <p className={portfolio.portgainloss >= 0 ? 'profit' : 'loss'}>
+                Rs {portfolio.portgainloss}
               </p>
             </div>
 
@@ -80,7 +85,7 @@ const PortfolioView = () => {
             </div>
             <div className="card">
   <h3>Percentage P&L:</h3>
-  <p style={{ color: portfolio.percentage >= 0 ? 'green' : 'red' }}>{portfolio.percentage >= 0 ? '+' : '-'}{Math.abs(portfolio.percentage)}%</p>
+  <p style={{ color: portfolio.portfolioPercentage >= 0 ? 'green' : 'red' }}>{portfolio.portfolioPercentage >= 0 ? '+' : '-'}{(portfolio.portfolioPercentage)}%</p>
 </div>
 <div className="card">
               <h3>Recommendation:</h3>
@@ -114,10 +119,11 @@ const PortfolioView = () => {
                 </ul>
               </div>
 
-              <div className="gain-loss-container">
-                <h3>Gain/Loss Records</h3>
+              {/* <div className="gain-loss-container">
+                <h3>Profit/Loss details</h3>
                 <ul>
-                  {portfolio.gainLossRecords.map(record => (
+                   */}
+                  {/* {portfolio.gainLossRecords.map(record => (
                     <li key={record._id} className="record-item">
                       <p><strong>Date:</strong> {new Date(record.date).toLocaleDateString()}</p>
                       <p><strong>Value:</strong> Rs {record.value}</p>
@@ -128,9 +134,9 @@ const PortfolioView = () => {
                         </span>
                       </p>
                     </li>
-                  ))}
-                </ul>
-              </div>
+                  ))} */}
+                {/* </ul>
+              </div> */}
             </div>
           </div>
         )}

@@ -1,17 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { FaCubes, FaPlus } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import { addStockToWatchlist, createWatchlist, deleteWatchlist, getWatchlist, removeStockFromWatchlist, renameWatchlist } from '../../apis/api.js';
-import NoImage from './a.png';
-import HandleAddStock from './handleaddstock.jsx';
-import HandleCreate from './handlecreate.jsx';
-import HandleDelete from './handledelete.jsx';
-import HandleRemoveStock from './handledeletestock.jsx';
-import HandleRename from './handlerename.jsx';
+import React, { useEffect, useRef, useState } from "react";
+import { FaCubes, FaPlus } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import {
+  addStockToWatchlist,
+  createWatchlist,
+  deleteWatchlist,
+  getWatchlist,
+  removeStockFromWatchlist,
+  renameWatchlist,
+} from "../../apis/api.js";
+import NoImage from "./a.png";
+import HandleAddStock from "./handleaddstock.jsx";
+import HandleCreate from "./handlecreate.jsx";
+import HandleDelete from "./handledelete.jsx";
+import HandleRemoveStock from "./handledeletestock.jsx";
+import HandleRename from "./handlerename.jsx";
+import secureLocalStorage from "react-secure-storage";
 
 
-import './user.css';
+import "./user.css";
 
 const UserWatchlists = () => {
   const [userWatchlists, setUserWatchlists] = useState([]);
@@ -30,7 +38,7 @@ const UserWatchlists = () => {
   useEffect(() => {
     const fetchWatchlists = async () => {
       try {
-        const storedUserData = JSON.parse(localStorage.getItem('user'));
+        const storedUserData = JSON.parse(secureLocalStorage.getItem("user"));
         setUserData(storedUserData);
 
         if (storedUserData) {
@@ -43,20 +51,21 @@ const UserWatchlists = () => {
             );
             const stockCounts = {};
             watchlists.data.data.forEach((watchlist) => {
-              stockCounts[watchlist._id] = watchlist.stocks ? watchlist.stocks.length : 0;
+              stockCounts[watchlist._id] = watchlist.stocks
+                ? watchlist.stocks.length
+                : 0;
             });
             setPortfolioStockCounts(stockCounts);
             setUserWatchlists(watchlists.data.data);
             setTotalStocksCount(allStocks.length);
-
           } else {
-            toast.error('Error fetching watchlists');
+            toast.error("Error fetching watchlists");
           }
         } else {
-          console.error('User data not found in local storage');
+          console.error("User data not found in local storage");
         }
       } catch (error) {
-        console.error('Error fetching watchlists:', error);
+        console.error("Error fetching watchlists:", error);
       } finally {
         setTimeout(() => {
           setLoading(false);
@@ -67,9 +76,9 @@ const UserWatchlists = () => {
     fetchWatchlists();
   }, []);
 
-    const handleMenuToggle = () => {
-        setShowCreateDialog(true);
-    };
+  const handleMenuToggle = () => {
+    setShowCreateDialog(true);
+  };
 
   const handleRenameClick = (watchlistId) => {
     setSelectedWatchlist(watchlistId);
@@ -79,203 +88,214 @@ const UserWatchlists = () => {
   const handleDeleteClick = (watchlistId) => {
     setSelectedWatchlist(watchlistId);
     setShowDeleteDialog(true);
-    };
+  };
 
   const handleAddStockClick = (watchlistId) => {
     setSelectedWatchlist(watchlistId);
     setshowAddStockDialog(true);
-    };
+  };
 
   const handleRemoveStockClick = (watchlistId) => {
     setSelectedWatchlist(watchlistId);
     setRemoveStockDialog(true);
-    };
+  };
 
-    const getStockLTP = (stockSymbol) => {
-      const assets = JSON.parse(localStorage.getItem('Assets'));
+  const getStockLTP = (stockSymbol) => {
+    const assets = JSON.parse(localStorage.getItem("Assets"));
 
-      if (assets) {
-        const stockData = assets.find(stock => stock.symbol === stockSymbol);
+    if (assets) {
+      const stockData = assets.find((stock) => stock.symbol === stockSymbol);
 
-        if (stockData && stockData.ltp !== undefined) {
-          return ` Rs ${stockData.ltp}`;
-        }
+      if (stockData && stockData.ltp !== undefined) {
+        return ` Rs ${stockData.ltp}`;
       }
+    }
 
-      return '';
-    };
+    return "";
+  };
 
-    const handleDeleteSave = async (event, email, watchlistId) => {
-        event.preventDefault();
-        try {
-            const res = await deleteWatchlist(email, watchlistId);
-            const { success, message } = res.data;
+  const handleDeleteSave = async (event, email, watchlistId) => {
+    event.preventDefault();
+    try {
+      const res = await deleteWatchlist(email, watchlistId);
+      const { success, message } = res.data;
 
-            if (success) {
-                toast.success(message);
-                setUserWatchlists((prevWatchlists) => {
-                const updatedWatchlists = prevWatchlists.filter((watchlist) => watchlist._id !== watchlistId);
+      if (success) {
+        toast.success(message);
+        setUserWatchlists((prevWatchlists) => {
+          const updatedWatchlists = prevWatchlists.filter(
+            (watchlist) => watchlist._id !== watchlistId
+          );
 
-                return updatedWatchlists;
-                });
-            } else {
-                toast.error(message);
+          return updatedWatchlists;
+        });
+      } else {
+        toast.error(message);
+      }
+    } catch (err) {
+      const errorMessage =
+        err.response && err.response.data && err.response.data.message
+          ? err.response.data.message
+          : "An error occurred.";
+      toast.error(errorMessage);
+    }
+
+    setShowDeleteDialog(false);
+  };
+
+  const handleRemoveStockSave = async (
+    event,
+    email,
+    watchlistId,
+    stockSymbol
+  ) => {
+    event.preventDefault();
+    try {
+      const res = await removeStockFromWatchlist(
+        email,
+        watchlistId,
+        stockSymbol
+      );
+      const { success, message } = res.data;
+
+      if (success) {
+        toast.success(message);
+        setUserWatchlists((prevWatchlists) => {
+          const updatedWatchlists = prevWatchlists.map((watchlist) => {
+            if (watchlist._id === watchlistId) {
+              return {
+                ...watchlist,
+                stocks: watchlist.stocks.filter(
+                  (stock) => stock !== stockSymbol
+                ),
+              };
             }
 
-        } catch (err) {
-            const errorMessage =
-              err.response && err.response.data && err.response.data.message
-                ? err.response.data.message
-                : 'An error occurred.';
-            toast.error(errorMessage);
-          }
+            return watchlist;
+          });
 
-        setShowDeleteDialog(false);
-      };
+          return updatedWatchlists;
+        });
+      } else {
+        toast.error(message);
+      }
+    } catch (err) {
+      const errorMessage =
+        err.response && err.response.data && err.response.data.message
+          ? err.response.data.message
+          : "An error occurred.";
+      toast.error(errorMessage);
+    }
+    setRemoveStockDialog(false);
+  };
 
-      const handleRemoveStockSave = async (event, email, watchlistId, stockSymbol) => {
-        event.preventDefault();
-        try {
-          const res = await removeStockFromWatchlist(email, watchlistId, stockSymbol);
-          const { success, message } = res.data;
+  const handleAddStockSave = async (event, email, watchlistId, stockSymbol) => {
+    event.preventDefault();
 
-          if (success) {
-            toast.success(message);
-            setUserWatchlists((prevWatchlists) => {
-              const updatedWatchlists = prevWatchlists.map((watchlist) => {
-                if (watchlist._id === watchlistId) {
-                  return {
-                    ...watchlist,
-                    stocks: watchlist.stocks.filter((stock) => stock !== stockSymbol),
-                  };
-                }
+    console.log(
+      "email, watchlistId, stockSymbol",
+      email,
+      watchlistId,
+      stockSymbol
+    );
 
-                return watchlist;
-              });
+    try {
+      const res = await addStockToWatchlist(email, watchlistId, stockSymbol);
+      const { success, message } = res.data;
 
-              return updatedWatchlists;
-            });
-          } else {
-            toast.error(message);
-          }
+      if (success) {
+        toast.success(message);
+        setUserWatchlists((prevWatchlists) => {
+          const updatedWatchlists = prevWatchlists.map((watchlist) => {
+            if (watchlist._id === watchlistId) {
+              return {
+                ...watchlist,
+                stocks: [...watchlist.stocks, stockSymbol],
+              };
+            }
 
-        } catch (err) {
-          const errorMessage =
-            err.response && err.response.data && err.response.data.message
-              ? err.response.data.message
-              : 'An error occurred.';
-          toast.error(errorMessage);
-        }
-        setRemoveStockDialog(false);
-      };
+            return watchlist;
+          });
 
-      const handleAddStockSave = async (event, email, watchlistId, stockSymbol) => {
-        event.preventDefault();
+          return updatedWatchlists;
+        });
+      } else {
+        toast.error(message);
+      }
+    } catch (err) {
+      const errorMessage =
+        err.response && err.response.data && err.response.data.message
+          ? err.response.data.message
+          : "An error occurred.";
+      toast.error(errorMessage);
+    }
 
-        console.log ("email, watchlistId, stockSymbol", email, watchlistId, stockSymbol)
-
-        try {
-          const res = await addStockToWatchlist(email, watchlistId, stockSymbol);
-          const { success, message } = res.data;
-
-          if (success) {
-            toast.success(message);
-            setUserWatchlists((prevWatchlists) => {
-              const updatedWatchlists = prevWatchlists.map((watchlist) => {
-                if (watchlist._id === watchlistId) {
-                  return {
-                    ...watchlist,
-                    stocks: [...watchlist.stocks, stockSymbol],
-                  };
-                }
-
-                return watchlist;
-              });
-
-              return updatedWatchlists;
-            });
-          } else {
-            toast.error(message);
-          }
-        } catch (err) {
-          const errorMessage =
-            err.response && err.response.data && err.response.data.message
-              ? err.response.data.message
-              : 'An error occurred.';
-          toast.error(errorMessage);
-        }
-
-        setshowAddStockDialog(false);
-      };
+    setshowAddStockDialog(false);
+  };
 
   const handleRenameSave = async (event, email, watchlistId, newName) => {
     event.preventDefault();
 
     try {
-    const res = await renameWatchlist(email,watchlistId,newName );
-    const { success, message } = res.data;
+      const res = await renameWatchlist(email, watchlistId, newName);
+      const { success, message } = res.data;
 
-    if (success) {
+      if (success) {
         toast.success(message);
         setUserWatchlists((prevWatchlists) => {
-        const updatedWatchlists = prevWatchlists.map((watchlist) => {
+          const updatedWatchlists = prevWatchlists.map((watchlist) => {
             if (watchlist._id === watchlistId) {
-            return {
+              return {
                 ...watchlist,
                 name: newName,
-            };
+              };
             }
 
             return watchlist;
-        });
+          });
 
-        return updatedWatchlists;
+          return updatedWatchlists;
         });
-    } else {
+      } else {
         toast.error(message);
-    }
-
-    } catch (err) {
-        const errorMessage =
-          err.response && err.response.data && err.response.data.message
-            ? err.response.data.message
-            : 'An error occurred.';
-        toast.error(errorMessage);
       }
+    } catch (err) {
+      const errorMessage =
+        err.response && err.response.data && err.response.data.message
+          ? err.response.data.message
+          : "An error occurred.";
+      toast.error(errorMessage);
+    }
 
     setShowRenameDialog(false);
   };
 
-    const handleCreateSave = async (event, email, watchlistName) => {
-        event.preventDefault();
+  const handleCreateSave = async (event, email, watchlistName) => {
+    event.preventDefault();
 
-        try {
-        const res = await createWatchlist(email, watchlistName);
-        const { success, message } = res.data;
+    try {
+      const res = await createWatchlist(email, watchlistName);
+      const { success, message } = res.data;
 
-        if (success) {
-            toast.success(message);
-            setUserWatchlists((prevWatchlists) => {
-            const updatedWatchlists = [...prevWatchlists, res.data.data];
+      if (success) {
+        toast.success(message);
+        setUserWatchlists((prevWatchlists) => {
+          const updatedWatchlists = [...prevWatchlists, res.data.data];
 
-            return updatedWatchlists;
-            });
-
-
-        } else {
-            toast.error(message);
-
-        }
-        } catch (err) {
-            const errorMessage =
-              err.response && err.response.data && err.response.data.message
-                ? err.response.data.message
-                : 'An error occurred.';
-            toast.error(errorMessage);
-          }
+          return updatedWatchlists;
+        });
+      } else {
+        toast.error(message);
+      }
+    } catch (err) {
+      const errorMessage =
+        err.response && err.response.data && err.response.data.message
+          ? err.response.data.message
+          : "An error occurred.";
+      toast.error(errorMessage);
+    }
     setShowCreateDialog(false);
-
-    };
+  };
 
   //cancel functions
 
@@ -285,11 +305,11 @@ const UserWatchlists = () => {
 
   const handleCreateCancel = () => {
     setShowCreateDialog(false);
-    };
+  };
 
-    const handleDeleteCancel = () => {
-        setShowDeleteDialog(false);
-    };
+  const handleDeleteCancel = () => {
+    setShowDeleteDialog(false);
+  };
 
   const handleAddStockCancel = () => {
     setshowAddStockDialog(false);
@@ -306,7 +326,7 @@ const UserWatchlists = () => {
         <p>Loading...</p>
       </div>
     );
-  };
+  }
 
   //add total count in json itself later
   const totalwatchlist = userWatchlists && userWatchlists.length;
@@ -338,156 +358,171 @@ const UserWatchlists = () => {
       </div>
       <h4>Your Watchlists: </h4>
       <div className="user-info-cards">
-          <InfoCard icon={<FaCubes />} value={totalwatchlist} label="Total Watchlist" />
-          <InfoCard icon={<FaCubes />} value={totalStocksCount} label="Total Stocks" />
-        </div>
+        <InfoCard
+          icon={<FaCubes />}
+          value={totalwatchlist}
+          label="Total Watchlist"
+        />
+        <InfoCard
+          icon={<FaCubes />}
+          value={totalStocksCount}
+          label="Total Stocks"
+        />
+      </div>
       <div className="watchlists">
         <div className="watchlist-container" ref={wrapperRef}>
-
           {userWatchlists.map((watchlistItem) => (
             <div key={watchlistItem._id} className="watchlist-item">
               <div className="watchlist-header">
                 <h4>Name: {watchlistItem.name}</h4>
 
                 <div className="watchlist-menu">
-
-                <button
-  type="button"
-  className="btn btn-sm btn-outline-secondary btn-hover-blue"
-  data-bs-toggle="dropdown"
-  aria-expanded="false"
->
-  Options
-</button>
-                <ul className="dropdown-menu">
-
-
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => handleRenameClick(watchlistItem._id)}
-                    >
-                      Rename Watchlist
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => handleAddStockClick(watchlistItem._id)}
-                    >
-                      Add Stock
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => handleRemoveStockClick(watchlistItem._id)}
-                    >
-                      Remove Stock
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => handleDeleteClick(watchlistItem._id)}
-                    >
-                      Delete Watchlist
-                    </button>
-                  </li>
-                  <li>
-                  </li>
-                </ul>
-              </div>
-
-
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-outline-secondary btn-hover-blue"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Options
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <button
+                        className="dropdown-item"
+                        onClick={() => handleRenameClick(watchlistItem._id)}
+                      >
+                        Rename Watchlist
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        className="dropdown-item"
+                        onClick={() => handleAddStockClick(watchlistItem._id)}
+                      >
+                        Add Stock
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        className="dropdown-item"
+                        onClick={() =>
+                          handleRemoveStockClick(watchlistItem._id)
+                        }
+                      >
+                        Remove Stock
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        className="dropdown-item"
+                        onClick={() => handleDeleteClick(watchlistItem._id)}
+                      >
+                        Delete Watchlist
+                      </button>
+                    </li>
+                    <li></li>
+                  </ul>
+                </div>
               </div>
 
               {watchlistItem.stocks && watchlistItem.stocks.length > 0 ? (
-                <div className="stocks" >
-                  <h3>Stocks: {portfolioStockCounts[watchlistItem._id] || 0}</h3>
+                <div className="stocks">
+                  <h3>
+                    Stocks: {portfolioStockCounts[watchlistItem._id] || 0}
+                  </h3>
                   {watchlistItem.stocks.map((stockSymbol) => (
                     <div key={stockSymbol} className="stock">
-<p>
-  {' '}
-  <Link to={`/stockdetailview?symbol=${stockSymbol}`} style={{ color: 'black', textDecoration: 'none' }}>
-            {stockSymbol+':'}
-            {getStockLTP(stockSymbol)}
-          </Link>
-</p>
-</div>
+                      <p>
+                        {" "}
+                        <Link
+                          to={`/stockdetailview?symbol=${stockSymbol}`}
+                          style={{ color: "black", textDecoration: "none" }}
+                        >
+                          {stockSymbol + ":"}
+                          {getStockLTP(stockSymbol)}
+                        </Link>
+                      </p>
+                    </div>
                   ))}
                 </div>
               ) : (
-
-<div style={{ textAlign: 'center' }}>
-  <img
-    src={NoImage}
-    alt="No stocks available"
-    height={100}
-    width={100}
-    style={{ display: 'block', margin: 'auto' }}
-  />
-  <p>No Stocks found</p>
-</div>
-
-
+                <div style={{ textAlign: "center" }}>
+                  <img
+                    src={NoImage}
+                    alt="No stocks available"
+                    height={100}
+                    width={100}
+                    style={{ display: "block", margin: "auto" }}
+                  />
+                  <p>No Stocks found</p>
+                </div>
               )}
             </div>
           ))}
-
 
           <div className="floating-icon">
             <div className="icon-container" onClick={handleMenuToggle}>
               <FaPlus size={30} color="#fff" />
             </div>
-                  {showRenameDialog && (
-  <HandleRename
-    userEmail={userData.email}
-    portfolioId={selectedWatchlist}
-    newName={userWatchlists.find(w => w._id === selectedWatchlist)?.name || ''}
-    onSave={handleRenameSave}
-    onCancel={handleRenameCancel}
-  />
-)}
+            {showRenameDialog && (
+              <HandleRename
+                userEmail={userData.email}
+                portfolioId={selectedWatchlist}
+                newName={
+                  userWatchlists.find((w) => w._id === selectedWatchlist)
+                    ?.name || ""
+                }
+                onSave={handleRenameSave}
+                onCancel={handleRenameCancel}
+              />
+            )}
 
-{showCreateDialog && (
-        <HandleCreate
-          userEmail={userData.email}
-          onSave={handleCreateSave}
-          onCancel={handleCreateCancel}
-        />
-      )}
-{showDeleteDialog && (
-        <HandleDelete
-        userEmail={userData.email}
-        portfolioId={selectedWatchlist}
-        portfolioName={userWatchlists.find(w => w._id === selectedWatchlist)?.name || ''}
-        onDelete={handleDeleteSave}
-        onCancel={handleDeleteCancel}
-        />
-      )}
+            {showCreateDialog && (
+              <HandleCreate
+                userEmail={userData.email}
+                onSave={handleCreateSave}
+                onCancel={handleCreateCancel}
+              />
+            )}
+            {showDeleteDialog && (
+              <HandleDelete
+                userEmail={userData.email}
+                portfolioId={selectedWatchlist}
+                portfolioName={
+                  userWatchlists.find((w) => w._id === selectedWatchlist)
+                    ?.name || ""
+                }
+                onDelete={handleDeleteSave}
+                onCancel={handleDeleteCancel}
+              />
+            )}
             {showAddStockDialog && (
-          <HandleAddStock
-            userEmail={userData.email}
-            watchlistId={selectedWatchlist}
-            watchlistName={userWatchlists.find(w => w._id === selectedWatchlist)?.name || ''}
-            onAdd={handleAddStockSave}
-            onCancel={handleAddStockCancel}
-          />
-        )}
-    {showRemoveStockDialog && (
-  <HandleRemoveStock
-    userEmail={userData.email}
-    watchlistId={selectedWatchlist}
-    stocks={userWatchlists.find(w => w._id === selectedWatchlist)?.stocks || []}
-    onSave={handleRemoveStockSave}
-    onCancel={handleRemoveStockCancel}
-  />
-)}
+              <HandleAddStock
+                userEmail={userData.email}
+                watchlistId={selectedWatchlist}
+                watchlistName={
+                  userWatchlists.find((w) => w._id === selectedWatchlist)
+                    ?.name || ""
+                }
+                onAdd={handleAddStockSave}
+                onCancel={handleAddStockCancel}
+              />
+            )}
+            {showRemoveStockDialog && (
+              <HandleRemoveStock
+                userEmail={userData.email}
+                watchlistId={selectedWatchlist}
+                stocks={
+                  userWatchlists.find((w) => w._id === selectedWatchlist)
+                    ?.stocks || []
+                }
+                onSave={handleRemoveStockSave}
+                onCancel={handleRemoveStockCancel}
+              />
+            )}
           </div>
         </div>
       </div>
-      <ToastContainer position="top-right" />
     </div>
   );
 };

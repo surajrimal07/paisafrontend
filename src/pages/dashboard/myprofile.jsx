@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import secureLocalStorage from "react-secure-storage";
 import "react-toastify/dist/ReactToastify.css";
 import { updateDPImage, updateUser } from "../../apis/api.js";
 import "./App.css";
@@ -13,7 +14,7 @@ const MyProfilePage = () => {
   const [showImageDialog, setShowImageDialog] = useState(false);
 
   useEffect(() => {
-    const storedUserData = JSON.parse(localStorage.getItem("user"));
+    const storedUserData = JSON.parse(secureLocalStorage.getItem("user"));
 
     if (storedUserData) {
       setUserData(storedUserData);
@@ -40,8 +41,9 @@ const MyProfilePage = () => {
 
       if (success) {
         toast.success(message);
-        localStorage.setItem("token", responseData.token);
-        localStorage.setItem("user", JSON.stringify(responseData));
+        //localStorage.setItem("token", responseData.token);
+        //localStorage.setItem("user", JSON.stringify(responseData));
+        secureLocalStorage.setItem("user", JSON.stringify(responseData));
         setUserData(responseData);
       } else {
         toast.error(message);
@@ -79,8 +81,13 @@ const MyProfilePage = () => {
 
       if (success) {
         toast.success(message);
-        localStorage.setItem("token", responseData.token);
-        localStorage.setItem("user", JSON.stringify(responseData));
+       // localStorage.setItem("token", responseData.token);
+
+       //localStorage.setItem("user", JSON.stringify(responseData));
+
+        secureLocalStorage.setItem("authtoken", responseData.token);
+
+        secureLocalStorage.setItem("user", JSON.stringify(responseData));
 
         setUserData(responseData);
       } else {
@@ -263,7 +270,6 @@ const MyProfilePage = () => {
           </div>
         </div>
       )}
-      <ToastContainer position="top-right" limit={1} />
     </div>
   );
 };

@@ -1,12 +1,32 @@
 import axios from "axios";
+import secureLocalStorage from "react-secure-storage";
 
 
 //to run in production use this command, npm run start-prod
+// secureLocalStorage.removeItem('xsrftoken');
+// secureLocalStorage.removeItem('authtoken');
 
-//const baseURL = "https://localhost:4000";
-const baseURL = "https://api.zorsha.com.np"
-const token = localStorage.getItem("token");
+const htt = "https://";
 
+//development version
+//localhost version
+export let midUrl = "localhost";
+export const urlPort = "4000";
+export let baseURL = `${htt}${midUrl}:${urlPort}`;
+
+if (process.env.NODE_ENV === 'production') {
+  midUrl = "api.zorsha.com.np";
+  baseURL = `${htt}${midUrl}`;
+}
+
+
+// //production version
+// export const midUrl = "api.zorsha.com.np";
+// export const baseURL = `${htt}${midUrl}`;
+
+
+//const baseURL = "https://api.zorsha.com.np"
+//const token = localStorage.getItem("token");
 
 //testing logger
 // axios.interceptors.request.use(
@@ -19,21 +39,35 @@ const token = localStorage.getItem("token");
 //   }
 // );
 
-//adding redirect to login page if token is expired
-
 const api = axios.create({
   baseURL,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
+    "Authorization": `Bearer ${secureLocalStorage.getItem('authtoken')}`,
+    "xsrf-token": secureLocalStorage.getItem('xsrftoken')
   },
 });
+
+
+// Add a request interceptor
+api.interceptors.request.use(
+  (config) => {
+    config.headers["Authorization"] = `Bearer ${secureLocalStorage.getItem('authtoken')}`;
+    config.headers["xsrf-token"] = secureLocalStorage.getItem('xsrftoken');
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 // Add a response interceptor
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 416) {
+    console.log(error.response.data.message);
+    if (error.response && (error.response.status === 416 || error.response.status === 440 || error.response.status === 498 || error.response.status === 499 || error.response.status === 401 || error.response.status === 403)) {
       const keysToRemove = [
         "token",
         "Users",
@@ -51,12 +85,11 @@ api.interceptors.response.use(
   }
 );
 
-const config = {
-  headers: {
-    authorization: `Bearer ${token}`,
-    "Content-Type": "application/json",
-  },
-};
+export const FetchXSRFToken = () => api.get("/api/user/csrf-token").then((response) => {
+  //  api.defaults.headers['xsrf-token'] = response.data.token;
+  secureLocalStorage.removeItem('xsrftoken');
+  secureLocalStorage.setItem('xsrftoken', response.data.token);
+});
 
 export const RegisterUser = (data) => api.post("/api/user/create", data);
 
@@ -65,32 +98,33 @@ export const verifyName = (data) => api.post("/api/user/verifyname", data);
 export const verifyPassword = (data) => api.post("/api/user/verifyPassword", data);
 export const verifyPhone = (data) => api.post("/api/user/verifyphone", data);
 
-export const loginUser = (data) => api.post("/api/user/login", data);
+export const loginUser = (data) => api.post("/api/user/login", data).then((response) => {
+  const token = response.data.data.token;
+  secureLocalStorage.removeItem('authtoken');
+  secureLocalStorage.setItem("authtoken", token);
+  return response;
+});
 
 export const getAllAssets = () => api.get("/api/sharesansardata");
 
 export const getMetals = (id) => api.get(`/api/metal`);
 
+export const getStockInfo = (symbol) => api.get(`/api/singlesharesansardata?symbol=${symbol}`);
+
 export const getCommo = (id) => api.get(`/api/commodity`);
 
-export const getAllUsers = () => api.get("/api/admin/allusers", config);
+export const getAllUsers = () => api.get("/api/admin/allusers");
 
-export const getUserLogs = () => api.get("/api/admin/fetchuserlogs", config);
+export const getUserLogs = () => api.get("/api/admin/fetchuserlogs");
 
 export const deleteUser = (deletingUser) => {
   const apiEndpoint = baseURL + "/api/deleteUser";
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  };
 
   const requestBody = {
     email: deletingUser,
   };
   return axios
-    .delete(apiEndpoint, { data: requestBody, ...config })
+    .delete(apiEndpoint, { data: requestBody })
     .then((response) => {
       return response;
     })
@@ -106,13 +140,6 @@ export const deleteUser = (deletingUser) => {
 export const editUser = (userid, field, value) => {
   const endpoint = baseURL + "/api/user/updateuser";
 
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  };
-
   const requestBody = {
     email: userid,
     field: field,
@@ -120,7 +147,7 @@ export const editUser = (userid, field, value) => {
   };
 
   return axios
-    .put(endpoint, requestBody, config)
+    .put(endpoint, requestBody)
     .then((response) => {
       return response;
     })
@@ -152,38 +179,38 @@ export const forgetPassword = (email) => api.post(`/api/user/forget`, email);
 
 export const savePassword = (data) => api.post(`/api/user/updateuser`, data);
 
-export const getPortfolio = (email) => {
-  const data = { email: email };
+// export const getPortfolio = () => {
+//   return api.get(`/api/getallportforuser`);
+// };
 
-  return api.post(`/api/getallportforuser`, data, config);
-};
+export const getPortfolio = () => api.get(`/api/user/getallportforuser`);
 
 export const renamePortfolio = (data) => {
-  return api.post(`/api/renameportfolio`, data);
+  return api.post(`/api/user/renameportfolio`, data);
 };
 
 export const getWatchlist = (email) => {
   const data = { email: email };
 
-  return api.post(`/api/getwatchlist`, data);
+  return api.post(`/api/user/getwatchlist`, data);
 };
 
 export const createWatchlist = (email, name) => {
   const data = { email: email, name: name };
 
-  return api.post(`/api/createwatchlist`, data);
+  return api.post(`/api/user/createwatchlist`, data);
 };
 
 export const deleteWatchlist = (email, watchlistId) => {
   const data = { email: email, watchlistId: watchlistId };
 
-  return api.post(`/api/deletewatchlist`, data);
+  return api.post(`/api/user/deletewatchlist`, data);
 };
 
 export const renameWatchlist = (email, watchlistId, newName) => {
   const data = { watchlistId: watchlistId, email: email, newName: newName };
 
-  return api.post(`/api/renamewatchlist`, data);
+  return api.post(`/api/user/renamewatchlist`, data);
 };
 
 export const addStockToWatchlist = (email, watchlistId, stockSymbol) => {
@@ -193,7 +220,7 @@ export const addStockToWatchlist = (email, watchlistId, stockSymbol) => {
     stockSymbol: stockSymbol,
   };
 
-  return api.post(`/api/addstocktowatchlist`, data);
+  return api.post(`/api/user/addstocktowatchlist`, data);
 };
 
 export const removeStockFromWatchlist = (email, watchlistId, stockSymbol) => {
@@ -203,36 +230,31 @@ export const removeStockFromWatchlist = (email, watchlistId, stockSymbol) => {
     stockSymbol: stockSymbol,
   };
 
-  return api.post(`/api/remstockfromwatchlist`, data);
+  return api.post(`/api/user/remstockfromwatchlist`, data);
 };
 
 export const updateUser = (data) => api.post(`/api/user/updateAllUserData`, data);
 
 export const updateDPImage = (data) => {
-  const config = {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  };
-  return api.post(`/api/user/updateprofilepic`, data, config);
+  return api.post(`/api/user/updateprofilepic`, data);
 };
 
 export const createPortfolio = (email, name) => {
   const data = { email: email, name: name };
 
-  return api.post(`/api/newport`, data, config);
+  return api.post(`/api/user/newport`, data);
 };
 
 export const deletePortfolio = async (data) => {
-  return api.delete("/api/delport", { data });
+  return api.delete("/api/user/delport", { data });
 };
 
 export const addStockToPortfolio = (data) => {
-  return api.post(`/api/addstock`, data);
+  return api.post(`/api/user/addstock`, data);
 };
 
 export const removeStockFromPortfolio = (data) => {
-  return api.post(`/api/remstock`, data);
+  return api.post(`/api/user/remstock`, data);
 };
 
 export const getAllPortfolios = () => {

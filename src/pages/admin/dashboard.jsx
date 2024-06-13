@@ -27,6 +27,8 @@ import {
 import "./dashboard.css";
 import UserDialogBox from "./dialogbox_admin.jsx";
 import EditUserDialogBox from "./editingbox_admin.jsx";
+import secureLocalStorage from "react-secure-storage";
+
 
 function AdminDashboard() {
   const [assets, setAssets] = useState([]);
@@ -34,6 +36,7 @@ function AdminDashboard() {
   const [commodities, setCommodities] = useState([]);
   const [metals, setMetals] = useState([]);
   const [portfolios, setPortfolios] = useState([]);
+
   const [currentUsersPage, setCurrentUsersPage] = useState(1);
   const [currentAssetsPage, setCurrentAssetsPage] = useState(1);
 
@@ -73,14 +76,21 @@ function AdminDashboard() {
       const assetResponse = await getAllAssets();
       if (
         assetResponse.status === 200 &&
-        Array.isArray(assetResponse.data.data)
+        Array.isArray(assetResponse.data.data.stockDataWithoutName)
       ) {
-        const jsonDecode = JSON.stringify(assetResponse.data.data);
+        const jsonDecode = JSON.stringify(
+          assetResponse.data.data.stockDataWithoutName
+        );
         localStorage.setItem("Assets", jsonDecode);
-        setAssets(assetResponse.data.data);
+        setAssets(assetResponse.data.data.stockDataWithoutName);
       } else {
-        toast.error("Error fetching assets");
-        console.error("Error fetching assets:", assetResponse.error);
+        if (assetResponse.error) {
+          toast.error(`Error fetching assets: ${assetResponse.error}`);
+          console.error("Error fetching assets:", assetResponse.error);
+        } else {
+          toast.error("Error fetching assets. Please try again later.");
+          console.error("Error fetching assets: Undefined error.");
+        }
       }
 
       const userResponse = await getAllUsers();
@@ -89,7 +99,7 @@ function AdminDashboard() {
         Array.isArray(userResponse.data.data)
       ) {
         const jsonDecode = JSON.stringify(userResponse.data.data);
-        localStorage.setItem("Users", jsonDecode);
+        secureLocalStorage.setItem("Users", jsonDecode);
         setUsers(userResponse.data.data);
       } else {
         toast.error("Error fetching users");
@@ -102,13 +112,12 @@ function AdminDashboard() {
         Array.isArray(portfolioRespose.data.data)
       ) {
         const jsonDecode = JSON.stringify(portfolioRespose.data.data);
-        localStorage.setItem("Portfolios", jsonDecode);
+        secureLocalStorage.setItem("Portfolios", jsonDecode);
 
         setPortfolios(portfolioRespose.data.data);
-       // console.log(portfolios);
+
       } else {
         toast.error("Error fetching portfolios");
-        console.error("Error fetching portfolios:", portfolioRespose.error);
       }
 
       const metalsResponse = await getMetals();
@@ -484,7 +493,7 @@ function AdminDashboard() {
 
   const handleClearSearchUsers = () => {
     setSearchQueryUsers("");
-    setUsers(JSON.parse(localStorage.getItem("Users")));
+    setUsers(JSON.parse(secureLocalStorage.getItem("Users")));
   };
 
   const handleClearSearchAssets = () => {

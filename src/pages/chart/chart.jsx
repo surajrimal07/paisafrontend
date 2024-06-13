@@ -4,8 +4,8 @@ const Chart = () => {
   return (
     <div style={{ width: '100%', height: '100vh', overflow: 'hidden' }}>
       <iframe
-        title="NepseAlpha Chart"
-        src="https://www.nepsealpha.com/trading/chart?"
+        title="Nepse Chart"
+        src="https://chukul.com/nepse-charts?"
         frameBorder="0"
         style={{ width: '100%', height: '100%', position: 'absolute' }}
         allowFullScreen

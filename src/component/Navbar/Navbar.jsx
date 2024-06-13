@@ -1,31 +1,31 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState,useContext } from "react";
 import { FaBell } from "react-icons/fa";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 //import useWebSocket from 'react-use-websocket';
+import { toast } from "react-toastify";
 import { getIndex } from "../../apis/api.js";
-import { GlobalContext } from "../../globalcontext";
 import logo from "../images/logo.png";
+import { useWebSocket } from "../websocket/websocket.jsx";
 import "./navbarO.css";
 import sound from "./noti.mp3";
+import secureLocalStorage from "react-secure-storage";
+import { GlobalContext } from "../../globalcontext.js";
 
 const Navbar = () => {
-  // const { email, password } = useContext(GlobalContext);
-  // const customWebSocketOptions = {
-  //   queryParams: { 'email': email,password  },
-  // };
-  //const { lastMessage } = useWebSocket('ws://localhost:8081', customWebSocketOptions);
-  const { lastMessage } = useContext(GlobalContext);
+
+  const { lastMessage, profileNotification } = useWebSocket(); // catch the data from websocket
+
+  const { isSocketConnected } = useContext(GlobalContext);
+
   const [index, setIndex] = useState("");
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [notificationCount, setNotificationCount] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [connected, setConnected] = useState(false);
   const notificationSound = useRef(new Audio(sound));
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(secureLocalStorage.getItem("user"));
   const navigate = useNavigate();
   const location = useLocation();
   const notificationDropdownRef = useRef(null);
@@ -58,25 +58,23 @@ const Navbar = () => {
 
       if (
         indexData &&
-        indexData.data.index &&
+        indexData.data.close &&
         indexData.data.percentageChange
       ) {
-        const percentageChangeString =
-          indexData.data.percentageChange.toString();
+        const percentageChangeString = indexData.data.change.toString();
         const isNegative = percentageChangeString.charAt(0) === "-";
         const arrow = isNegative ? "↓" : "↑";
         const color = isNegative ? "red" : "green";
 
         const indexedValue = (
           <span style={{ color: color, fontSize: "0.7em" }}>
-            {arrow} {indexData.data.index} (
-            {indexData.data.percentageChange + "%"})
+            {arrow} {indexData.data.close} ({indexData.data.change})
           </span>
         );
         localStorage.setItem("index", JSON.stringify(indexData));
         setIndex(indexedValue);
       } else {
-        //toast.error("Index Error");
+        toast.error("Index Error");
       }
     } catch (error) {
       console.error("Error fetching index:", error);
@@ -157,16 +155,15 @@ const Navbar = () => {
 
   useEffect(() => {
     if (lastMessage) {
-      setConnected(true);
       //update notification list from local storage
       const storedNotifications =
         JSON.parse(localStorage.getItem("notifications")) || [];
       setNotifications(storedNotifications);
 
-      const newNotification = JSON.parse(lastMessage.data);
+      //const newNotification = JSON.parse(lastMessage);
 
       // only store 50 items //test code //
-      storedNotifications.unshift(newNotification);
+      storedNotifications.unshift(lastMessage);
       const trimmedNotifications = storedNotifications.slice(0, 20);
 
       setNotifications(trimmedNotifications);
@@ -177,7 +174,7 @@ const Navbar = () => {
       // Save notifications to local storage
       localStorage.setItem(
         "notifications",
-        JSON.stringify([newNotification, ...notifications])
+        JSON.stringify([lastMessage, ...notifications])
       );
 
       //update notification count from local storage
@@ -188,8 +185,8 @@ const Navbar = () => {
 
       //browser permission for new notification.
       if (Notification.permission === "granted") {
-        new Notification(newNotification.title, {
-          body: newNotification.description,
+        new Notification(lastMessage.title, {
+          body: lastMessage.description,
         });
       } else {
         requestNotificationPermission();
@@ -255,12 +252,7 @@ const Navbar = () => {
     <>
       <nav className="navbar navbar-expand-lg fixed-top custom-navbar">
         <div className="container-fluid">
-          <NavLink
-            className="navbar-brand text fw-bold"
-            to="/"
-            activeclassname="active"
-            exact="true"
-          >
+          <NavLink className="navbar-brand text fw-bold" to="/" exact="true">
             <img
               src={logo}
               alt="Logo"
@@ -288,22 +280,12 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <NavLink
-                  className="nav-link"
-                  to="/"
-                  activeclassname="active"
-                  exact="true"
-                >
+                <NavLink className="nav-link" to="/" exact="true">
                   Home
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink
-                  className="nav-link"
-                  to="/news"
-                  activeclassname="active"
-                  exact="true"
-                >
+                <NavLink className="nav-link" to="/news" exact="true">
                   News
                 </NavLink>
               </li>
@@ -329,38 +311,22 @@ const Navbar = () => {
                     aria-labelledby="profileDropdown"
                   >
                     <li>
-                      <NavLink
-                        className="dropdown-item"
-                        to="/myprofile"
-                        activeclassname="active"
-                      >
+                      <NavLink className="dropdown-item" to="/myprofile">
                         Profile
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink
-                        className="dropdown-item"
-                        to="/watchlist"
-                        activeclassname="active"
-                      >
+                      <NavLink className="dropdown-item" to="/watchlist">
                         Watchlist
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink
-                        className="dropdown-item"
-                        to="/stocks"
-                        activeclassname="active"
-                      >
+                      <NavLink className="dropdown-item" to="/stocks">
                         Trending
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink
-                        className="dropdown-item"
-                        to="/commodities"
-                        activeclassname="active"
-                      >
+                      <NavLink className="dropdown-item" to="/commodities">
                         Stocks
                       </NavLink>
                     </li>
@@ -370,49 +336,29 @@ const Navbar = () => {
 
               {user && (
                 <li className="nav-item">
-                  <NavLink
-                    className="nav-link"
-                    to={"/dashboard"}
-                    activeclassname="active"
-                  >
+                  <NavLink className="nav-link" to={"/dashboard"}>
                     Portfolio
                   </NavLink>
                 </li>
               )}
 
               <li className="nav-item">
-                <NavLink
-                  className="nav-link"
-                  to="/worldmarket"
-                  activeclassname="active"
-                >
+                <NavLink className="nav-link" to="/worldmarket">
                   Market
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink
-                  className="nav-link"
-                  to="/nrbdata"
-                  activeclassname="active"
-                >
+                <NavLink className="nav-link" to="/nrbdata">
                   Banking Data
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink
-                  className="nav-link"
-                  to="/feathures"
-                  activeclassname="active"
-                >
+                <NavLink className="nav-link" to="/feathures">
                   Features
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink
-                  className="nav-link"
-                  to="/aboutus"
-                  activeclassname="active"
-                >
+                <NavLink className="nav-link" to="/aboutus">
                   About Us
                 </NavLink>
               </li>
@@ -487,7 +433,7 @@ const Navbar = () => {
                             </span>
                           )}
 
-                          {!connected && (
+                          {!isSocketConnected && (
                             <span
                               style={{
                                 color: "orange",
@@ -551,7 +497,6 @@ const Navbar = () => {
                             <NavLink
                               className="dropdown-item"
                               to="/admin/dashboard"
-                              activeClassName="active"
                             >
                               Admin Dashboard
                             </NavLink>
@@ -560,7 +505,6 @@ const Navbar = () => {
                             <NavLink
                               className="dropdown-item"
                               to="/admin/userlogs"
-                              activeClassName="active"
                             >
                               User Logs
                             </NavLink>
@@ -586,7 +530,6 @@ const Navbar = () => {
                     <NavLink
                       className="btn btn-outline-primary me-2"
                       to={"/login"}
-                      activeclassname="active"
                     >
                       Login
                     </NavLink>
@@ -602,7 +545,6 @@ const Navbar = () => {
             </form>
           </div>
         </div>
-        <ToastContainer position="top-right" />
       </nav>
     </>
   );

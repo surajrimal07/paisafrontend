@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { otpLogin } from '../../apis/api';
+import secureLocalStorage from "react-secure-storage";
 import './login2.css';
 
 const ForgetPassword = ({ handleBackToLoginClick }) => {
@@ -25,8 +26,12 @@ const ForgetPassword = ({ handleBackToLoginClick }) => {
       const { success, message, hash } = response.data;
 
       if (success) {
-        localStorage.setItem('hash', hash);
-        localStorage.setItem('email', email);
+        //localStorage.setItem('hash', hash);
+       /// localStorage.setItem('email', email);
+
+        secureLocalStorage.setItem('hash', hash);
+        secureLocalStorage.setItem('email', email);
+
         toast.success(message);
       } else {
         toast.error(message);

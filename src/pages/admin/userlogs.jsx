@@ -3,6 +3,7 @@ import { FaSyncAlt } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getUserLogs } from "../../apis/api.js";
+import Map from "../../component/map/mapComponent.jsx";
 import "./UserLogs.css";
 
 const UserLogs = () => {
@@ -11,6 +12,7 @@ const UserLogs = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedLog, setSelectedLog] = useState(null);
   const logsPerPage = 100;
 
   const [filters, setFilters] = useState({
@@ -50,7 +52,7 @@ const UserLogs = () => {
 
   useEffect(() => {
     filterLogs();
-  }, [filters, logs]);
+  });
 
   const filterLogs = () => {
     let filtered = logs;
@@ -60,8 +62,10 @@ const UserLogs = () => {
       );
     }
     if (filters.user) {
-      filtered = filtered.filter((log) =>
-        log.user.toLowerCase().includes(filters.user.toLowerCase())
+      filtered = filtered.filter(
+        (log) =>
+          log.user.toLowerCase().includes(filters.user.toLowerCase()) ||
+          log.sessionID.includes(filters.user)
       );
     }
     if (filters.statusCode) {
@@ -145,12 +149,16 @@ const UserLogs = () => {
     );
   }
 
+  const handleLogClick = (log) => {
+    setSelectedLog(log);
+  };
+
   return (
     <div className="user-logs-container">
       <h1>
         User Logs
         <span style={{ fontSize: "small", textTransform: "lowercase" }}>
-            (total:
+          (total:
         </span>{" "}
         <span style={{ fontSize: "small", textTransform: "lowercase" }}>
           {totalCount} items)
@@ -240,7 +248,8 @@ const UserLogs = () => {
         </thead>
         <tbody>
           {currentLogs.map((log, index) => (
-            <tr key={index}>
+            //<tr key={index}>
+            <tr key={index} onClick={() => handleLogClick(log)}>
               <td>{log.user}</td>
               <td>{log.method}</td>
               <td>{log.url}</td>
@@ -254,6 +263,48 @@ const UserLogs = () => {
           ))}
         </tbody>
       </table>
+      {selectedLog && (
+        <div className="log-details-dialog">
+          <button onClick={() => setSelectedLog(null)}>Close</button>
+          <h2>Log Details</h2>
+          <div>SessionID: {selectedLog.sessionID}</div>
+          <div>User: {selectedLog.user}</div>
+          <div>Method: {selectedLog.method}</div>
+          <div>URL: {selectedLog.url}</div>
+          <div>Status Code: {selectedLog.statusCode}</div>
+          <div>Response Time: {selectedLog.responseTime}</div>
+          <div>Timestamp: {selectedLog.timestamp}</div>
+          <div>Client IP: {selectedLog.clientIP}</div>
+          <div>Server Hostname: {selectedLog.serverHostname}</div>
+          <div>Environment: {selectedLog.environment}</div>
+
+          {selectedLog.clientAddress && (
+            <div>
+              <h3>Address Details</h3>
+              <div>Country: {selectedLog.clientAddress.country}</div>
+              <div>Region: {selectedLog.clientAddress.region}</div>
+              <div>Location: {selectedLog.clientAddress.city}</div>
+
+              <div>Timezone: {selectedLog.clientAddress.timezone}</div>
+              <div>ISP: {selectedLog.clientAddress.isp}</div>
+
+              {/* <div>longitude: {selectedLog.clientAddress.longitude}</div>
+              <div>latitude: {selectedLog.clientAddress.latitude}</div> */}
+
+              {selectedLog.clientAddress.longitude &&
+                selectedLog.clientAddress.latitude &&
+                selectedLog.clientAddress.longitude !== "Localhost" &&
+                selectedLog.clientAddress.latitude !== "Localhost" && (
+                  <Map
+                    latitude={selectedLog.clientAddress.latitude}
+                    longitude={selectedLog.clientAddress.longitude}
+                  />
+                )}
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="pagination">
         {Array.from({ length: totalPages }, (_, index) => (
           <button

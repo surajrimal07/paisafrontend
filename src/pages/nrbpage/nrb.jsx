@@ -12,7 +12,6 @@ const NrbData = () => {
       try {
         const nrbData = await getNrbdata();
         setNrbData(nrbData.data.data);
-        console.log(nrbData.data.data);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching NRB data:', error);
