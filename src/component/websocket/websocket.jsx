@@ -23,8 +23,6 @@ export const WebSocketProvider = ({ children }) => {
   const [ws2, setWs2] = useState(null); // WebSocket instance for room 2
   const [profileNotification, setProfileNotification] = useState(null); // Last message for room 2
 
-  console.log(`is logged in: ${isLoggedIn}`)
-
   useEffect(() => {
     if (isLoggedIn) {
       let newsUrl = `wss://${midUrl}:8081/?room=news&jwt=${jwtToken}`;
@@ -45,7 +43,7 @@ export const WebSocketProvider = ({ children }) => {
       };
 
       websocket2.onopen = () => {
-        toast.success("Profile Server connected");
+        //toast.success("Profile Server connected");
       };
 
       websocket.onmessage = (event) => {
@@ -60,12 +58,12 @@ export const WebSocketProvider = ({ children }) => {
       };
 
       websocket.onclose = () => {
-        toast.error("News Server disconnected");
+        //toast.error("News Server disconnected");
         setIsSocketConnected(false);
       };
 
       websocket2.onclose = () => {
-        toast.error("Profile Server disconnected");
+        //toast.error("Profile Server disconnected");
       };
 
       setWs2(websocket2);
@@ -76,7 +74,7 @@ export const WebSocketProvider = ({ children }) => {
         websocket.close();
         websocket2.close();
         setIsSocketConnected(false);
-        toast.error("WebSocket closed");
+        //toast.error("WebSocket closed");
       };
     }
   }, [jwtToken, setIsSocketConnected, isLoggedIn]);

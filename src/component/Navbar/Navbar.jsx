@@ -1,20 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState,useContext } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { FaBell } from "react-icons/fa";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 //import useWebSocket from 'react-use-websocket';
+import secureLocalStorage from "react-secure-storage";
 import { toast } from "react-toastify";
-import { getIndex } from "../../apis/api.js";
+import { getIndex, logoutUser } from "../../apis/api.js";
+import { GlobalContext } from "../../globalcontext.js";
 import logo from "../images/logo.png";
 import { useWebSocket } from "../websocket/websocket.jsx";
 import "./navbarO.css";
 import sound from "./noti.mp3";
-import secureLocalStorage from "react-secure-storage";
-import { GlobalContext } from "../../globalcontext.js";
 
 const Navbar = () => {
-
   const { lastMessage, profileNotification } = useWebSocket(); // catch the data from websocket
 
   const { isSocketConnected } = useContext(GlobalContext);
@@ -31,9 +30,15 @@ const Navbar = () => {
   const notificationDropdownRef = useRef(null);
 
   const handleLogout = (e) => {
-    e.preventDefault();
-    localStorage.clear();
-    navigate("/login");
+    const logout = logoutUser();
+
+    if (logout.status === 200) {
+      localStorage.clear();
+      navigate("/login");
+      toast.success("Logged out successfully");
+    } else {
+      console.log(logout.status);
+    }
   };
 
   const getPicture = () => {

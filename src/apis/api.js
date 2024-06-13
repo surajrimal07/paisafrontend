@@ -107,6 +107,8 @@ export const loginUser = (data) => api.post("/api/user/login", data).then((respo
 
 export const getAllAssets = () => api.get("/api/sharesansardata");
 
+export const logoutUser = () => api.get("/api/user/logout");
+
 export const getMetals = (id) => api.get(`/api/metal`);
 
 export const getStockInfo = (symbol) => api.get(`/api/singlesharesansardata?symbol=${symbol}`);

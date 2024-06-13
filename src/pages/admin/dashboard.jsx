@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   FaArrowDown,
   FaArrowUp,
@@ -15,6 +15,7 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import ScrollToTop from "react-scroll-to-top";
+import secureLocalStorage from "react-secure-storage";
 import { toast } from "react-toastify";
 import {
   deleteUser,
@@ -27,15 +28,21 @@ import {
 import "./dashboard.css";
 import UserDialogBox from "./dialogbox_admin.jsx";
 import EditUserDialogBox from "./editingbox_admin.jsx";
-import secureLocalStorage from "react-secure-storage";
-
 
 function AdminDashboard() {
-  const [assets, setAssets] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [commodities, setCommodities] = useState([]);
-  const [metals, setMetals] = useState([]);
-  const [portfolios, setPortfolios] = useState([]);
+  // const [assets, setAssets] = useState([]);
+  // const [users, setUsers] = useState([]);
+  // const [commodities, setCommodities] = useState([]);
+  // const [metals, setMetals] = useState([]);
+  // const [portfolios, setPortfolios] = useState([]);
+
+  const [data, setData] = useState({
+    assets: [],
+    users: [],
+    portfolios: [],
+    metals: [],
+    commodities: [],
+  });
 
   const [currentUsersPage, setCurrentUsersPage] = useState(1);
   const [currentAssetsPage, setCurrentAssetsPage] = useState(1);
@@ -64,16 +71,119 @@ function AdminDashboard() {
     ascending: true,
   });
 
-  const totalUsers = users.length;
-  const totalAssets = assets.length;
-  const totalAmount = users.reduce((total, user) => total + user.userAmount, 0);
-  const totalAdmins = users.filter((user) => user.isAdmin).length;
-  const totalCommodity = commodities.length;
-  const totalMetals = metals.length;
+  const totalUsers = data.users.length;
+  const totalAssets = data.assets.length;
+  const totalAmount = data.users.reduce(
+    (total, user) => total + user.userAmount,
+    0
+  );
+  const totalAdmins = data.users.filter((user) => user.isAdmin).length;
+  const totalCommodity = data.commodities.length;
+  const totalMetals = data.metals.length;
 
-  const fetchData = async () => {
+  // const fetchData = async () => {
+  //   try {
+  //     const assetResponse = await getAllAssets();
+  //     if (
+  //       assetResponse.status === 200 &&
+  //       Array.isArray(assetResponse.data.data.stockDataWithoutName)
+  //     ) {
+  //       const jsonDecode = JSON.stringify(
+  //         assetResponse.data.data.stockDataWithoutName
+  //       );
+  //       localStorage.setItem("Assets", jsonDecode);
+  //       setAssets(assetResponse.data.data.stockDataWithoutName);
+  //     } else {
+  //       if (assetResponse.error) {
+  //         toast.error(`Error fetching assets: ${assetResponse.error}`);
+  //       } else {
+  //         toast.error("Error fetching assets. Please try again later.");
+  //       }
+  //     }
+
+  //     const userResponse = await getAllUsers();
+  //     if (
+  //       userResponse.status === 200 &&
+  //       Array.isArray(userResponse.data.data)
+  //     ) {
+  //       const jsonDecode = JSON.stringify(userResponse.data.data);
+  //       secureLocalStorage.setItem("Users", jsonDecode);
+  //       setUsers(userResponse.data.data);
+  //     } else {
+  //       toast.error("Error fetching users");
+  //       console.error("Error fetching users:", userResponse.error);
+  //     }
+
+  //     const portfolioRespose = await getAllPortfolios();
+  //     if (
+  //       portfolioRespose.status === 200 &&
+  //       Array.isArray(portfolioRespose.data.data)
+  //     ) {
+  //       const jsonDecode = JSON.stringify(portfolioRespose.data.data);
+  //       secureLocalStorage.setItem("Portfolios", jsonDecode);
+
+  //       setPortfolios(portfolioRespose.data.data);
+
+  //     } else {
+  //       toast.error("Error fetching portfolios");
+  //     }
+
+  //     const metalsResponse = await getMetals();
+  //     if (
+  //       metalsResponse.status === 200 &&
+  //       Array.isArray(metalsResponse.data.metalData)
+  //     ) {
+  //       const jsonDecode = JSON.stringify(metalsResponse.data.metalData);
+  //       localStorage.setItem("Metals", jsonDecode);
+  //       setMetals(metalsResponse.data.metalData);
+  //     } else {
+  //       toast.error("Error fetching metals");
+  //       console.error("Error fetching metals:", metalsResponse.error);
+  //     }
+
+  //     const commodityResponse = await getCommo();
+  //     if (
+  //       commodityResponse.status === 200 &&
+  //       Array.isArray(commodityResponse.data.data)
+  //     ) {
+  //       const jsonDecode = JSON.stringify(commodityResponse.data.data);
+  //       localStorage.setItem("Commodities", jsonDecode);
+  //       setCommodities(commodityResponse.data.data);
+  //     } else {
+  //       toast.error("Error fetching commodities");
+  //       console.error("Error fetching commodities:", commodityResponse.error);
+  //     }
+
+  //     setTimeout(() => {
+  //       setLoading(false);
+  //     }, 1000);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+
+  const fetchData = useCallback(async () => {
     try {
-      const assetResponse = await getAllAssets();
+      const [
+        assetResponse,
+        userResponse,
+        portfolioResponse,
+        metalsResponse,
+        commodityResponse,
+      ] = await Promise.all([
+        getAllAssets(),
+        getAllUsers(),
+        getAllPortfolios(),
+        getMetals(),
+        getCommo(),
+      ]);
+
+      let newState = {};
+
       if (
         assetResponse.status === 200 &&
         Array.isArray(assetResponse.data.data.stockDataWithoutName)
@@ -82,7 +192,7 @@ function AdminDashboard() {
           assetResponse.data.data.stockDataWithoutName
         );
         localStorage.setItem("Assets", jsonDecode);
-        setAssets(assetResponse.data.data.stockDataWithoutName);
+        newState.assets = assetResponse.data.data.stockDataWithoutName;
       } else {
         if (assetResponse.error) {
           toast.error(`Error fetching assets: ${assetResponse.error}`);
@@ -93,70 +203,52 @@ function AdminDashboard() {
         }
       }
 
-      const userResponse = await getAllUsers();
       if (
         userResponse.status === 200 &&
         Array.isArray(userResponse.data.data)
       ) {
         const jsonDecode = JSON.stringify(userResponse.data.data);
         secureLocalStorage.setItem("Users", jsonDecode);
-        setUsers(userResponse.data.data);
-      } else {
-        toast.error("Error fetching users");
-        console.error("Error fetching users:", userResponse.error);
+        newState.users = userResponse.data.data;
       }
 
-      const portfolioRespose = await getAllPortfolios();
       if (
-        portfolioRespose.status === 200 &&
-        Array.isArray(portfolioRespose.data.data)
+        portfolioResponse.status === 200 &&
+        Array.isArray(portfolioResponse.data.data)
       ) {
-        const jsonDecode = JSON.stringify(portfolioRespose.data.data);
+        const jsonDecode = JSON.stringify(portfolioResponse.data.data);
         secureLocalStorage.setItem("Portfolios", jsonDecode);
-
-        setPortfolios(portfolioRespose.data.data);
-
-      } else {
-        toast.error("Error fetching portfolios");
+        newState.portfolios = portfolioResponse.data.data;
       }
 
-      const metalsResponse = await getMetals();
       if (
         metalsResponse.status === 200 &&
         Array.isArray(metalsResponse.data.metalData)
       ) {
         const jsonDecode = JSON.stringify(metalsResponse.data.metalData);
         localStorage.setItem("Metals", jsonDecode);
-        setMetals(metalsResponse.data.metalData);
-      } else {
-        toast.error("Error fetching metals");
-        console.error("Error fetching metals:", metalsResponse.error);
+        newState.metals = metalsResponse.data.metalData;
       }
 
-      const commodityResponse = await getCommo();
       if (
         commodityResponse.status === 200 &&
         Array.isArray(commodityResponse.data.data)
       ) {
         const jsonDecode = JSON.stringify(commodityResponse.data.data);
         localStorage.setItem("Commodities", jsonDecode);
-        setCommodities(commodityResponse.data.data);
-      } else {
-        toast.error("Error fetching commodities");
-        console.error("Error fetching commodities:", commodityResponse.error);
+        newState.commodities = commodityResponse.data.data;
       }
 
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+      setData(newState);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   const renderSortIcon = (column, sortOrder) => {
     if (sortOrder.column === column) {
@@ -170,7 +262,7 @@ function AdminDashboard() {
       sortOrderUsers.column === column ? !sortOrderUsers.ascending : true;
     setSortOrderUsers({ column, ascending: isAscending });
 
-    const sortedUsers = [...users].sort((a, b) => {
+    const sortedUsers = [...data.users].sort((a, b) => {
       const valueA = a[column];
       const valueB = b[column];
 
@@ -189,7 +281,8 @@ function AdminDashboard() {
       }
     });
 
-    setUsers(sortedUsers);
+    data.users = sortedUsers;
+    //setUsers(sortedUsers);
   };
 
   const handleSortAssets = (column) => {
@@ -197,7 +290,7 @@ function AdminDashboard() {
       sortOrderAssets.column === column ? !sortOrderAssets.ascending : true;
     setSortOrderAssets({ column, ascending: isAscending });
 
-    const sortOrderAsset = [...assets].sort((a, b) => {
+    const sortOrderAsset = [...data.assets].sort((a, b) => {
       const valueA = a[column];
       const valueB = b[column];
 
@@ -215,7 +308,8 @@ function AdminDashboard() {
           : 1;
       }
     });
-    setAssets(sortOrderAsset);
+    data.assets = sortOrderAsset;
+    //setAssets(sortOrderAsset);
   };
 
   const handleSortCommodities = (column) => {
@@ -225,7 +319,7 @@ function AdminDashboard() {
         : true;
     setSortOrderCommodities({ column, ascending: isAscending });
 
-    const sortOrderCommodity = [...commodities].sort((a, b) => {
+    const sortOrderCommodity = [...data.commodities].sort((a, b) => {
       const valueA = a[column];
       const valueB = b[column];
 
@@ -243,7 +337,8 @@ function AdminDashboard() {
           : 1;
       }
     });
-    setCommodities(sortOrderCommodity);
+    data.commodities = sortOrderCommodity;
+    // setCommodities(sortOrderCommodity);
   };
 
   const handleEditUser = (user) => {
@@ -285,7 +380,9 @@ function AdminDashboard() {
 
       if (response.status === 200 || response.status === 204) {
         toast.success("User deleted successfully");
-        setUsers(users.filter((user) => user.email !== deletingUser));
+
+        data.users = data.users.filter((user) => user.email !== deletingUser);
+        //setUsers(users.filter((user) => user.email !== deletingUser));
       } else {
         toast.error("Failed to delete user");
       }
@@ -316,9 +413,9 @@ function AdminDashboard() {
 
   const indexOfLastUser = currentUsersPage * itemsPerPage;
   const indexOfFirstUser = indexOfLastUser - itemsPerPage;
-  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+  const currentUsers = data.users.slice(indexOfFirstUser, indexOfLastUser);
 
-  const totalUsersPageCount = Math.ceil(users.length / itemsPerPage);
+  const totalUsersPageCount = Math.ceil(data.users.length / itemsPerPage);
 
   const renderUserPaginationButtons = () => {
     const buttons = [];
@@ -367,30 +464,40 @@ function AdminDashboard() {
 
   const indexOfLastAsset = currentAssetsPage * itemsPerPage;
   const indexOfFirstAsset = indexOfLastAsset - itemsPerPage;
-  const currentAssets = assets.slice(indexOfFirstAsset, indexOfLastAsset);
+  const currentAssets = data.assets.slice(indexOfFirstAsset, indexOfLastAsset);
 
   const indexOfLastCommodity = currentCommoditiesPage * itemsPerPage;
   const indexOfFirstCommodity = indexOfLastCommodity - itemsPerPage;
-  const currentCommodity = commodities.slice(
+  const currentCommodity = data.commodities.slice(
     indexOfFirstCommodity,
     indexOfLastCommodity
   );
 
-  const totalAssetsPageCount = Math.ceil(assets.length / itemsPerPage);
+  const totalAssetsPageCount = Math.ceil(data.assets.length / itemsPerPage);
   const totalCommoditiesPageCount = Math.ceil(
-    commodities.length / itemsPerPage
+    data.commodities.length / itemsPerPage
   );
 
-  const totalPortfolioCount = Math.ceil(portfolios.length);
+  const totalPortfolioCount = Math.ceil(data.portfolios.length);
 
-  const totalPortfolioValue = portfolios.reduce(
-    (total, portfolio) => total + portfolio.portfoliovalue,
-    0
-  );
-  const totalPortfolioCost = portfolios.reduce(
-    (total, portfolio) => total + portfolio.portfoliocost,
-    0
-  );
+  console.log("portfolios", data.portfolios);
+
+  const totalPortfolioValue = data.portfolios.reduce((total, portfolio) => {
+    const portfolioValue = portfolio.portfoliovalue;
+
+    const validValue = isNaN(portfolioValue) ? 0 : portfolioValue;
+
+    return total + validValue;
+  }, 0);
+
+  const totalPortfolioCost = data.portfolios.reduce((total, portfolio) => {
+    const portfolioCost = portfolio.portfoliocost;
+
+    const validCost = isNaN(portfolioCost) ? 0 : portfolioCost;
+
+    return total + validCost;
+  }, 0);
+
   const totalReturns = totalPortfolioValue - totalPortfolioCost;
 
   const totalAveragePortfolioReturnsPercentage = (
@@ -493,21 +600,24 @@ function AdminDashboard() {
 
   const handleClearSearchUsers = () => {
     setSearchQueryUsers("");
-    setUsers(JSON.parse(secureLocalStorage.getItem("Users")));
+    data.users = JSON.parse(secureLocalStorage.getItem("Users"));
+    //setUsers(JSON.parse(secureLocalStorage.getItem("Users")));
   };
 
   const handleClearSearchAssets = () => {
     setSearchQueryAssets("");
-    setAssets(JSON.parse(localStorage.getItem("Assets")));
+    data.assets = JSON.parse(localStorage.getItem("Assets"));
+    //setAssets(JSON.parse(localStorage.getItem("Assets")));
   };
 
   const handleClearSearchCommodity = () => {
     setSearchQueryCommodities("");
-    setCommodities(JSON.parse(localStorage.getItem("Commodities")));
+    data.commodities = JSON.parse(localStorage.getItem("Commodities"));
+    //setCommodities(JSON.parse(localStorage.getItem("Commodities")));
   };
 
   const handleSearchUsers = () => {
-    const filteredUsers = users.filter((user) => {
+    const filteredUsers = data.users.filter((user) => {
       const lowerCaseQuery = searchQueryUsers.toLowerCase();
       return (
         user.name.toLowerCase().includes(lowerCaseQuery) ||
@@ -516,22 +626,24 @@ function AdminDashboard() {
         user.token.toLowerCase().includes(lowerCaseQuery)
       );
     });
-    setUsers(filteredUsers);
+    data.users = filteredUsers;
+    //setUsers(filteredUsers);
     setCurrentUsersPage(1);
   };
 
   const handleSearchAssets = () => {
-    const filteredAssets = assets.filter(
+    const filteredAssets = data.assets.filter(
       (asset) =>
         asset.symbol.toLowerCase().includes(searchQueryAssets.toLowerCase()) ||
         asset.name.toLowerCase().includes(searchQueryAssets.toLowerCase())
     );
-    setAssets(filteredAssets);
+    data.assets = filteredAssets;
+    //setAssets(filteredAssets);
     setCurrentAssetsPage(1);
   };
 
   const handleSearchCommodities = () => {
-    const filteredCommodities = commodities.filter((commodity) => {
+    const filteredCommodities = data.commodities.filter((commodity) => {
       const nameMatch =
         commodity.name &&
         commodity.name
@@ -540,7 +652,8 @@ function AdminDashboard() {
       return nameMatch;
     });
 
-    setCommodities(filteredCommodities);
+    data.commodities = filteredCommodities;
+    // setCommodities(filteredCommodities);
     setCurrentCommoditiesPage(1);
   };
 
@@ -774,18 +887,21 @@ function AdminDashboard() {
           <table className="table mt-2">
             <thead className="table-light">
               <tr>
-                <th>Symbol</th>
-                <th onClick={() => handleSortAssets("name")}>
-                  Name {renderSortIcon("name", sortOrderAssets)}
-                </th>
-                <th onClick={() => handleSortAssets("sector")}>
-                  Sector {renderSortIcon("sector", sortOrderAssets)}
-                </th>
                 <th onClick={() => handleSortAssets("symbol")}>
                   Symbol {renderSortIcon("symbol", sortOrderAssets)}
                 </th>
+                <th onClick={() => handleSortAssets("name")}>
+                  Name {renderSortIcon("name", sortOrderAssets)}
+                </th>
+                <th onClick={() => handleSortAssets("volume")}>
+                  volume {renderSortIcon("volume", sortOrderAssets)}
+                </th>
                 <th onClick={() => handleSortAssets("ltp")}>
                   LTP {renderSortIcon("ltp", sortOrderAssets)}
+                </th>
+                <th onClick={() => handleSortAssets("previousclose")}>
+                  Previous Close{" "}
+                  {renderSortIcon("previousclose", sortOrderAssets)}
                 </th>
                 <th onClick={() => handleSortAssets("pointchange")}>
                   Point Change {renderSortIcon("pointchange", sortOrderAssets)}
@@ -808,10 +924,11 @@ function AdminDashboard() {
                     </Link>
                   </td>
                   <td>{asset.name}</td>
-                  <td>{asset.sector}</td>
-                  <td>{asset.symbol}</td>
+                  <td>{asset.volume}</td>
                   <td>{asset.ltp}</td>
+                  <td>{asset.previousclose} </td>
                   <td>{asset.pointchange}</td>
+
                   <td>
                     <span
                       style={{
@@ -887,10 +1004,11 @@ function AdminDashboard() {
               <tr>
                 <th>Symbol</th>
 
-                <th>LTP</th>
                 <th onClick={() => handleSortCommodities("ltp")}>
-                  Unit {renderSortIcon("ltp", sortOrderCommodities)}
+                  LTP {renderSortIcon("ltp", sortOrderCommodities)}
                 </th>
+
+                <th>Unit</th>
                 <th>Category</th>
               </tr>
             </thead>
@@ -929,7 +1047,7 @@ function AdminDashboard() {
             </tr>
           </thead>
           <tbody>
-            {metals.map((metal, index) => (
+            {data.metals.map((metal, index) => (
               <tr key={index} onClick={() => handleViewDetail(metal)}>
                 <td>{metal.symbol}</td>
                 <td>{metal.ltp}</td>
