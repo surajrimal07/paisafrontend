@@ -67,7 +67,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
 //    console.log(error.response.data.message);
-    if (error.response && (error.response.status === 416 || error.response.status === 440 || error.response.status === 498 || error.response.status === 499 || error.response.status === 401 || error.response.status === 403)) {
+    if (error.response && (error.response.status === 416 || error.response.status === 440 || error.response.status === 498 || error.response.status === 499)) {
       const keysToRemove = [
         "token",
         "Users",
