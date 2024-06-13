@@ -68,7 +68,6 @@ const Login = () => {
       try {
         await FetchXSRFToken();
       } catch (err) {
-        console.log(err);
         toast.error("An error occurred while fetching XSRF token.");
       }
     };
@@ -76,11 +75,13 @@ const Login = () => {
   }, []);
 
   const handleEmailChange = (event) => {
+    event.preventDefault();
     const cleanEmail = sanitizeInput(event.target.value);
     setEmail(cleanEmail);
   };
 
   const handlePasswordChange = (event) => {
+    event.preventDefault();
     const cleanPassword = sanitizeInput(event.target.value);
     setStrength(evaluatePasswordStrength(cleanPassword));
     setPassword(cleanPassword);
@@ -199,7 +200,6 @@ const Login = () => {
         toast.error(message);
       }
     } catch (err) {
-      console.log(err);
       const errorMessage =
         err.response && err.response.data && err.response.data.message
           ? err.response.data.message
@@ -221,6 +221,7 @@ const Login = () => {
       setEmailValid(false);
     }
   };
+
 
   const handleNameValidate = async (name) => {
     const data = {
@@ -393,7 +394,7 @@ const Login = () => {
       const { success, message, hash } = response.data;
 
       if (success) {
-       // localStorage.setItem("hash", hash);
+        // localStorage.setItem("hash", hash);
         //localStorage.setItem("email", email);
 
         secureLocalStorage.setItem("hash", hash);
@@ -421,7 +422,7 @@ const Login = () => {
 
       const { success, message, data } = response.data;
       if (success) {
-       // localStorage.setItem("hash", data);
+        // localStorage.setItem("hash", data);
         //localStorage.setItem("email", email);
 
         secureLocalStorage.setItem("hash", data);
@@ -579,7 +580,7 @@ const Login = () => {
                 className="tooltisp"
                 style={{ position: "absolute", right: "5px" }}
               >
-                {!emailValid ? (
+                {!emailValid && emailError === "Email already exists" ? (
                   <FaCheckCircle
                     style={{ color: "green", marginLeft: "5px" }}
                   />
