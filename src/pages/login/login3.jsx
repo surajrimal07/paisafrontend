@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   FetchXSRFToken,
   RegisterUser,
+  api,
   forgetPassword,
   loginUser,
   otpLogin,
@@ -67,6 +68,15 @@ const Login = () => {
     const fetchXSRFToken = async () => {
       try {
         await FetchXSRFToken();
+
+        api.interceptors.request.use((config) => {
+          config.headers[
+            "Authorization"
+          ] = `Bearer ${secureLocalStorage.getItem("authtoken")}`;
+          config.headers["xsrf-token"] =
+            secureLocalStorage.getItem("xsrftoken");
+          return config;
+        });
       } catch (err) {
         console.log(err);
         toast.error("An error occurred while fetching XSRF token.");
@@ -201,7 +211,6 @@ const Login = () => {
     };
 
     try {
-      const xsrf = await FetchXSRFToken();
       const res = await loginUser(data);
       const { success, message, data: responseData } = res.data;
 

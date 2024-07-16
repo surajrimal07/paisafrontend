@@ -38,7 +38,7 @@ if (process.env.NODE_ENV === 'production') {
 //   }
 // );
 
-const api = axios.create({
+export const api = axios.create({
   baseURL,
   withCredentials: true,
   headers: {
