@@ -103,6 +103,7 @@ export const loginUser = (data) => api.post("/api/user/login", data).then((respo
   secureLocalStorage.setItem("authtoken", token);
   return response;
 });
+export const updateNewsViews = (id) => api.get(`/updatenewsview?id=${id}`);
 
 export const getAllAssets = () => api.get("/api/sharesansardata");
 

@@ -15,6 +15,7 @@ export const useWebSocket = () => {
 export const WebSocketProvider = ({ children }) => {
   const { setIsSocketConnected } = useContext(GlobalContext);
   const jwtToken = secureLocalStorage.getItem("authtoken");
+  //console.log("jwtToken", jwtToken);
   const isLoggedIn = jwtToken ? true : false;
 
   const [ws, setWs] = useState(null);
@@ -29,8 +30,8 @@ export const WebSocketProvider = ({ children }) => {
       let profileUrl = `wss://${midUrl}:8081/?room=profile&jwt=${jwtToken}`;
 
       if (process.env.NODE_ENV === "production") {
-        newsUrl = `wss://socket.zorsha.com.np/?room=news&jwt=${jwtToken}`;
-        profileUrl = `wss://socket.zorsha.com.np/?room=profile&jwt=${jwtToken}`;
+        newsUrl = `wss://socket.surajr.com.np/?room=news&jwt=${jwtToken}`;
+        profileUrl = `wss://socket.surajr.com.np/?room=profile&jwt=${jwtToken}`;
       }
 
       //const url = `wss://socket.zorsha.com.np/?room=news&wt=${encodeURIComponent(jwtToken)}`;
