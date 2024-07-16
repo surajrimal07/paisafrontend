@@ -62,6 +62,7 @@ const Login = () => {
 
   const [showResetForm, setShowResetForm] = useState(false);
   const [strength, setStrength] = useState("");
+  const [xsrfToken, setXSRFToken] = useState("");
   const [strengthColor, setStrengthColor] = useState("black");
 
   useEffect(() => {
@@ -69,12 +70,14 @@ const Login = () => {
       try {
         await FetchXSRFToken();
 
+        const xsrf = secureLocalStorage.getItem("xsrftoken");
+        setXSRFToken(xsrf);
+
         api.interceptors.request.use((config) => {
           config.headers[
             "Authorization"
           ] = `Bearer ${secureLocalStorage.getItem("authtoken")}`;
-          config.headers["xsrf-token"] =
-            secureLocalStorage.getItem("xsrftoken");
+          config.headers["xsrf-token"] = xsrf;
           return config;
         });
       } catch (err) {
@@ -206,8 +209,9 @@ const Login = () => {
     event.preventDefault();
 
     const data = {
-      email,
-      password,
+      email: email,
+      password: password,
+      _csrf: xsrfToken,
     };
 
     try {

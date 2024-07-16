@@ -88,7 +88,6 @@ api.interceptors.response.use(
 
 export const FetchXSRFToken = () => api.get("/api/user/csrf-token").then((response) => {
   secureLocalStorage.removeItem('xsrftoken');
-  console.log("XSRF Token: ", response.data.token);
   secureLocalStorage.setItem('xsrftoken', response.data.token);
 });
 
@@ -107,8 +106,6 @@ export const verifyPhone = (data) => api.post("/api/user/verifyphone", data);
 // });
 
 export const loginUser = (data) => {
-  console.log('Request headers:', api.defaults.headers);
-
   return api.post("/api/user/login", data)
     .then((response) => {
       const token = response.data.data.token;
