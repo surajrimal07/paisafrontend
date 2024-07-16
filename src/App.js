@@ -39,7 +39,6 @@ import PortfolioCompare from './pages/portfolio/portfoliocompare';
 
 import { ToastContainer } from "react-toastify";
 import UserLogs from './pages/admin/userlogs';
-import AIDashboard from './pages/ai_dashboard/ai_dashboard';
 import NrbData from './pages/nrbpage/nrb';
 import MarketData from './pages/worldmarket/worldmarket';
 
@@ -88,10 +87,8 @@ function App() {
               <Route path="/stockdetailview" element={<StockDetailView />} />
               <Route path="/stocks" element={<Stock />} />
               <Route path="/chart" element={<Chart />} />
-              <Route path="/ai" element={<AIDashboard />} />
 
             </Route>
-
             <Route element={<AdminRoutes />} >
               <Route path='/admin/dashboard' element={<Dashboard />} />
               <Route path='/admin/userlogs' element={<UserLogs />} />

@@ -87,6 +87,28 @@ const Login = () => {
     setPassword(cleanPassword);
   };
 
+  const sanitizeInput = (input) => {
+    return DOMPurify.sanitize(input);
+  };
+
+  const handlePasswordValidate = async (password, email, name) => {
+    const data = {
+      password,
+      email,
+      name,
+    };
+
+    try {
+      const res = await verifyPassword(data);
+      setPasswordError(res.data.message);
+      setPasswordValid(res.status === 200);
+    } catch (error) {
+      setPasswordError(error.response.data.message);
+      setPasswordValid(false);
+    }
+  };
+
+
   const handleNameChange = (event) => {
     const cleanName = sanitizeInput(event.target.value);
     setName(cleanName);
@@ -184,8 +206,6 @@ const Login = () => {
 
       if (success) {
         toast.success(message);
-        //  const { token } = responseData;
-        // secureLocalStorage.setItem("authtoken", token);
         const jsonDecode = JSON.stringify(responseData);
         secureLocalStorage.setItem("user", jsonDecode);
         setIsUserLoggedIn(true);
@@ -252,22 +272,7 @@ const Login = () => {
     }
   };
 
-  const handlePasswordValidate = async (password, email, name) => {
-    const data = {
-      password,
-      email,
-      name,
-    };
 
-    try {
-      const res = await verifyPassword(data);
-      setPasswordError(res.data.message);
-      setPasswordValid(res.status === 200);
-    } catch (error) {
-      setPasswordError(error.response.data.message);
-      setPasswordValid(false);
-    }
-  };
 
   const handleConfirmPasswordValidate = async (confirmPassword, passowrd) => {
     if (confirmPassword === passowrd && passwordValid) {
@@ -279,9 +284,6 @@ const Login = () => {
     }
   };
 
-  const sanitizeInput = (input) => {
-    return DOMPurify.sanitize(input);
-  };
 
   const handleRegisterSubmit = async (event) => {
     event.preventDefault();

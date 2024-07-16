@@ -15,7 +15,7 @@ export const urlPort = "4000";
 export let baseURL = `${htt}${midUrl}:${urlPort}`;
 
 if (process.env.NODE_ENV === 'production') {
-  midUrl = "api.zorsha.com.np";
+  midUrl = "api.surajr.com.np";
   baseURL = `${htt}${midUrl}`;
 }
 
@@ -86,7 +86,6 @@ api.interceptors.response.use(
 );
 
 export const FetchXSRFToken = () => api.get("/api/user/csrf-token").then((response) => {
-  //  api.defaults.headers['xsrf-token'] = response.data.token;
   secureLocalStorage.removeItem('xsrftoken');
   secureLocalStorage.setItem('xsrftoken', response.data.token);
 });

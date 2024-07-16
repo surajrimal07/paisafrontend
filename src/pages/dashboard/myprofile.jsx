@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import secureLocalStorage from "react-secure-storage";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { updateDPImage, updateUser } from "../../apis/api.js";
 import "./App.css";
 import HandleDPChange from "./handleDPChange";
 import EditProfileForm from "./handleEdit";
+import mime from 'mime/lite';
 
 const MyProfilePage = () => {
   const [userData, setUserData] = useState(null);
@@ -41,8 +42,6 @@ const MyProfilePage = () => {
 
       if (success) {
         toast.success(message);
-        //localStorage.setItem("token", responseData.token);
-        //localStorage.setItem("user", JSON.stringify(responseData));
         secureLocalStorage.setItem("user", JSON.stringify(responseData));
         setUserData(responseData);
       } else {
@@ -69,6 +68,12 @@ const MyProfilePage = () => {
       return;
     }
 
+    const fileMimeType = mime.getType(file);
+    if (!fileMimeType || !fileMimeType.startsWith("image")) {
+      toast.error("Please select an image file.");
+      return;
+    }
+    
     const data = new FormData();
     data.append("dpImage", file);
     data.append("oldEmail", userData.email);
@@ -81,9 +86,6 @@ const MyProfilePage = () => {
 
       if (success) {
         toast.success(message);
-       // localStorage.setItem("token", responseData.token);
-
-       //localStorage.setItem("user", JSON.stringify(responseData));
 
         secureLocalStorage.setItem("authtoken", responseData.token);
 
