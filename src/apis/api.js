@@ -85,7 +85,8 @@ api.interceptors.response.use(
   }
 );
 
-export const FetchXSRFToken = () => api.get("/api/user/csrf-token").then((response) => {
+
+export const FetchXSRFToken = () => axios.get(baseURL + "/api/user/csrf-token").then((response) => {
   secureLocalStorage.removeItem('xsrftoken');
   secureLocalStorage.setItem('xsrftoken', response.data.token);
 });
