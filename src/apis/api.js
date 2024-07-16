@@ -99,12 +99,29 @@ export const verifyName = (data) => api.post("/api/user/verifyname", data);
 export const verifyPassword = (data) => api.post("/api/user/verifyPassword", data);
 export const verifyPhone = (data) => api.post("/api/user/verifyphone", data);
 
-export const loginUser = (data) => api.post("/api/user/login", data).then((response) => {
-  const token = response.data.data.token;
-  secureLocalStorage.removeItem('authtoken');
-  secureLocalStorage.setItem("authtoken", token);
-  return response;
-});
+// export const loginUser = (data) => api.post("/api/user/login", data).then((response) => {
+//   const token = response.data.data.token;
+//   secureLocalStorage.removeItem('authtoken');
+//   secureLocalStorage.setItem("authtoken", token);
+//   return response;
+// });
+
+export const loginUser = (data) => {
+  console.log('Request headers:', api.defaults.headers);
+
+  return api.post("/api/user/login", data)
+    .then((response) => {
+      const token = response.data.data.token;
+      secureLocalStorage.removeItem('authtoken');
+      secureLocalStorage.setItem("authtoken", token);
+      return response;
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      throw error;
+    });
+};
+
 export const updateNewsViews = (id) => api.get(`/updatenewsview?id=${id}`);
 
 export const getAllAssets = () => api.get("/api/sharesansardata");
