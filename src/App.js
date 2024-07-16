@@ -40,6 +40,7 @@ import PortfolioCompare from './pages/portfolio/portfoliocompare';
 import { ToastContainer } from "react-toastify";
 import UserLogs from './pages/admin/userlogs';
 import NrbData from './pages/nrbpage/nrb';
+import Supplydemand from './pages/supplydemand/supplydemand';
 import MarketData from './pages/worldmarket/worldmarket';
 
 
@@ -76,6 +77,7 @@ function App() {
             <Route path="/complaint" element={<Complaint />} />
             <Route path="/nrbdata" element={<NrbData />} />
             <Route path="/worldmarket" element={<MarketData />} />
+            <Route path="/supplydemand" element={<Supplydemand />} />
 
             <Route element={<UserRoutes />}>
               <Route path="/myprofile" element={<MyProfilePage />} />
@@ -87,6 +89,7 @@ function App() {
               <Route path="/stockdetailview" element={<StockDetailView />} />
               <Route path="/stocks" element={<Stock />} />
               <Route path="/chart" element={<Chart />} />
+
 
             </Route>
             <Route element={<AdminRoutes />} >

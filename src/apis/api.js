@@ -135,6 +135,8 @@ export const getAllUsers = () => api.get("/api/admin/allusers");
 
 export const getUserLogs = () => api.get("/api/admin/fetchuserlogs");
 
+export const getSupplyDemand = () => api.get("/api/supplydemand");
+
 export const deleteUser = (deletingUser) => {
   const apiEndpoint = baseURL + "/api/deleteUser";
 

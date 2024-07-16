@@ -28,7 +28,7 @@ const Navbar = () => {
   const location = useLocation();
   const notificationDropdownRef = useRef(null);
 
-  const handleLogout =async (e) => {
+  const handleLogout = async (e) => {
     e.preventDefault();
     const logout = await logoutUser();
 
@@ -358,13 +358,18 @@ const Navbar = () => {
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link" to="/feathures">
-                  Features
+                <NavLink className="nav-link" to="/supplydemand">
+                  Supply Demand
                 </NavLink>
               </li>
               <li className="nav-item">
                 <NavLink className="nav-link" to="/aboutus">
-                  About Us
+                  Floorsheet
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/aboutus">
+                  Signals
                 </NavLink>
               </li>
             </ul>
