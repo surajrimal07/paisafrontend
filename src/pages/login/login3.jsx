@@ -68,6 +68,7 @@ const Login = () => {
       try {
         await FetchXSRFToken();
       } catch (err) {
+        console.log(err);
         toast.error("An error occurred while fetching XSRF token.");
       }
     };
@@ -107,7 +108,6 @@ const Login = () => {
       setPasswordValid(false);
     }
   };
-
 
   const handleNameChange = (event) => {
     const cleanName = sanitizeInput(event.target.value);
@@ -201,6 +201,7 @@ const Login = () => {
     };
 
     try {
+      const xsrf = await FetchXSRFToken();
       const res = await loginUser(data);
       const { success, message, data: responseData } = res.data;
 
@@ -242,7 +243,6 @@ const Login = () => {
     }
   };
 
-
   const handleNameValidate = async (name) => {
     const data = {
       name,
@@ -272,8 +272,6 @@ const Login = () => {
     }
   };
 
-
-
   const handleConfirmPasswordValidate = async (confirmPassword, passowrd) => {
     if (confirmPassword === passowrd && passwordValid) {
       setConfirmPasswordError("Password Matched");
@@ -283,7 +281,6 @@ const Login = () => {
       setConfirmPasswordValid(false);
     }
   };
-
 
   const handleRegisterSubmit = async (event) => {
     event.preventDefault();
