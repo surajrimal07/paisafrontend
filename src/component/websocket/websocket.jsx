@@ -44,16 +44,16 @@ export const WebSocketProvider = ({ children }) => {
       const websocket3 = new WebSocket(supplydemandUrl);
 
       websocket.onopen = () => {
-        toast.success("News Server connected");
+        //toast.success("News Server connected");
         setIsSocketConnected(true);
       };
 
       websocket2.onopen = () => {
-        toast.success("Profile Server connected");
+        //toast.success("Profile Server connected");
       };
 
       websocket3.onopen = () => {
-        toast.success("Supply Demand Server connected");
+        //toast.success("Supply Demand Server connected");
       };
 
       websocket.onmessage = (event) => {
@@ -72,16 +72,16 @@ export const WebSocketProvider = ({ children }) => {
       };
 
       websocket.onclose = () => {
-        toast.error("News Server disconnected");
+        //toast.error("News Server disconnected");
         setIsSocketConnected(false);
       };
 
       websocket2.onclose = () => {
-        toast.error("Profile Server disconnected");
+        //toast.error("Profile Server disconnected");
       };
 
       websocket3.onclose = () => {
-        toast.error("Supply Demand Server disconnected");
+        //toast.error("Supply Demand Server disconnected");
       };
 
       setWs2(websocket2);
