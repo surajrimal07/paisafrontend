@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { BiRefresh } from "react-icons/bi";
+import Modal from "react-modal";
 import ScrollToTop from "react-scroll-to-top";
 import { getNews, updateNewsViews } from "../../apis/api.js";
 import "./news.css";
@@ -10,8 +11,11 @@ const NewsDisplay = () => {
   const [loading, setLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [showAnimation] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({ summary: "", link: "" });
   const loaderRef = useRef(null);
   const itemsPerPage = 10;
+
   const fetchNews = useCallback(async () => {
     try {
       setLoading(true);
@@ -118,7 +122,19 @@ const NewsDisplay = () => {
     const updateSuccess = await updateNewsView(key);
 
     if (updateSuccess) {
-      window.open(url, "_blank", "noopener noreferrer");
+      try {
+        const response = await fetch(
+          `https://summary.surajr.com.np/summarize?url=${url}`,
+          {
+            method: "GET",
+          }
+        );
+        const summaryData = await response.json();
+        setModalContent({ summary: summaryData.summary, link: url });
+        setModalIsOpen(true);
+      } catch (error) {
+        console.error("Failed to fetch news summary:", error);
+      }
     } else {
       console.error("Failed to update news view. Unable to proceed.");
     }
@@ -188,10 +204,7 @@ const NewsDisplay = () => {
                 <p className="card-text">
                   {truncateDescription(news.description, 20)}
                 </p>
-                <a
-                  // href={news.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
                   onClick={() =>
                     handleReadMoreClick(news.unique_key, news.link)
                   }
@@ -199,7 +212,7 @@ const NewsDisplay = () => {
                   style={{ marginTop: "auto" }}
                 >
                   Read More <i className="bi bi-arrow-right" />
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -210,7 +223,33 @@ const NewsDisplay = () => {
 
       <div ref={loaderRef} style={{ height: "10px" }} />
       <ScrollToTop smooth />
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        contentLabel="News Summary"
+        ariaHideApp={false}
+        className="Modal"
+        overlayClassName="Overlay"
+      >
+        <h2>News Summary</h2>
+        <p>{modalContent.summary}</p>
+        <button
+          className="btn btn-primary"
+          onClick={() =>
+            window.open(modalContent.link, "_blank", "noopener noreferrer")
+          }
+        >
+          Read Full News
+        </button>
+        <button
+          className="btn btn-secondary"
+          onClick={() => setModalIsOpen(false)}
+        >
+          Close
+        </button>
+      </Modal>
     </div>
   );
 };
+
 export default NewsDisplay;
