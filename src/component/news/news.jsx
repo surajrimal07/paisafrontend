@@ -127,16 +127,36 @@ const NewsDisplay = () => {
           `https://summary.surajr.com.np/summarize?url=${url}`,
           {
             method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
         );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const summaryData = await response.json();
-        setModalContent({ summary: summaryData.summary, link: url });
-        setModalIsOpen(true);
+        const summary = summaryData[0]?.trim() || "";
+        if (
+          !Array.isArray(summaryData) ||
+          summaryData.length === 0 ||
+          summary === null ||
+          summary.split(" ").length < 5
+        ) {
+          window.open(url, "_blank", "noopener noreferrer");
+        } else {
+          const summary = summaryData[0];
+          setModalContent({ summary, link: url });
+          setModalIsOpen(true);
+        }
       } catch (error) {
         console.error("Failed to fetch news summary:", error);
+        window.open(url, "_blank", "noopener noreferrer");
       }
     } else {
       console.error("Failed to update news view. Unable to proceed.");
+      window.open(url, "_blank", "noopener noreferrer");
     }
   };
 
@@ -233,20 +253,22 @@ const NewsDisplay = () => {
       >
         <h2>News Summary</h2>
         <p>{modalContent.summary}</p>
-        <button
-          className="btn btn-primary"
-          onClick={() =>
-            window.open(modalContent.link, "_blank", "noopener noreferrer")
-          }
-        >
-          Read Full News
-        </button>
-        <button
-          className="btn btn-secondary"
-          onClick={() => setModalIsOpen(false)}
-        >
-          Close
-        </button>
+        <div className="modal-buttons">
+          <button
+            className="btn btn-primary modal-button"
+            onClick={() =>
+              window.open(modalContent.link, "_blank", "noopener noreferrer")
+            }
+          >
+            Read Full News
+          </button>
+          <button
+            className="btn btn-secondary modal-button"
+            onClick={() => setModalIsOpen(false)}
+          >
+            Close
+          </button>
+        </div>
       </Modal>
     </div>
   );
