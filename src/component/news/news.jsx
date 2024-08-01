@@ -238,7 +238,7 @@ const NewsDisplay = () => {
                   className="btn btn-outline-secondary align-self-center"
                   style={{ marginTop: "auto" }}
                 >
-                  Read More <i className="bi bi-arrow-right" />
+                  Read Summary <i className="bi bi-arrow-right" />
                 </button>
               </div>
             </div>
