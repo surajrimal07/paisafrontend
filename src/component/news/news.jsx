@@ -12,7 +12,11 @@ const NewsDisplay = () => {
   const [isFetching, setIsFetching] = useState(false);
   const [showAnimation] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({ summary: "", link: "" });
+  const [modalContent, setModalContent] = useState({
+    summary: "",
+    link: "",
+    imgUrl: "",
+  });
   const loaderRef = useRef(null);
   const itemsPerPage = 10;
 
@@ -118,7 +122,7 @@ const NewsDisplay = () => {
     }
   };
 
-  const handleReadMoreClick = async (key, url) => {
+  const handleReadMoreClick = async (key, url, imgUrl) => {
     const updateSuccess = await updateNewsView(key);
 
     if (updateSuccess) {
@@ -146,8 +150,7 @@ const NewsDisplay = () => {
         ) {
           window.open(url, "_blank", "noopener noreferrer");
         } else {
-          const summary = summaryData[0];
-          setModalContent({ summary, link: url });
+          setModalContent({ summary, link: url, imgUrl });
           setModalIsOpen(true);
         }
       } catch (error) {
@@ -226,7 +229,11 @@ const NewsDisplay = () => {
                 </p>
                 <button
                   onClick={() =>
-                    handleReadMoreClick(news.unique_key, news.link)
+                    handleReadMoreClick(
+                      news.unique_key,
+                      news.link,
+                      news.img_url
+                    )
                   }
                   className="btn btn-outline-secondary align-self-center"
                   style={{ marginTop: "auto" }}
@@ -252,6 +259,19 @@ const NewsDisplay = () => {
         overlayClassName="Overlay"
       >
         <h2>News Summary</h2>
+        {modalContent.imgUrl && (
+          <img
+            src={modalContent.imgUrl}
+            alt="News"
+            style={{
+              width: "100%",
+              height: "200px",
+              objectFit: "cover",
+              marginBottom: "20px",
+            }}
+          />
+        )}
+
         <p>{modalContent.summary}</p>
         <div className="modal-buttons">
           <button
