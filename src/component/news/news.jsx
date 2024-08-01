@@ -269,6 +269,9 @@ const NewsDisplay = () => {
               objectFit: "cover",
               marginBottom: "20px",
             }}
+            onError={(e) => {
+              e.target.src = getDefaultImage();
+            }}
           />
         )}
 
