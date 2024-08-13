@@ -123,42 +123,37 @@ const NewsDisplay = () => {
   };
 
   const handleReadMoreClick = async (key, url, imgUrl) => {
-    const updateSuccess = await updateNewsView(key);
+    await updateNewsView(key);
 
-    if (updateSuccess) {
-      try {
-        const response = await fetch(
-          `https://summary.surajr.com.np/summarize?url=${url}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+    try {
+      const response = await fetch(
+        `https://summary.surajr.com.np/summarize?url=${url}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-
-        const summaryData = await response.json();
-        const summary = summaryData[0]?.trim() || "";
-        if (
-          !Array.isArray(summaryData) ||
-          summaryData.length === 0 ||
-          summary === null ||
-          summary.split(" ").length < 5
-        ) {
-          window.open(url, "_blank", "noopener noreferrer");
-        } else {
-          setModalContent({ summary, link: url, imgUrl });
-          setModalIsOpen(true);
-        }
-      } catch (error) {
-        console.error("Failed to fetch news summary:", error);
-        window.open(url, "_blank", "noopener noreferrer");
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    } else {
-      console.error("Failed to update news view. Unable to proceed.");
+
+      const summaryData = await response.json();
+      const summary = summaryData[0]?.trim() || "";
+      if (
+        !Array.isArray(summaryData) ||
+        summaryData.length === 0 ||
+        summary === null ||
+        summary.split(" ").length < 5
+      ) {
+        window.open(url, "_blank", "noopener noreferrer");
+      } else {
+        setModalContent({ summary, link: url, imgUrl });
+        setModalIsOpen(true);
+      }
+    } catch (error) {
+      console.error("Failed to fetch news summary:", error);
       window.open(url, "_blank", "noopener noreferrer");
     }
   };
