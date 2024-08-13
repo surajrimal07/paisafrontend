@@ -123,7 +123,14 @@ const NewsDisplay = () => {
   };
 
   const handleReadMoreClick = async (key, url, imgUrl) => {
-    await updateNewsView(key);
+    try {
+      const response = await updateNewsView(key);
+      if (response.status !== 200) {
+        throw new Error("Failed to update news view");
+      }
+    } catch (error) {
+      console.error("Error updating news view:", error);
+    }
 
     try {
       const response = await fetch(
