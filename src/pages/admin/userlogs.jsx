@@ -285,11 +285,7 @@ const UserLogs = () => {
               <div>Region: {selectedLog.clientAddress.region}</div>
               <div>Location: {selectedLog.clientAddress.city}</div>
 
-              <div>Timezone: {selectedLog.clientAddress.timezone}</div>
               <div>ISP: {selectedLog.clientAddress.isp}</div>
-
-              {/* <div>longitude: {selectedLog.clientAddress.longitude}</div>
-              <div>latitude: {selectedLog.clientAddress.latitude}</div> */}
 
               {selectedLog.clientAddress.longitude &&
                 selectedLog.clientAddress.latitude &&
