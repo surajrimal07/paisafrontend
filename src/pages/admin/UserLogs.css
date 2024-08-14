@@ -55,10 +55,14 @@ h1 {
 
 .logs-table th,
 .logs-table td {
+  word-wrap: break-word;
+  white-space: normal;
+  word-break: break-all;
   border: 1px solid #ddd;
+  overflow-wrap: break-word;
   padding: 8px;
   text-align: left;
-  max-width: 180px;
+  max-width: 200px;
 }
 
 .logs-table th {
