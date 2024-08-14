@@ -1,5 +1,5 @@
 .user-logs-container {
-  max-width: 1000px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
@@ -57,12 +57,12 @@ h1 {
 .logs-table td {
   word-wrap: break-word;
   white-space: normal;
-  word-break: break-all;
+  word-break: auto-phrase;
   border: 1px solid #ddd;
   overflow-wrap: break-word;
   padding: 8px;
   text-align: left;
-  max-width: 250px;
+  max-width: 250;
 }
 
 .logs-table th {
