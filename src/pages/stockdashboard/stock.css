@@ -1,65 +1,63 @@
 .table thead th {
-    position: sticky;
-    top: 0;
-    background-color: rgb(253, 245, 243);
-  }
+  position: sticky;
+  top: 0;
+  background-color: #f4f4f4;
+}
 
-  .table thead {
-    position: sticky;
-    top: 0;
-    background-color: #fff;
-    z-index: 1;
-  }
+.table thead {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 1;
+}
 
-  .table tbody td {
-    position: sticky;
-    top: 0;
-    background-color: rgb(253, 245, 243);
-  }
+.table tbody td {
+  position: sticky;
+  top: 0;
+  background-color: #f4f4f4;
+}
 
-  .card-header {
-    background-color: rgb(253, 245, 243);
-  }
+.card-header {
+  background-color: #f4f4f4;
+}
 
-  .card.mb-4 {
-    background-color: rgb(253, 245, 243);
-  }
+.card.mb-4 {
+  background-color: #f4f4f4;
+}
 
-  .card-body {
-    background-color: rgb(253, 245, 243);
-  }
+.card-body {
+  background-color: #f4f4f4;
+}
 
-  .table-responsive::-webkit-scrollbar {
-    display: none;
-  }
+.table-responsive::-webkit-scrollbar {
+  display: none;
+}
 
-  .iframe-container {
-    width: 97%;
-    height: 100%;
-    overflow: hidden;
-    position: relative;
-    padding-top: 56.25%;
+.iframe-container {
+  width: 97%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  padding-top: 56.25%;
+}
 
-  }
+.user-dashboards {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  overflow-y: auto;
+}
 
-  .user-dashboards {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    overflow-y: auto;
-  }
+.table-responsive {
+  width: 100%;
+}
 
-  .table-responsive {
-    width: 95%;
-  }
+.test {
+  margin-left: 14px;
+  width: 95%;
+}
 
-  .test {
-    margin-left: 14px;
-    width: 95%;
-  }
-
-
-  .stockto{
-    margin-top: 10px;
-  }
+.stockto {
+  margin-top: 10px;
+}
