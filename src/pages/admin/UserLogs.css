@@ -12,43 +12,41 @@ h1 {
 }
 
 .filter-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    gap: 5px;
-    height: 38px;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 5px;
+  height: 38px;
+}
 
-  .filter-bar select,
-  .filter-bar input {
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    flex: 1;
-    height: 38px;
-  }
+.filter-bar select,
+.filter-bar input {
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  flex: 1;
+  height: 38px;
+}
 
-  .response-time-filter {
-    display: flex;
-    align-items: center;
-  }
+.response-time-filter {
+  display: flex;
+  align-items: center;
+}
 
-  .response-time-filter select,
-  .response-time-filter input {
-    padding: 8px;
-    margin-right: 5px;
+.response-time-filter select,
+.response-time-filter input {
+  padding: 8px;
+  margin-right: 5px;
+}
 
+.response-time-filter select {
+  width: 50px;
+}
 
-  }
-
-  .response-time-filter select {
-    width: 50px;
-  }
-
-  .response-time-filter input {
-    flex: 1;
-  }
+.response-time-filter input {
+  flex: 1;
+}
 
 .logs-table {
   width: 100%;
@@ -60,6 +58,7 @@ h1 {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
+  max-width: 180px;
 }
 
 .logs-table th {
@@ -138,57 +137,59 @@ h1 {
   background-color: #0056b3;
 }
 
-
 .clear-filter-button {
-    display: inline-block;
-    padding: 8px 10px;
-    background-color: #ffffff;
-    height: 38px;
+  display: inline-block;
+  padding: 8px 10px;
+  background-color: #ffffff;
+  height: 38px;
 
-    color: #333333;
-    border: 1px solid #cccccc;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-  }
+  color: #333333;
+  border: 1px solid #cccccc;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
+}
 
-  .clear-filter-button:hover {
-    background-color: #f0f0f0;
-    border-color: #999999;
-  }
+.clear-filter-button:hover {
+  background-color: #f0f0f0;
+  border-color: #999999;
+}
 
-  .clear-filter-button:focus {
-    outline: none;
-  }
+.clear-filter-button:focus {
+  outline: none;
+}
 
-  .clear-filter-button:active {
-    background-color: #e6e6e6;
-    border-color: #666666;
-  }
+.clear-filter-button:active {
+  background-color: #e6e6e6;
+  border-color: #666666;
+}
 
-  .log-details-dialog {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-  }
+.log-details-dialog {
+  word-wrap: break-word;
+  white-space: normal;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
 
-  .log-details-dialog button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    color: #555;
-  }
+.log-details-dialog button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #555;
+}
 
-  .log-details-dialog div {
-    margin-bottom: 10px;
-  }
+.log-details-dialog div {
+  margin-bottom: 10px;
+}
