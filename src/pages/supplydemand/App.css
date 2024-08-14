@@ -15,9 +15,8 @@ h2 {
 }
 
 .table {
-  width: 40%; /* Adjust the width of the tables as needed */
+  width: 100%; /* Adjust the width of the tables as needed */
 }
-
 
 .larger-width-column {
   width: 200px; /* Adjust as needed */
